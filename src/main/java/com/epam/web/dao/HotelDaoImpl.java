@@ -20,4 +20,5 @@ public class HotelDaoImpl extends AbstractDao<Hotel> implements HotelDao {
     public List<Hotel> getAllHotels() throws SQLException {
         return executeQuery(GET_ALL_HOTELS);
     }
+
 }

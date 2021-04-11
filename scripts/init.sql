@@ -4,6 +4,7 @@ create table user
     login varchar(50) not null,
     password varchar(256) not null,
     role enum('USER', 'ADMIN') not null,
+    balance DECIMAL default 0 null;
 
     primary key (id)
 );

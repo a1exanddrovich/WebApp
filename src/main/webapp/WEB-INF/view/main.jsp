@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="true" %>
 
@@ -32,7 +32,7 @@
                             <h4 class="hotel__name">${hotel.getName()}</h4>
                             <p class="hotel__info">${hotel.getDescription()}</p>
                         </div>
-                        <a href="controller?command=booking" class="button-hover card-button">Apply</a>
+                        <a href="controller?command=booking&hotelName=${hotel.getName()}" class="button-hover card-button">Apply</a>
                     </div>
                 </div>
             </c:forEach>
@@ -43,10 +43,10 @@
 <script>
     const lightTheme = window.sessionStorage.getItem("lightTheme");
     const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if(lightTheme === "false" && darkTheme === "true") {
+    if (lightTheme === "false" && darkTheme === "true") {
         getDarkTheme();
     }
-    if(lightTheme === "true" && darkTheme === "false") {
+    if (lightTheme === "true" && darkTheme === "false") {
         getLightTheme();
     }
 </script>

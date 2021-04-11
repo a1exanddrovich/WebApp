@@ -31,6 +31,21 @@ public class CommandFactory {
             case "about" :
                 return new ShowPageCommand("/WEB-INF/view/about.jsp");
 
+            case "editOrderPage" :
+                return new ShowPageCommand("/WEB-INF/view/edit.jsp");
+
+            case "showBalance" :
+                return new ShowBalanceCommand(new UserService(new DaoHelperFactory()));
+
+            case "topUpBalance" :
+                return new TopUpBalanceCommand(new UserService(new DaoHelperFactory()));
+
+            case "editOrder" :
+                return new EditOrderCommand(new OrderService(new DaoHelperFactory()));
+
+            case "deleteOrder" :
+                return new DeleteOrderCommand(new OrderService(new DaoHelperFactory()));
+
             case "enIndex":
                 return new ChangeLanguageCommand("en", "/index.jsp");
 
@@ -39,6 +54,9 @@ public class CommandFactory {
 
             case "esIndex":
                 return new ChangeLanguageCommand("es", "/index.jsp");
+
+            case "makeOrder":
+                return new MakeOrderCommand(new OrderService(new DaoHelperFactory()));
 
             default:
                 throw  new IllegalArgumentException("Unknown type " + type);

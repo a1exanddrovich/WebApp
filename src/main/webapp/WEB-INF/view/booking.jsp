@@ -1,4 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page session="true" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -18,12 +21,20 @@
     <div class="container">
         <section class="section">
             <div class="section__container">
-                <form class="section__form" action="" method="post">
-                    <input class="form__input" type="text" placeholder="Hotel name" autofocus>
-                    <input class="form__input" type="text" placeholder="Class">
-                    <input class="form__input" type="text" placeholder="Room">
-                    <input class="form__input" type="date" placeholder="Arriving ate">
-                    <input class="form__input" type="date" placeholder="Departure date">
+                <form class="section__form" action="controller?command=makeOrder" method="post">
+                    <c:choose>
+                        <c:when test="${hotelName != null}">
+                            <input class="form__input" type="text" placeholder="Hotel name" name="hotelName" value="${hotelName}">
+                            <input class="form__input" type="text" placeholder="Class" name="class" autofocus>
+                        </c:when>
+                        <c:otherwise>
+                            <input class="form__input" type="text" placeholder="Hotel name" name="hotelName" autofocus>
+                            <input class="form__input" type="text" placeholder="Class" name="class">
+                        </c:otherwise>
+                    </c:choose>
+                    <input class="form__input" type="text" placeholder="Places" name="places">
+                    <input class="form__input" type="date" placeholder="Arriving date" name="arrival">
+                    <input class="form__input" type="date" placeholder="Departure date" name="departure">
                     <button class="form__button button-hover" type="submit">Book it</button>
                 </form>
                 <div class="section__image"></div>
@@ -31,14 +42,14 @@
         </section>
     </div>
 </main>
-<jsp:include page="fragments/footer.jsp"/>
+<%--<jsp:include page="fragments/footer.jsp"/>--%>
 <script>
     const lightTheme = window.sessionStorage.getItem("lightTheme");
     const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if(lightTheme === "false" && darkTheme === "true") {
+    if (lightTheme === "false" && darkTheme === "true") {
         getDarkTheme();
     }
-    if(lightTheme === "true" && darkTheme === "false") {
+    if (lightTheme === "true" && darkTheme === "false") {
         getLightTheme();
     }
 </script>

@@ -13,6 +13,12 @@ public class ShowPageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
+        if(request.getParameter("orderId") != null) {
+            request.setAttribute("orderId", request.getParameter("orderId"));
+        }
+        if(request.getParameter("hotelName") != null) {
+            request.setAttribute("hotelName", request.getParameter("hotelName"));
+        }
         return CommandResult.forward(page);
     }
 

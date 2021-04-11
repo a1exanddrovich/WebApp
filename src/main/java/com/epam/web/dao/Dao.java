@@ -5,8 +5,4 @@ import com.epam.web.mapper.UserMapper;
 
 import java.util.List;
 
-public interface Dao<T extends Identifiable> {
-
-
-
-}
+public interface Dao<T extends Identifiable> { }

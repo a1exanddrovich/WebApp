@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -17,48 +17,57 @@
 <jsp:include page="fragments/header.jsp"/>
 <main class="main">
     <div class="container">
-        <section class="section">
-            <c:forEach items="${reservations}" var="reservation">
-                <div class="section__card">
-                    <div class="app__info">
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Order id</h3>
-                            <p class="app__info-text-data">${reservation.getOrderId()}</p>
+        <c:choose>
+            <c:when test="${reservations.size() != 0}">
+                <section class="section">
+                    <c:forEach items="${reservations}" var="reservation">
+                        <div class="section__card">
+                            <div class="app__info">
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Order id</h3>
+                                    <p class="app__info-text-data">${reservation.getOrderId()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Hotel id</h3>
+                                    <p class="app__info-text-data">${reservation.getHotelId()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">User id</h3>
+                                    <p class="app__info-text-data">${reservation.getUserId()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Room id</h3>
+                                    <p class="app__info-text-data">${reservation.getRoomId()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Price</h3>
+                                    <p class="app__info-text-data">$${reservation.getPrice()}</p>
+                                </div>
+                            </div>
+                            <div class="app__actions">
+                                <button class="app__button button-hover" type="submit">Pay</button>
+                                <button class="app__button button-hover" type="submit">Refuse</button>
+                            </div>
                         </div>
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Hotel id</h3>
-                            <p class="app__info-text-data">${reservation.getHotelId()}</p>
-                        </div>
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">User id</h3>
-                            <p class="app__info-text-data">${reservation.getUserId()}</p>
-                        </div>
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Room id</h3>
-                            <p class="app__info-text-data">${reservation.getRoomId()}</p>
-                        </div>
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Price</h3>
-                            <p class="app__info-text-data">$${reservation.getPrice()}</p>
-                        </div>
-                    </div>
-                    <div class="app__actions">
-                        <button class="app__button button-hover" type="submit">Pay</button>
-                        <button class="app__button button-hover" type="submit">Refuse</button>
-                    </div>
-                </div>
-            </c:forEach>
-        </section>
+                    </c:forEach>
+                </section>
+            </c:when>
+            <c:otherwise>
+                <h2>Nothing to show</h2>
+            </c:otherwise>
+        </c:choose>
     </div>
 </main>
-<jsp:include page="fragments/footer.jsp"/>
+<c:if test="${reservations.size() != 0}">
+    <jsp:include page="fragments/footer.jsp"/>
+</c:if>
 <script>
     const lightTheme = window.sessionStorage.getItem("lightTheme");
     const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if(lightTheme === "false" && darkTheme === "true") {
+    if (lightTheme === "false" && darkTheme === "true") {
         getDarkTheme();
     }
-    if(lightTheme === "true" && darkTheme === "false") {
+    if (lightTheme === "true" && darkTheme === "false") {
         getLightTheme();
     }
 </script>

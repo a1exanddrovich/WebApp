@@ -11,6 +11,7 @@ public class UserMapper implements Mapper<User> {
     public static final String ID = "id";
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
+    public static final String BALANCE = "balance";
     public static final String ROLE = "role";
 
     @Override
@@ -19,7 +20,8 @@ public class UserMapper implements Mapper<User> {
         String userLogin = resultSet.getString(LOGIN);
         String userPassword = resultSet.getString(PASSWORD);
         UserRole userRole = UserRole.valueOf(resultSet.getString(ROLE));
-        User user = new User(userId, userLogin, userPassword, userRole);
+        double userBalance = resultSet.getDouble(BALANCE);
+        User user = new User(userId, userLogin, userPassword, userBalance, userRole);
         return user;
     }
 

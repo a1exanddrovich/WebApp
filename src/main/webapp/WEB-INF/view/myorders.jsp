@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -17,52 +17,65 @@
 <jsp:include page="fragments/header.jsp"/>
 <main class="main">
     <div class="container">
-        <section class="section">
-            <c:forEach items="${orders}" var="order">
-                <div class="section__card">
-                    <div class="app__info">
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Hotel</h3>
-                            <p class="app__info-text-data">${order.getHotelName()}</p>
+        <c:choose>
+            <c:when test="${orders.size() != 0}">
+                <section class="section">
+                    <c:forEach items="${orders}" var="order">
+                        <div class="section__card">
+                            <div class="app__info">
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Hotel</h3>
+                                    <p class="app__info-text-data">${order.getHotelName()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Class</h3>
+                                    <p class="app__info-text-data">${order.getRoomClass()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Places</h3>
+                                    <p class="app__info-text-data">${order.getPlaceCount()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Arr Date</h3>
+                                    <p class="app__info-text-data">${order.getArrivalDate()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Dep Date</h3>
+                                    <p class="app__info-text-data">${order.getDepartureDate()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">Status</h3>
+                                    <p class="app__info-text-data">${order.getStatus()}</p>
+                                </div>
+                            </div>
+                            <div class="app__actions">
+                                <button class="app__button button-hover" type="submit">
+                                    <a href="controller?command=editOrderPage&orderId=${order.getId()}">Edit</a>
+                                </button>
+                                <button class="app__button button-hover" type="submit">
+                                    <a href="controller?command=deleteOrder&orderId=${order.getId()}">Delete</a>
+                                </button>
+                            </div>
                         </div>
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Class</h3>
-                            <p class="app__info-text-data">${order.getRoomClass()}</p>
-                        </div>
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Places</h3>
-                            <p class="app__info-text-data">${order.getPlaceCount()}</p>
-                        </div>
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Arr Date</h3>
-                            <p class="app__info-text-data">${order.getArrivalDate()}</p>
-                        </div>
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Dep Date</h3>
-                            <p class="app__info-text-data">${order.getDepartureDate()}</p>
-                        </div>
-                        <div class="app__info-text">
-                            <h3 class="app__info-text-title">Status</h3>
-                            <p class="app__info-text-data">${order.getStatus()}</p>
-                        </div>
-                    </div>
-                    <div class="app__actions">
-                        <button class="app__button button-hover" type="submit">Edit</button>
-                        <button class="app__button button-hover" type="submit">Delete</button>
-                    </div>
-                </div>
-            </c:forEach>
-        </section>
+                    </c:forEach>
+                </section>
+            </c:when>
+            <c:otherwise>
+                <h2>Nothing to show</h2>
+            </c:otherwise>
+        </c:choose>
     </div>
 </main>
-<jsp:include page="fragments/footer.jsp"/>
+<c:if test="${orders.size() != 0}">
+    <jsp:include page="fragments/footer.jsp"/>
+</c:if>
 <script>
     const lightTheme = window.sessionStorage.getItem("lightTheme");
     const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if(lightTheme === "false" && darkTheme === "true") {
+    if (lightTheme === "false" && darkTheme === "true") {
         getDarkTheme();
     }
-    if(lightTheme === "true" && darkTheme === "false") {
+    if (lightTheme === "true" && darkTheme === "false") {
         getLightTheme();
     }
 </script>

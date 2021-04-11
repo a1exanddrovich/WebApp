@@ -5,6 +5,9 @@ import com.epam.web.entitiy.OrderStatus;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class OrderMapper implements Mapper<Order> {
 
@@ -24,8 +27,8 @@ public class OrderMapper implements Mapper<Order> {
         String hotelName = resultSet.getString(HOTEL_NAME);
         int places = resultSet.getInt(PLACES);
         String hotelClass = resultSet.getString(CLASS);
-        String arrivalDate = resultSet.getString(ARRIVAL_DATE);
-        String departureDate = resultSet.getString(DEPARTURE_DATE);
+        Date arrivalDate = resultSet.getDate(ARRIVAL_DATE);
+        Date departureDate = resultSet.getDate(DEPARTURE_DATE);
         OrderStatus status = OrderStatus.valueOf(resultSet.getString(STATUS));
         Order order = new Order(id, userId, hotelName, hotelClass, places, arrivalDate, departureDate, status);
         return order;

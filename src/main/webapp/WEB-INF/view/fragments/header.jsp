@@ -29,6 +29,9 @@
                         <li class="menu__list-item">
                             <a href="controller?command=about" class="menu__list-link"><fmt:message key="label.about"/></a>
                         </li>
+                        <li class="menu__list-item">
+                            <a href="controller?command=showBalance" class="menu__list-link">Balance</a>
+                        </li>
                     </ul>
                 </nav>
                 <a href="controller?command=logout" class="header__logout"><fmt:message key="label.logout"/></a>

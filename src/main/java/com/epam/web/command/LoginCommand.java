@@ -21,6 +21,7 @@ public class LoginCommand implements Command {
         Optional<User> optionalUser = service.login(username, password);
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
+            request.getSession().setAttribute("user", user);
         } else {
             request.setAttribute("errorMessage", "something");
             return CommandResult.forward("/index.jsp");
