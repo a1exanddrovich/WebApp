@@ -22,6 +22,9 @@ public class LoginCommand implements Command {
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
             request.getSession().setAttribute("user", user);
+//            if("ADMIN".equals(user.getRole())) {
+//                return CommandResult.redirect("controller?command=adminMainPage");
+//            }
         } else {
             request.setAttribute("errorMessage", "something");
             return CommandResult.forward("/index.jsp");

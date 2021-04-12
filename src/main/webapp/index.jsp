@@ -11,7 +11,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Welcome</title>
+    <title>
+        <fmt:message key="label.indexTitle"/>
+    </title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap"
           rel="stylesheet">
@@ -58,75 +60,9 @@
                         <h2 class="invalid__login">${invalidLogin}</h2>
                     </div>
                 </c:if>
-<%--                <p class="about__text login__text">--%>
-<%--                    Lorem ipsum dolor sit--%>
-<%--                    amet, consectetur dipiscing elit,--%>
-<%--                    sed do--%>
-<%--                    eiusmod tempor incididunt--%>
-<%--                    ut labore et dolore magna aliqua.--%>
-<%--                    Lorem ipsum dolor sit--%>
-<%--                    amet, consectetur dipiscing elit,--%>
-<%--                    sed do--%>
-<%--                    eiusmod tempor incididunt--%>
-<%--                    ut labore et dolore magna aliqua.--%>
-<%--                    Lorem ipsum dolor sit--%>
-<%--                    Lorem ipsum dolor sit--%>
-<%--                    amet, consectetur dipiscing elit,--%>
-<%--                    sed do--%>
-<%--                    eiusmod tempor incididunt--%>
-<%--                    ut labore et dolore magna aliqua.--%>
-<%--                    Lorem ipsum dolor sit--%>
-<%--                    amet, consectetur dipiscing elit,--%>
-<%--                    sed do--%>
-<%--                    eiusmod tempor incididunt--%>
-<%--                    ut labore et dolore magna aliqua.--%>
-<%--                    Lorem ipsum dolor sit--%>
-<%--                </p>--%>
-
             </div>
         </section>
     </div>
 </main>
 </body>
 </html>
-<%--<main class="main">--%>
-<%--    <div class="container">--%>
-<%--        <section class="section">--%>
-<%--            <form class="section__form login__form" action="${pageContext.request.contextPath}/controller?command=login"--%>
-<%--                  method="post">--%>
-<%--                <input class="form__input login" type="text" placeholder="Username" name="username"/>--%>
-<%--                <input class="form__input login" type="password" placeholder="Password" name="password"/>--%>
-<%--                <button class="form__button" type="submit">Log in</button>--%>
-<%--            </form>--%>
-<%--            <p class="about__text login__text">--%>
-<%--                Lorem ipsum dolor sit--%>
-<%--                amet, consectetur dipiscing elit,--%>
-<%--                sed do--%>
-<%--                eiusmod tempor incididunt--%>
-<%--                ut labore et dolore magna aliqua.--%>
-<%--                Lorem ipsum dolor sit--%>
-<%--                amet, consectetur dipiscing elit,--%>
-<%--                sed do--%>
-<%--                eiusmod tempor incididunt--%>
-<%--                ut labore et dolore magna aliqua.--%>
-<%--                Lorem ipsum dolor sit--%>
-<%--                Lorem ipsum dolor sit--%>
-<%--                amet, consectetur dipiscing elit,--%>
-<%--                sed do--%>
-<%--                eiusmod tempor incididunt--%>
-<%--                ut labore et dolore magna aliqua.--%>
-<%--                Lorem ipsum dolor sit--%>
-<%--                amet, consectetur dipiscing elit,--%>
-<%--                sed do--%>
-<%--                eiusmod tempor incididunt--%>
-<%--                ut labore et dolore magna aliqua.--%>
-<%--                Lorem ipsum dolor sit--%>
-<%--            </p>--%>
-<%--            <c:if test="${errorMessage != null}">--%>
-<%--                <div>--%>
-<%--                    <h2 style="color: darkred">${errorMessage}</h2>--%>
-<%--                </div>--%>
-<%--            </c:if>--%>
-<%--        </section>--%>
-<%--    </div>--%>
-<%--</main>--%>

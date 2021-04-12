@@ -1,13 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="true" %>
-<html>
+
+<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<fmt:setBundle basename="messages" scope="session"/>
+
+<html lang="${sessionScope.lang}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Booking</title>
+    <title>
+        <fmt:message key="label.bookingTitle"/>
+    </title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap"
           rel="stylesheet">
@@ -24,25 +30,36 @@
                 <form class="section__form" action="controller?command=makeOrder" method="post">
                     <c:choose>
                         <c:when test="${hotelName != null}">
-                            <input class="form__input" type="text" placeholder="Hotel name" name="hotelName" value="${hotelName}">
-                            <input class="form__input" type="text" placeholder="Class" name="class" autofocus>
+                            <fmt:message key="label.hotelName" var="name"/>
+                            <input class="form__input" type="text" placeholder="${name}" name="hotelName" value="${hotelName}" required>
+                            <fmt:message key="label.class" var="roomClass"/>
+                            <input class="form__input" type="text" placeholder="${roomClass}" name="class" autofocus required>
                         </c:when>
                         <c:otherwise>
-                            <input class="form__input" type="text" placeholder="Hotel name" name="hotelName" autofocus>
-                            <input class="form__input" type="text" placeholder="Class" name="class">
+                            <fmt:message key="label.hotelName" var="name"/>
+                            <input class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>
+                            <fmt:message key="label.class" var="roomClass"/>
+                            <input class="form__input" type="text" placeholder="${roomClass}" name="class" required>
                         </c:otherwise>
                     </c:choose>
-                    <input class="form__input" type="text" placeholder="Places" name="places">
-                    <input class="form__input" type="date" placeholder="Arriving date" name="arrival">
-                    <input class="form__input" type="date" placeholder="Departure date" name="departure">
-                    <button class="form__button button-hover" type="submit">Book it</button>
+                    <fmt:message key="label.places" var="places"/>
+                    <input class="form__input" type="text" placeholder="${places}" name="places" required>
+                    <fmt:message key="label.arrival" var="arrival"/>
+                    <input class="form__input" type="date" placeholder="${arrival}" name="arrival" required>
+                    <fmt:message key="label.departure" var="departure"/>
+                    <input class="form__input" type="date" placeholder="${departure}" name="departure" required>
+                    <fmt:message key="label.book" var="book"/>
+                    <button class="form__button button-hover" type="submit">${book}</button>
                 </form>
-                <div class="section__image"></div>
             </div>
         </section>
+        <c:if test="${error != null}">
+            <p style="color: darkred; margin-top: 10px">
+                <fmt:message key="label.invalidDate"/>
+            </p>
+        </c:if>
     </div>
 </main>
-<%--<jsp:include page="fragments/footer.jsp"/>--%>
 <script>
     const lightTheme = window.sessionStorage.getItem("lightTheme");
     const darkTheme = window.sessionStorage.getItem("darkTheme");

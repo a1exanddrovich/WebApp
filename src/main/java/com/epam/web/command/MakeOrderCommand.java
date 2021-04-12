@@ -4,7 +4,7 @@ import com.epam.web.entitiy.Order;
 import com.epam.web.entitiy.OrderStatus;
 import com.epam.web.entitiy.User;
 import com.epam.web.service.OrderService;
-
+import com.epam.web.validator.Validator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
@@ -14,8 +14,11 @@ import java.util.Date;
 
 public class MakeOrderCommand implements Command {
 
+    private final static String DATE_FORMAT = "yyyy-MM-dd";
+
     private final OrderService service;
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    private final Validator validator = new Validator();
 
     public MakeOrderCommand(OrderService service) {
         this.service = service;
@@ -35,8 +38,13 @@ public class MakeOrderCommand implements Command {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Order order = new Order(user.getId(), hotelName, roomClass, places, arrivalDate, departureDate, OrderStatus.PROCESSING);
-        service.makeOrder(order);
+        if(validator.validateDate(arrivalDate, departureDate)) {
+            Order order = new Order(user.getId(), hotelName, roomClass, places, arrivalDate, departureDate, OrderStatus.PROCESSING);
+            service.makeOrder(order);
+        } else {
+            request.setAttribute("error", "something");
+            return CommandResult.forward("/WEB-INF/view/booking.jsp");
+        }
         return CommandResult.forward("/WEB-INF/view/successfulpage.jsp");
     }
 

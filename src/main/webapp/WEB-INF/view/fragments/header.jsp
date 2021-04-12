@@ -15,22 +15,34 @@
                 <nav class="menu">
                     <ul class="menu__list">
                         <li class="menu__list-item">
-                            <a href="controller?command=mainPage" class="menu__list-link"><fmt:message key="label.main"/></a>
+                            <a href="controller?command=mainPage" class="menu__list-link">
+                                <fmt:message key="label.main"/>
+                            </a>
                         </li>
                         <li class="menu__list-item">
-                            <a href="controller?command=booking" class="menu__list-link"><fmt:message key="label.booking"/></a>
+                            <a href="controller?command=booking" class="menu__list-link">
+                                <fmt:message key="label.booking"/>
+                            </a>
                         </li>
                         <li class="menu__list-item">
-                            <a href="controller?command=myOrders" class="menu__list-link"><fmt:message key="label.orders"/></a>
+                            <a href="controller?command=myOrders" class="menu__list-link">
+                                <fmt:message key="label.orders"/>
+                            </a>
                         </li>
                         <li class="menu__list-item">
-                            <a href="controller?command=myReservations" class="menu__list-link"><fmt:message key="label.reservations"/></a>
+                            <a href="controller?command=myReservations" class="menu__list-link">
+                                <fmt:message key="label.reservations"/>
+                            </a>
                         </li>
                         <li class="menu__list-item">
-                            <a href="controller?command=about" class="menu__list-link"><fmt:message key="label.about"/></a>
+                            <a href="controller?command=about" class="menu__list-link">
+                                <fmt:message key="label.about"/>
+                            </a>
                         </li>
                         <li class="menu__list-item">
-                            <a href="controller?command=showBalance" class="menu__list-link">Balance</a>
+                            <a href="controller?command=showBalance" class="menu__list-link">
+                                <fmt:message key="label.balance"/>
+                            </a>
                         </li>
                     </ul>
                 </nav>

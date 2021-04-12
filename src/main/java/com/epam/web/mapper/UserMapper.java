@@ -8,11 +8,11 @@ import java.sql.SQLException;
 
 public class UserMapper implements Mapper<User> {
 
-    public static final String ID = "id";
-    public static final String LOGIN = "login";
-    public static final String PASSWORD = "password";
-    public static final String BALANCE = "balance";
-    public static final String ROLE = "role";
+    private static final String ID = "id";
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
+    private static final String BALANCE = "balance";
+    private static final String ROLE = "role";
 
     @Override
     public User map(ResultSet resultSet) throws SQLException {

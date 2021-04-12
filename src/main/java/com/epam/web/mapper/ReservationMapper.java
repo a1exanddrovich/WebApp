@@ -7,13 +7,13 @@ import java.sql.SQLException;
 
 public class ReservationMapper implements Mapper<Reservation> {
 
-    public static final String ID = "id";
-    public static final String ORDER_ID = "order_id";
-    public static final String HOTEL_ID = "hotel_id";
-    public static final String ROOM_ID = "room_id";
-    public static final String USER_ID = "user_id";
-    public static final String PRICE = "price";
-    public static final String IS_PAID = "is_paid";
+    private static final String ID = "id";
+    private static final String ORDER_ID = "order_id";
+    private static final String HOTEL_ID = "hotel_id";
+    private static final String ROOM_ID = "room_id";
+    private static final String USER_ID = "user_id";
+    private static final String PRICE = "price";
+    private static final String IS_PAID = "is_paid";
 
     @Override
     public Reservation map(ResultSet resultSet) throws SQLException {

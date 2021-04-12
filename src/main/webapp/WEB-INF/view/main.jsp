@@ -11,7 +11,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Feed</title>
+    <title>
+        <fmt:message key="label.feedTitle"/>
+    </title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap"
           rel="stylesheet">
@@ -26,13 +28,15 @@
         <section class="section">
             <c:forEach items="${hotels}" var="hotel">
                 <div class="section__card">
-                    <div class="card-image"></div>
+                    <div class="card-image" style="background-image: url('images/photos/hotel-${hotel.getImageId()}.jpg')"></div>
                     <div class="card-describer">
                         <div class="card-info">
                             <h4 class="hotel__name">${hotel.getName()}</h4>
                             <p class="hotel__info">${hotel.getDescription()}</p>
                         </div>
-                        <a href="controller?command=booking&hotelName=${hotel.getName()}" class="button-hover card-button">Apply</a>
+                        <a href="controller?command=booking&hotelName=${hotel.getName()}" class="button-hover card-button">
+                            <fmt:message key="label.apply"/>
+                        </a>
                     </div>
                 </div>
             </c:forEach>

@@ -2,23 +2,20 @@ package com.epam.web.mapper;
 
 import com.epam.web.entitiy.Order;
 import com.epam.web.entitiy.OrderStatus;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OrderMapper implements Mapper<Order> {
 
-    public static final String ID = "id";
-    public static final String USER_ID = "user_id";
-    public static final String HOTEL_NAME = "hotel_name";
-    public static final String PLACES = "places";
-    public static final String CLASS = "class";
-    public static final String ARRIVAL_DATE = "arrival_date";
-    public static final String DEPARTURE_DATE = "departure_date";
-    public static final String STATUS = "status";
+    private static final String ID = "id";
+    private static final String USER_ID = "user_id";
+    private static final String HOTEL_NAME = "hotel_name";
+    private static final String PLACES = "places";
+    private static final String CLASS = "class";
+    private static final String ARRIVAL_DATE = "arrival_date";
+    private static final String DEPARTURE_DATE = "departure_date";
+    private static final String STATUS = "status";
 
     @Override
     public Order map(ResultSet resultSet) throws SQLException {

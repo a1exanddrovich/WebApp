@@ -1,11 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page session="true" %>
+
+<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<fmt:setBundle basename="messages" scope="session"/>
+
+<html lang="${sessionScope.lang}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My resvs</title>
+    <title>
+        <fmt:message key="label.myReservationsTitle"/>
+    </title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap"
           rel="stylesheet">
@@ -24,20 +32,16 @@
                         <div class="section__card">
                             <div class="app__info">
                                 <div class="app__info-text">
-                                    <h3 class="app__info-text-title">Order id</h3>
-                                    <p class="app__info-text-data">${reservation.getOrderId()}</p>
+                                    <h3 class="app__info-text-title">Order</h3>
+                                    <p class="app__info-text-data">#${reservation.getOrderId()}</p>
                                 </div>
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">Hotel id</h3>
                                     <p class="app__info-text-data">${reservation.getHotelId()}</p>
                                 </div>
                                 <div class="app__info-text">
-                                    <h3 class="app__info-text-title">User id</h3>
-                                    <p class="app__info-text-data">${reservation.getUserId()}</p>
-                                </div>
-                                <div class="app__info-text">
-                                    <h3 class="app__info-text-title">Room id</h3>
-                                    <p class="app__info-text-data">${reservation.getRoomId()}</p>
+                                    <h3 class="app__info-text-title">Room</h3>
+                                    <p class="app__info-text-data">#${reservation.getRoomId()}</p>
                                 </div>
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">Price</h3>
@@ -45,15 +49,21 @@
                                 </div>
                             </div>
                             <div class="app__actions">
-                                <button class="app__button button-hover" type="submit">Pay</button>
-                                <button class="app__button button-hover" type="submit">Refuse</button>
+                                <button class="app__button button-hover" type="submit">
+                                    <fmt:message key="label.pay"/>
+                                </button>
+                                <button class="app__button button-hover" type="submit">
+                                    <fmt:message key="label.refuse"/>
+                                </button>
                             </div>
                         </div>
                     </c:forEach>
                 </section>
             </c:when>
             <c:otherwise>
-                <h2>Nothing to show</h2>
+                <h2 class="inscription">
+                    <fmt:message key="label.nothingFound"/>
+                </h2>
             </c:otherwise>
         </c:choose>
     </div>

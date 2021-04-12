@@ -113,6 +113,10 @@ a {
     transition: .3s;
 }
 
+.header__language + .header__language {
+    margin-left: 15px;
+}
+
 .header__title {
     font-size: 50px;
 }
@@ -132,6 +136,9 @@ a {
 
 .card-image {
     background-color: black;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
     height: 50%;
     width: 100%;
 }
@@ -379,6 +386,18 @@ a {
 
 .form__input-login {
     height: 20%;
+}
+
+.balance {
+    height: 200px;
+}
+
+.balance_form {
+    justify-content: space-around;
+}
+
+.inscription {
+    margin-top: 15px;
 }
 
 @media (max-width: 1000px) {
@@ -651,6 +670,10 @@ a {
     .login__actions {
         align-items: start;
         flex-direction: column;
+    }
+
+    .header__language + .header__language {
+        margin-left: 0;
     }
 
 }

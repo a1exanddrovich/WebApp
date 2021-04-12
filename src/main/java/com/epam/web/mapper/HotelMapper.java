@@ -6,16 +6,18 @@ import java.sql.SQLException;
 
 public class HotelMapper implements Mapper{
 
-    public static final String ID = "id";
-    public static final String NAME = "name";
-    public static final String DESCRIPTION = "description";
+    private static final String ID = "id";
+    private static final String NAME = "name";
+    private static final String DESCRIPTION = "description";
+    private static final String IMAGE_ID = "image_id";
 
     @Override
     public Hotel map(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         String name = resultSet.getString(NAME);
         String description = resultSet.getString(DESCRIPTION);
-        Hotel hotel = new Hotel(id, name, description);
+        long imageId = resultSet.getLong(IMAGE_ID);
+        Hotel hotel = new Hotel(id, name, description, imageId);
         return hotel;
     }
 

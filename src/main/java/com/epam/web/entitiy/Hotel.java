@@ -5,11 +5,13 @@ public class Hotel implements Identifiable {
     private final long id;
     private final String name;
     private final String description;
+    private final long imageId;
 
-    public Hotel(long id, String name, String description) {
+    public Hotel(long id, String name, String description, long imageId) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.imageId = imageId;
     }
 
     public String getName() {
@@ -18,6 +20,10 @@ public class Hotel implements Identifiable {
 
     public String getDescription() {
         return this.description;
+    }
+
+    public long getImageId() {
+        return this.imageId;
     }
 
     @Override
