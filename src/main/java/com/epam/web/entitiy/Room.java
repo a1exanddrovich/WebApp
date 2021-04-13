@@ -1,26 +1,29 @@
 package com.epam.web.entitiy;
 
+import java.util.Date;
+
 public class Room implements Identifiable {
 
-    public static final String TABLE = "room";
-    public static final String ID = "id";
-    public static final String HOTEL_ID = "hotel_id";
-    public static final String CLASS = "class";
-    public static final String PLACES = "places";
-    public static final String BOOKED_UNTIL = "booked_until";
-
-    private final long id;
+    private long id;
     private final long hotelId;
     private final String roomClass;
     private final int placeCount;
-    private final String bookedUntil;
+    private Date bookedUntil;
+    private Date bookedFrom;
 
-    public Room(long id, long hotelId, String roomClass, int placeCount, String bookedUntil) {
+    public Room(long id, long hotelId, String roomClass, int placeCount, Date bookedUntil, Date bookedFrom) {
         this.id = id;
         this.hotelId = hotelId;
         this.roomClass = roomClass;
         this.placeCount = placeCount;
         this.bookedUntil = bookedUntil;
+        this.bookedFrom = bookedFrom;
+    }
+
+    public Room(long hotelId, String roomClass, int placeCount) {
+        this.hotelId = hotelId;
+        this.roomClass = roomClass;
+        this.placeCount = placeCount;
     }
 
     public long getHotelId() {
@@ -35,8 +38,12 @@ public class Room implements Identifiable {
         return this.placeCount;
     }
 
-    public String getBookedUntil() {
+    public Date getBookedUntil() {
         return this.bookedUntil;
+    }
+
+    public Date getBookedFrom() {
+        return this.bookedFrom;
     }
 
     @Override

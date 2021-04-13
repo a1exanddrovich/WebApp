@@ -4,6 +4,8 @@ import com.epam.web.dao.DaoHelper;
 import com.epam.web.dao.DaoHelperFactory;
 import com.epam.web.dao.HotelDao;
 import com.epam.web.entitiy.Hotel;
+import com.epam.web.exception.DaoException;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,15 @@ public class HotelService {
             e.printStackTrace();
         }
         return hotels;
+    }
+
+    public void addHotel(Hotel hotel) {
+        try(DaoHelper helper = factory.createDaoHelper()) {
+            HotelDao dao = helper.createHotelDao();
+            dao.addHotel(hotel);
+        } catch (SQLException | DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 }

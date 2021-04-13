@@ -28,6 +28,10 @@ public class DaoHelper implements AutoCloseable {
         return new ReservationDaoImpl(connection);
     }
 
+    public RoomDao createRoomDao() {
+        return new RoomDaoImpl(connection);
+    }
+
     @Override
     public void close() throws SQLException {
         connection.close();

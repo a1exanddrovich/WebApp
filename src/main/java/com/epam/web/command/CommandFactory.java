@@ -1,10 +1,7 @@
 package com.epam.web.command;
 
 import com.epam.web.dao.DaoHelperFactory;
-import com.epam.web.service.OrderService;
-import com.epam.web.service.HotelService;
-import com.epam.web.service.ReservationService;
-import com.epam.web.service.UserService;
+import com.epam.web.service.*;
 
 public class CommandFactory {
 
@@ -33,6 +30,21 @@ public class CommandFactory {
 
             case "editOrderPage" :
                 return new ShowPageCommand("/WEB-INF/view/edit.jsp");
+
+            case "adminAllOrders" :
+                return new AdminAllOrdersPageCommand(new OrderService(new DaoHelperFactory()));
+
+            case "adminShowAddRoomPage" :
+                return new ShowPageCommand("/WEB-INF/view/admin/adminaddroom.jsp");
+
+            case "adminShowAddHotelPage" :
+                return new ShowPageCommand("/WEB-INF/view/admin/adminaddhotel.jsp");
+
+            case "adminAddHotel" :
+                return new AdminAddHotelCommand(new HotelService(new DaoHelperFactory()));
+
+            case "adminAddRoom" :
+                return new AdminAddRoomCommand(new RoomService(new DaoHelperFactory()));
 
             case "showBalance" :
                 return new ShowBalanceCommand(new UserService(new DaoHelperFactory()));
