@@ -20,6 +20,14 @@ public class Room implements Identifiable {
         this.bookedFrom = bookedFrom;
     }
 
+    public Room(long hotelId, String roomClass, int placeCount, Date bookedUntil, Date bookedFrom) {
+        this.hotelId = hotelId;
+        this.roomClass = roomClass;
+        this.placeCount = placeCount;
+        this.bookedUntil = bookedUntil;
+        this.bookedFrom = bookedFrom;
+    }
+
     public Room(long hotelId, String roomClass, int placeCount) {
         this.hotelId = hotelId;
         this.roomClass = roomClass;

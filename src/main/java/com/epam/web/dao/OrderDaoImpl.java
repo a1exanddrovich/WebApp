@@ -9,15 +9,19 @@ import com.epam.web.mapper.OrderMapper;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao{
 
     public static final String TABLE = "`order`";
-    private final static String GET_ALL_ORDERS = "SELECT * FROM `order`";
+    private final static String GET_ALL_ORDERS = "SELECT * FROM `order` WHERE status = 'PROCESSING'";
     private final static String GET_CURRENT_USER_ORDER = "SELECT * FROM `order` WHERE user_id = ";
     private final static String MAKE_ORDER = "INSERT INTO `order` (user_id, hotel_name, places, class, arrival_date, departure_date, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private final static String UPDATE_ORDER = "UPDATE `order` SET hotel_name = ?, places = ?, class = ?, arrival_date = ?, departure_date = ?, status = ? WHERE id = ?";
     private final static String DELETE_ORDER = "DELETE FROM `order` WHERE id = ";
+    private final static String DECLINE_ORDER = "UPDATE `order` SET status = 'DECLINED' WHERE id = ";
+    private final static String FIND_ORDER_BY_ID = "SELECT * FROM `order` WHERE id = ";
+    private final static String CHANGE_ORDER_STATUS = "UPDATE `order` SET status = 'ACCEPTED' WHERE id = ";
 
     public OrderDaoImpl(ProxyConnection connection) {
         super(connection, new OrderMapper(), TABLE);
@@ -61,6 +65,22 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao{
     @Override
     public void deleteOrder(long orderId) throws DaoException {
         executeUpdate(DELETE_ORDER + orderId);
+    }
+
+    @Override
+    public void declineOrderById(long orderId) throws DaoException {
+        executeUpdate(DECLINE_ORDER + orderId);
+    }
+
+    @Override
+    public Optional<Order> findOrderById(long orderId) throws SQLException {
+        return executeForSingleResult(FIND_ORDER_BY_ID + orderId);
+    }
+
+    @Override
+    public void updateOrder(Order order) throws DaoException {
+        long orderId= order.getId();
+        executeUpdate(CHANGE_ORDER_STATUS + orderId);
     }
 
 }

@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>
-        All orders
+        Looking for a room...
     </title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap"
@@ -26,57 +26,34 @@
 <main class="main">
     <div class="container">
         <c:choose>
-            <c:when test="${orders.size() != 0}">
+            <c:when test="${rooms.size() != 0}">
                 <section class="section">
-                    <c:forEach items="${orders}" var="order">
+                    <c:forEach items="${rooms}" var="room">
                         <div class="section__card">
                             <div class="app__info">
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">
-                                        <fmt:message key="label.orderNumber"/>
+                                        Hotel id
                                     </h3>
-                                    <p class="app__info-text-data">#${order.getId()}</p>
+                                    <p class="app__info-text-data">#${room.getHotelId()}</p>
                                 </div>
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">
-                                        <fmt:message key="label.hotelName"/>
+                                        Class
                                     </h3>
-                                    <p class="app__info-text-data">${order.getHotelName()}</p>
+                                    <p class="app__info-text-data">${room.getRoomClass()}</p>
                                 </div>
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">
-                                        <fmt:message key="label.class"/>
+                                        Places
                                     </h3>
-                                    <p class="app__info-text-data">${order.getRoomClass()}</p>
-                                </div>
-                                <div class="app__info-text">
-                                    <h3 class="app__info-text-title">
-                                        <fmt:message key="label.places"/>
-                                    </h3>
-                                    <p class="app__info-text-data">${order.getPlaceCount()}</p>
-                                </div>
-                                <div class="app__info-text">
-                                    <h3 class="app__info-text-title">
-                                        <fmt:message key="label.arrivalDate"/>
-                                    </h3>
-                                    <p class="app__info-text-data">${order.getArrivalDate()}</p>
-                                </div>
-                                <div class="app__info-text">
-                                    <h3 class="app__info-text-title">
-                                        <fmt:message key="label.departureDate"/>
-                                    </h3>
-                                    <p class="app__info-text-data">${order.getDepartureDate()}</p>
+                                    <p class="app__info-text-data">${room.getPlaceCount()}</p>
                                 </div>
                             </div>
                             <div class="app__actions">
                                 <button class="app__button button-hover" type="submit">
-                                    <a href="controller?command=findProperRoom&orderId=${order.getId()}&userId=${order.getUserId()}&hotel=${order.getHotelName()}&class=${order.getRoomClass()}&places=${order.getPlaceCount()}&arrival=${order.getArrivalDate()}&departure=${order.getDepartureDate()}">
-                                        Find a room
-                                    </a>
-                                </button>
-                                <button class="app__button button-hover" type="submit">
-                                    <a href="controller?command=declineOrder&orderId=${order.getId()}">
-                                        Decline
+                                    <a href="controller?command=makeReservation&userId=${param.userId}&hotelId=${room.getHotelId()}&roomId=${room.getId()}&orderId=${param.orderId}">
+                                        Apply
                                     </a>
                                 </button>
                             </div>

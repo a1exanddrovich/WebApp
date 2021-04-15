@@ -5,10 +5,10 @@ import com.epam.web.dao.DaoHelperFactory;
 import com.epam.web.dao.HotelDao;
 import com.epam.web.entitiy.Hotel;
 import com.epam.web.exception.DaoException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class HotelService {
 
@@ -39,4 +39,14 @@ public class HotelService {
         }
     }
 
+    public long getHotelIdByName(String hotelName) {
+        Optional<Hotel> hotel = null;
+        try(DaoHelper helper = factory.createDaoHelper()) {
+            HotelDao dao = helper.createHotelDao();
+            hotel = dao.getHotelIdByName(hotelName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return hotel.get().getId();
+    }
 }

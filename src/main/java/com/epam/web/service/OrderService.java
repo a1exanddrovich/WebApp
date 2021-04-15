@@ -9,6 +9,7 @@ import com.epam.web.exception.DaoException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class OrderService {
 
@@ -69,4 +70,23 @@ public class OrderService {
         }
     }
 
+    public void declineOrderById(long orderId) {
+        try (DaoHelper helper = factory.createDaoHelper()) {
+            OrderDao dao = helper.createOrderDao();
+            dao.declineOrderById(orderId);
+        } catch (SQLException | DaoException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Order findOrderById(long orderId) {
+        Optional<Order> order = null;
+        try (DaoHelper helper = factory.createDaoHelper()) {
+            OrderDao dao = helper.createOrderDao();
+            order = dao.findOrderById(orderId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return order.get();
+    }
 }

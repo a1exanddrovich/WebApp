@@ -5,6 +5,27 @@ import com.epam.web.service.*;
 
 public class CommandFactory {
 
+    //TO-DO
+    //ADMIN
+    //1.show orders with processing status only
+    //2.validation of input on add hotel page
+    //3.validation of input on add room page
+    //4.if hotel with given name doesnt exist then show "no such hotel" inscription instead of 500 error
+    //5.search only rooms with null booked until dates
+    //USER
+    //1.validation of input on booking page
+    //2.if order has accepted status then disable edit and delete buttons
+    //3.validation of input on edit page
+    //4.if reservation has is_paid true status then disable refuse and pay buttons
+    //5.check for enough user's money before starting payment process
+    //6.validation of input on top up balance page
+    //7.think og showing proper data on reservation info cards
+    //OTHER
+    //1.come up with a Calculator class which is able to calculate price of a reservation
+    //2.finish up internationalization
+    //3.money has to have decimal type instead of double
+    //FURTHER REFACTORING OF THE CODE
+
     public Command create(String type) {
         switch (type) {
             case "login" :
@@ -34,6 +55,18 @@ public class CommandFactory {
             case "adminAllOrders" :
                 return new AdminAllOrdersPageCommand(new OrderService(new DaoHelperFactory()));
 
+            case "findProperRoom" :
+                return new FindRoomCommand(new RoomService(new DaoHelperFactory()),
+                                           new HotelService(new DaoHelperFactory()));
+
+            case "declineOrder" :
+                return new DeclineOrderCommand(new OrderService(new DaoHelperFactory()));
+
+            case "makeReservation" :
+                return new MakeReservationCommand(new ReservationService(new DaoHelperFactory()),
+                                                  new RoomService(new DaoHelperFactory()),
+                                                  new OrderService(new DaoHelperFactory()));
+
             case "adminShowAddRoomPage" :
                 return new ShowPageCommand("/WEB-INF/view/admin/adminaddroom.jsp");
 
@@ -51,6 +84,13 @@ public class CommandFactory {
 
             case "topUpBalance" :
                 return new TopUpBalanceCommand(new UserService(new DaoHelperFactory()));
+
+            case "makePayment" :
+                return new PaymentCommand(new UserService(new DaoHelperFactory()),
+                                          new HotelService(new DaoHelperFactory()));
+
+            case "refuseReservation" :
+                return new RefuseReservationCommand(new ReservationService(new DaoHelperFactory()));
 
             case "editOrder" :
                 return new EditOrderCommand(new OrderService(new DaoHelperFactory()));

@@ -2,15 +2,15 @@ package com.epam.web.entitiy;
 
 public class Reservation implements Identifiable {
 
-    private final long id;
+    private long id;
     private final long orderId;
     private final long hotelId;
     private final long roomId;
     private final long userId;
-    private final long price;
-    private final boolean isPaid;
+    private double price;
+    private boolean isPaid;
 
-    public Reservation(long id, long orderId, long hotelId, long roomId, long userId, long price, boolean isPaid) {
+    public Reservation(long id, long orderId, long hotelId, long roomId, long userId, double price, boolean isPaid) {
         this.id = id;
         this.orderId = orderId;
         this.hotelId = hotelId;
@@ -18,6 +18,13 @@ public class Reservation implements Identifiable {
         this.userId = userId;
         this.price = price;
         this.isPaid = isPaid;
+    }
+
+    public Reservation(long orderId, long hotelId, long roomId, long userId) {
+        this.orderId = orderId;
+        this.hotelId = hotelId;
+        this.roomId = roomId;
+        this.userId = userId;
     }
 
     public long getOrderId() {
@@ -36,8 +43,12 @@ public class Reservation implements Identifiable {
         return this.userId;
     }
 
-    public long getPrice() {
+    public double getPrice() {
         return this.price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public boolean isPaid() {

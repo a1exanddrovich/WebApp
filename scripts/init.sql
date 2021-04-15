@@ -15,6 +15,7 @@ create table hotel
     name varchar(50) not null,
     description varchar(256) not null,
     image_id BIGINT,
+    balance DECIMAL default 0 null,
 
     primary key (id)
 );

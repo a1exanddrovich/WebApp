@@ -10,6 +10,7 @@ public class HotelMapper implements Mapper{
     private static final String NAME = "name";
     private static final String DESCRIPTION = "description";
     private static final String IMAGE_ID = "image_id";
+    private static final String BALANCE = "balance";
 
     @Override
     public Hotel map(ResultSet resultSet) throws SQLException {

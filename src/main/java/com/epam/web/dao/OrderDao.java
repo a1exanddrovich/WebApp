@@ -6,6 +6,7 @@ import com.epam.web.exception.DaoException;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderDao extends Dao<Order>{
 
@@ -18,5 +19,11 @@ public interface OrderDao extends Dao<Order>{
     void editOrder(Order order) throws DaoException;
 
     void deleteOrder(long orderId) throws DaoException;
+
+    void declineOrderById(long orderId) throws DaoException;
+
+    Optional<Order> findOrderById(long orderId) throws SQLException;
+
+    void updateOrder(Order order) throws DaoException;
 
 }

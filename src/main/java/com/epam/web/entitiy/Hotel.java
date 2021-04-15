@@ -6,12 +6,21 @@ public class Hotel implements Identifiable {
     private final String name;
     private final String description;
     private final long imageId;
+    private double balance;
 
     public Hotel(long id, String name, String description, long imageId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.imageId = imageId;
+    }
+
+    public Hotel(long id, String name, String description, long imageId, double balance) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.imageId = imageId;
+        this.balance = balance;
     }
 
     public Hotel(String name, String description, long imageId) {
@@ -31,6 +40,10 @@ public class Hotel implements Identifiable {
 
     public long getImageId() {
         return this.imageId;
+    }
+
+    public double getBalance() {
+        return this.balance;
     }
 
     @Override
