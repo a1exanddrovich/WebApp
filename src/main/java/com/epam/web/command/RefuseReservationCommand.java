@@ -21,7 +21,7 @@ public class RefuseReservationCommand implements Command {
         long reservationId = Long.parseLong(request.getParameter("reservationId"));
         Reservation reservation = service.findById(reservationId);
         service.refuseReservation(reservation);
-        return CommandResult.forward("/WEB-INF/view/successfulpage.jsp");
+        return CommandResult.redirect("controller?command=myReservations&currentPage=1");
     }
 
 }

@@ -18,7 +18,7 @@ public class DeleteOrderCommand implements Command {
         String orderId = request.getParameter("orderId");
         long id = Long.parseLong(orderId);
         service.deleteOrder(id);
-        return CommandResult.forward("/WEB-INF/view/successfulpage.jsp");
+        return CommandResult.redirect("controller?command=myOrders&currentPage=1");
     }
 
 }

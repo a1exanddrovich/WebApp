@@ -33,7 +33,7 @@ public class DaoHelper implements AutoCloseable {
     }
 
     @Override
-    public void close() throws SQLException {
+    public void close() {
         connection.close();
     }
 
@@ -41,7 +41,7 @@ public class DaoHelper implements AutoCloseable {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException(e);
         }
     }
 
@@ -50,7 +50,7 @@ public class DaoHelper implements AutoCloseable {
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException(e);
         }
     }
 

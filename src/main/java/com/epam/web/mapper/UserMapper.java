@@ -3,6 +3,7 @@ package com.epam.web.mapper;
 import com.epam.web.entitiy.User;
 import com.epam.web.entitiy.UserRole;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,7 +21,7 @@ public class UserMapper implements Mapper<User> {
         String userLogin = resultSet.getString(LOGIN);
         String userPassword = resultSet.getString(PASSWORD);
         UserRole userRole = UserRole.valueOf(resultSet.getString(ROLE));
-        double userBalance = resultSet.getDouble(BALANCE);
+        BigDecimal userBalance = resultSet.getBigDecimal(BALANCE);
         User user = new User(userId, userLogin, userPassword, userBalance, userRole);
         return user;
     }

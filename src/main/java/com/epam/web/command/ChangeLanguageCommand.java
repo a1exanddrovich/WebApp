@@ -19,7 +19,7 @@ public class ChangeLanguageCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        session.setAttribute("lang", this.language);
+        session.setAttribute(LANGUAGE, this.language);
         return CommandResult.forward(page);
     }
 

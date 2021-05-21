@@ -5,6 +5,8 @@ import com.epam.web.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class ShowBalanceCommand implements Command {
 
@@ -17,7 +19,7 @@ public class ShowBalanceCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute("user");
-        double balance = service.getCurrentUserBalance(user);
+        BigDecimal balance = service.getCurrentUserBalance(user);
         request.setAttribute("balance", balance);
         return CommandResult.forward("/WEB-INF/view/balance.jsp");
     }

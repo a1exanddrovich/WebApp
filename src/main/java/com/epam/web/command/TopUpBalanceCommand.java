@@ -2,14 +2,16 @@ package com.epam.web.command;
 
 import com.epam.web.entitiy.User;
 import com.epam.web.service.UserService;
-import com.epam.web.validator.Validator;
+import com.epam.web.validator.CashValidator;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 
 public class TopUpBalanceCommand implements Command {
 
     private final UserService service;
-    private final Validator validator = new Validator();
+    private final CashValidator cashValidator = new CashValidator();
 
     public TopUpBalanceCommand(UserService service) {
         this.service = service;
@@ -19,14 +21,22 @@ public class TopUpBalanceCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute("user");
         String topUpBalance = request.getParameter("topUpBalance");
-        double balance = Double.parseDouble(topUpBalance);
-        if(validator.validateSum(balance)) {
+        double balanceToTopUp;
+        BigDecimal balance;
+        try {
+            balanceToTopUp = Double.parseDouble(topUpBalance);
+        } catch (NumberFormatException e) {
+            request.setAttribute("invalidCash", "something");
+            return CommandResult.forward("/controller?command=showBalance");
+        }
+        balance = new BigDecimal(balanceToTopUp);
+        if (cashValidator.validate(balance)) {
             service.topUpBalance(balance, user.getId());
-        } else  {
+        } else {
             request.setAttribute("error", "something");
             return CommandResult.forward("/controller?command=showBalance");
         }
-        return CommandResult.forward("/WEB-INF/view/successfulpage.jsp");
+        return CommandResult.redirect("controller?command=showBalance");
     }
 
 }

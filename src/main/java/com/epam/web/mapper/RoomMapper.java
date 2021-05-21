@@ -1,6 +1,7 @@
 package com.epam.web.mapper;
 
 import com.epam.web.entitiy.Room;
+import com.epam.web.entitiy.RoomClass;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class RoomMapper implements Mapper<Room> {
     public Room map(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong(ID);
         long hotelId = resultSet.getLong(HOTEL_ID);
-        String roomClass = resultSet.getString(CLASS);
+        RoomClass roomClass = RoomClass.valueOf(resultSet.getString(CLASS));
         int places = resultSet.getInt(PLACES);
         Date bookedUntil = resultSet.getDate(BOOKED_UNTIL);
         Date bookedFrom = resultSet.getDate(BOOKED_FROM);

@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="true" %>
 
-<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
 
 <html lang="${sessionScope.lang}">
@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>
-        Add a hotel
+        <fmt:message key="label.addHotel"/>
     </title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap"
@@ -27,25 +27,23 @@
     <div class="container">
         <section class="section">
             <div class="section__container">
-                <form class="section__form" action="controller?command=adminAddHotel" method="post">
-                    <input class="form__input" type="text" placeholder="Hotel name" name="hotelName" autofocus required>
-                    <input class="form__input" type="text" placeholder="Description" name="description" required>
-                    <input class="form__input" type="text" placeholder="Main photo id" name="photoId" required>
-                    <button class="form__button button-hover" type="submit">Add</button>
+                <form class="section__form" action="controller?command=adminAddHotel" method="post" enctype="multipart/form-data">
+                    <fmt:message key="label.hotelName" var="name"/>
+                    <input class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>
+                    <fmt:message key="label.description" var="description"/>
+                    <input class="form__input" type="text" placeholder="${description}" name="description" required>
+<%--                    <input class="form__input" type="text" placeholder="Main photo id" name="photoId" required>--%>
+                    <input type="file" name="file"  accept="image/*"/>
+                    <button class="form__button button-hover" type="submit">
+                        <fmt:message key="label.add"/>
+                    </button>
                 </form>
             </div>
         </section>
     </div>
 </main>
 <script>
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if (lightTheme === "false" && darkTheme === "true") {
-        getDarkTheme();
-    }
-    if (lightTheme === "true" && darkTheme === "false") {
-        getLightTheme();
-    }
+    checkForTheme();
 </script>
 </body>
 </html>

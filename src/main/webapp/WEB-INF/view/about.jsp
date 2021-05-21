@@ -115,14 +115,7 @@
 </main>
 <jsp:include page="fragments/footer.jsp"/>
 <script>
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if(lightTheme === "false" && darkTheme === "true") {
-        getDarkTheme();
-    }
-    if(lightTheme === "true" && darkTheme === "false") {
-        getLightTheme();
-    }
+    checkForTheme();
 </script>
 </body>
 </html>

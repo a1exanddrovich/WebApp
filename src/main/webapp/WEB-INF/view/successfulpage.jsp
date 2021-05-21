@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="true" %>
 
-<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
 
 <html lang="${sessionScope.lang}">
@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="static/style.css">
     <script src="script/main.js"></script>
 </head>
-<body>
+<body class="body">
 <jsp:include page="fragments/header.jsp"/>
 <div class="container">
     <h2 class="inscription">
@@ -28,14 +28,7 @@
     </h2>
 </div>
 <script>
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if(lightTheme === "false" && darkTheme === "true") {
-        getDarkTheme();
-    }
-    if(lightTheme === "true" && darkTheme === "false") {
-        getLightTheme();
-    }
+    checkForTheme();
 </script>
 </body>
 </html>

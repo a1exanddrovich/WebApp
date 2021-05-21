@@ -4,14 +4,14 @@ import java.util.Date;
 
 public class Room implements Identifiable {
 
-    private long id;
+    private final long id;
     private final long hotelId;
-    private final String roomClass;
+    private final RoomClass roomClass;
     private final int placeCount;
-    private Date bookedUntil;
-    private Date bookedFrom;
+    private final Date bookedUntil;
+    private final Date bookedFrom;
 
-    public Room(long id, long hotelId, String roomClass, int placeCount, Date bookedUntil, Date bookedFrom) {
+    public Room(long id, long hotelId, RoomClass roomClass, int placeCount, Date bookedUntil, Date bookedFrom) {
         this.id = id;
         this.hotelId = hotelId;
         this.roomClass = roomClass;
@@ -20,25 +20,11 @@ public class Room implements Identifiable {
         this.bookedFrom = bookedFrom;
     }
 
-    public Room(long hotelId, String roomClass, int placeCount, Date bookedUntil, Date bookedFrom) {
-        this.hotelId = hotelId;
-        this.roomClass = roomClass;
-        this.placeCount = placeCount;
-        this.bookedUntil = bookedUntil;
-        this.bookedFrom = bookedFrom;
-    }
-
-    public Room(long hotelId, String roomClass, int placeCount) {
-        this.hotelId = hotelId;
-        this.roomClass = roomClass;
-        this.placeCount = placeCount;
-    }
-
     public long getHotelId() {
         return this.hotelId;
     }
 
-    public String getRoomClass() {
+    public RoomClass getRoomClass() {
         return this.roomClass;
     }
 

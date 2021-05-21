@@ -21,9 +21,9 @@ public class RoomService {
     public void addRoom(Room room) {
         try(DaoHelper helper = factory.createDaoHelper()) {
             RoomDao dao = helper.createRoomDao();
-            dao.addRoom(room);
-        } catch (SQLException | DaoException e) {
-            e.printStackTrace();
+            dao.save(room);
+        } catch (DaoException e) {
+            throw new SecurityException(e);
         }
     }
 
@@ -31,21 +31,21 @@ public class RoomService {
         List<Room> rooms = new ArrayList<>();
         try (DaoHelper helper = factory.createDaoHelper()) {
             RoomDao dao = helper.createRoomDao();
-            List<Room> retrievedRooms = dao.findRoom(room);
+            List<Room> retrievedRooms = dao.findProperRoom(room);
             rooms.addAll(retrievedRooms);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException | DaoException e) {
+            throw new SecurityException(e);
         }
         return rooms;
     }
 
     public Room findRoomById(long roomId) {
-        Optional<Room> room = null;
+        Optional<Room> room;
         try (DaoHelper helper = factory.createDaoHelper()) {
             RoomDao dao = helper.createRoomDao();
             room = dao.findRoomById(roomId);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException | DaoException e) {
+            throw new SecurityException(e);
         }
         return room.get();
     }

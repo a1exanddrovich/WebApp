@@ -8,6 +8,7 @@ import com.epam.web.service.ReservationService;
 import com.epam.web.service.RoomService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 
 public class MakeReservationCommand implements Command {
 
@@ -29,8 +30,8 @@ public class MakeReservationCommand implements Command {
         long userId = Long.parseLong(request.getParameter("userId"));
         Room room = roomService.findRoomById(roomId);
         Order order = orderService.findOrderById(orderId);
-        Reservation reservation = new Reservation(orderId, hotelId, roomId, userId);
+        Reservation reservation = new Reservation(0, orderId, hotelId, roomId, userId, new BigDecimal(0), false);
         reservationService.makeReservation(reservation, order, room);
-        return CommandResult.forward("/WEB-INF/view/admin/adminsuccessfulpage.jsp");
+        return CommandResult.redirect("controller?command=adminAllOrders&currentPage=1");
     }
 }

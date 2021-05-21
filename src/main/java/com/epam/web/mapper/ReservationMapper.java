@@ -2,6 +2,7 @@ package com.epam.web.mapper;
 
 import com.epam.web.entitiy.Reservation;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -22,7 +23,7 @@ public class ReservationMapper implements Mapper<Reservation> {
         long hotelId = resultSet.getLong(HOTEL_ID);
         long roomId = resultSet.getLong(ROOM_ID);
         long userId = resultSet.getLong(USER_ID);
-        long price = resultSet.getLong(PRICE);
+        BigDecimal price = resultSet.getBigDecimal(PRICE);
         boolean isPaid = resultSet.getBoolean(IS_PAID);
         Reservation reservation = new Reservation(id, orderId, hotelId, roomId, userId, price, isPaid);
         return reservation;

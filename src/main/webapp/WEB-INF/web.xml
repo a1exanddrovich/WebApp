@@ -4,6 +4,42 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+<!--  <context-param>-->
+<!--    <param-name>javax.servlet.jsp.jstl.fmt.locale</param-name>-->
+<!--    <param-value>ru</param-value>-->
+<!--  </context-param>-->
+<!--  <filter>-->
+<!--    <filter-name>paramsSaver</filter-name>-->
+<!--    <filter-class>com.epam.web.filter.SaveParamsFilter</filter-class>-->
+<!--  </filter>-->
+<!--  <filter>-->
+<!--    <filter-name>localizationFilter</filter-name>-->
+<!--    <filter-class>com.epam.web.filter.LocalizationFilter</filter-class>-->
+<!--  </filter>-->
+<!--  <filter-mapping>-->
+<!--    <filter-name>paramsSaver</filter-name>-->
+<!--    <servlet-name>main</servlet-name>-->
+<!--  </filter-mapping>-->
+<!--  <filter-mapping>-->
+<!--    <filter-name>localizationFilter</filter-name>-->
+<!--    <servlet-name>main</servlet-name>-->
+<!--  </filter-mapping>-->
+<!--  <context-param>-->
+<!--    <param-name>file-upload</param-name>-->
+<!--    <param-value>D:\ImagesForWebApp</param-value>-->
+<!--  </context-param>-->
+  <context-param>
+    <param-name>file-upload</param-name>
+    <param-value>D:\Java Work\WebApp\src\main\webapp\images\photos</param-value>
+  </context-param>
+  <filter>
+    <filter-name>laguageChanger</filter-name>
+    <filter-class>com.epam.web.filter.LanguageFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>laguageChanger</filter-name>
+    <servlet-name>main</servlet-name>
+  </filter-mapping>
   <servlet>
     <servlet-name>main</servlet-name>
     <servlet-class>com.epam.web.Controller</servlet-class>

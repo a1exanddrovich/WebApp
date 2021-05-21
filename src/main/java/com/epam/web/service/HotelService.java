@@ -5,6 +5,12 @@ import com.epam.web.dao.DaoHelperFactory;
 import com.epam.web.dao.HotelDao;
 import com.epam.web.entitiy.Hotel;
 import com.epam.web.exception.DaoException;
+import org.apache.commons.fileupload.FileItem;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,24 +24,31 @@ public class HotelService {
         this.factory = factory;
     }
 
-    public List<Hotel> getAllHotels() {
+    public List<Hotel> getAllHotels(int currentPage, int recordsPerPage) {
         List<Hotel> hotels = new ArrayList<>();
         try(DaoHelper helper = factory.createDaoHelper()) {
             HotelDao dao = helper.createHotelDao();
-            List<Hotel> retrievedHotels = dao.getAllHotels();
+            List<Hotel> retrievedHotels = dao.getAllHotels(currentPage, recordsPerPage);
             hotels.addAll(retrievedHotels);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException | DaoException e) {
+            throw new SecurityException(e);
         }
         return hotels;
     }
 
-    public void addHotel(Hotel hotel) {
+    public void addHotel(Hotel hotel, String filePath, FileItem item) {
+        try {
+            InputStream fileContent = item.getInputStream();
+            BufferedImage image = ImageIO.read(fileContent);
+            ImageIO.write(image, "jpg", new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try(DaoHelper helper = factory.createDaoHelper()) {
             HotelDao dao = helper.createHotelDao();
-            dao.addHotel(hotel);
-        } catch (SQLException | DaoException e) {
-            e.printStackTrace();
+            dao.save(hotel);
+        } catch (DaoException e) {
+            throw new SecurityException(e);
         }
     }
 
@@ -44,9 +57,21 @@ public class HotelService {
         try(DaoHelper helper = factory.createDaoHelper()) {
             HotelDao dao = helper.createHotelDao();
             hotel = dao.getHotelIdByName(hotelName);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException | DaoException e) {
+            throw new SecurityException(e);
         }
         return hotel.get().getId();
     }
+
+    public int getHotelCount() {
+        int recordCount = 0;
+        try(DaoHelper helper = factory.createDaoHelper()) {
+            HotelDao dao = helper.createHotelDao();
+            recordCount = dao.countHotels();
+        } catch (SQLException | DaoException e) {
+            throw new SecurityException(e);
+        }
+        return recordCount;
+    }
+
 }

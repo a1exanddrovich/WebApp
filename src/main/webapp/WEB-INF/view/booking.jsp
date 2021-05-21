@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="true" %>
 
-<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
 
 <html lang="${sessionScope.lang}">
@@ -27,21 +27,27 @@
     <div class="container">
         <section class="section">
             <div class="section__container">
-                <form class="section__form" action="controller?command=makeOrder" method="post">
+                <form id="addroom" class="section__form" action="controller?command=makeOrder" method="post">
                     <c:choose>
                         <c:when test="${hotelName != null}">
                             <fmt:message key="label.hotelName" var="name"/>
-                            <input class="form__input" type="text" placeholder="${name}" name="hotelName" value="${hotelName}" required>
-                            <fmt:message key="label.class" var="roomClass"/>
-                            <input class="form__input" type="text" placeholder="${roomClass}" name="class" autofocus required>
+                            <input class="form__input" type="text" placeholder="${name}" name="hotelName"
+                                   value="${hotelName}" required>
                         </c:when>
                         <c:otherwise>
                             <fmt:message key="label.hotelName" var="name"/>
-                            <input class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>
-                            <fmt:message key="label.class" var="roomClass"/>
-                            <input class="form__input" type="text" placeholder="${roomClass}" name="class" required>
+                            <input class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus
+                                   required>
                         </c:otherwise>
                     </c:choose>
+                    <select class="classes" id="classes" name="class" form="addroom" required>
+                        <option value=""><fmt:message key="label.chooseClass"/></option>
+                        <option value="BUDGET">Budget</option>
+                        <option value="BEACH">Beach</option>
+                        <option value="SKI">Ski</option>
+                        <option value="THEMED">Themed</option>
+                        <option value="URBAN">Urban</option>
+                    </select>
                     <fmt:message key="label.places" var="places"/>
                     <input class="form__input" type="text" placeholder="${places}" name="places" required>
                     <fmt:message key="label.arrival" var="arrival"/>
@@ -53,6 +59,11 @@
                 </form>
             </div>
         </section>
+        <c:if test="${invalidPlaceCount != null}">
+            <p style="color: darkred; margin-top: 10px">
+                <fmt:message key="label.invalidPlaceCount"/>
+            </p>
+        </c:if>
         <c:if test="${error != null}">
             <p style="color: darkred; margin-top: 10px">
                 <fmt:message key="label.invalidDate"/>
@@ -61,14 +72,7 @@
     </div>
 </main>
 <script>
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if (lightTheme === "false" && darkTheme === "true") {
-        getDarkTheme();
-    }
-    if (lightTheme === "true" && darkTheme === "false") {
-        getLightTheme();
-    }
+    checkForTheme();
 </script>
 </body>
 </html>

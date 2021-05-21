@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix = "ctg" uri = "/WEB-INF/custom.tld" %>
 <%@ page session="true" %>
 
-<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
 
 <html lang="${sessionScope.lang}">
@@ -32,29 +33,87 @@
                         <div class="section__card">
                             <div class="app__info">
                                 <div class="app__info-text">
-                                    <h3 class="app__info-text-title">Order</h3>
-                                    <p class="app__info-text-data">#${reservation.getOrderId()}</p>
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.hotelName"/>
+                                    </h3>
+                                    <p class="app__info-text-data">${reservation.getHotelName()}</p>
                                 </div>
                                 <div class="app__info-text">
-                                    <h3 class="app__info-text-title">Hotel id</h3>
-                                    <p class="app__info-text-data">${reservation.getHotelId()}</p>
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.class"/>
+                                    </h3>
+                                    <p class="app__info-text-data">${reservation.getRoomClass()}</p>
                                 </div>
                                 <div class="app__info-text">
-                                    <h3 class="app__info-text-title">Room</h3>
-                                    <p class="app__info-text-data">#${reservation.getRoomId()}</p>
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.places"/>
+                                    </h3>
+                                    <p class="app__info-text-data">${reservation.getPlaces()}</p>
                                 </div>
                                 <div class="app__info-text">
-                                    <h3 class="app__info-text-title">Price</h3>
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.arrivalDate"/>
+                                    </h3>
+                                    <p class="app__info-text-data">${reservation.getArrivalDate()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.departureDate"/>
+                                    </h3>
+                                    <p class="app__info-text-data">${reservation.getDepartureDate()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.price"/>
+                                    </h3>
                                     <p class="app__info-text-data">$${reservation.getPrice()}</p>
                                 </div>
+                                <c:choose>
+                                    <c:when test="${reservation.isPaid() == true}">
+                                        <div class="app__info-text">
+                                            <h3 class="app__info-text-title">
+                                                <fmt:message key="label.status"/>
+                                            </h3>
+                                            <p class="app__info-text-data">
+                                                <fmt:message key="label.paid"/>
+                                            </p>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="app__info-text">
+                                            <h3 class="app__info-text-title">
+                                                <fmt:message key="label.status"/>
+                                            </h3>
+                                            <p class="app__info-text-data">
+                                                <fmt:message key="label.unpaid"/>
+                                            </p>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                             <div class="app__actions">
-                                <button class="app__button button-hover" type="submit">
-                                    <fmt:message key="label.pay"/>
-                                </button>
-                                <button class="app__button button-hover" type="submit">
-                                    <fmt:message key="label.refuse"/>
-                                </button>
+                                <c:choose>
+                                    <c:when test="${reservation.isPaid() == true}">
+                                        <button style="cursor: unset" class="app__button" type="submit" disabled>
+                                            <fmt:message key="label.pay"/>
+                                        </button>
+                                        <button style="cursor: unset" class="app__button" type="submit" disabled>
+                                            <fmt:message key="label.refuse"/>
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button class="app__button button-hover" type="submit">
+                                            <a href="controller?command=makePayment&reservationId=${reservation.getId()}">
+                                                <fmt:message key="label.pay"/>
+                                            </a>
+                                        </button>
+                                        <button class="app__button button-hover" type="submit">
+                                            <a href="controller?command=refuseReservation&reservationId=${reservation.getId()}">
+                                                <fmt:message key="label.refuse"/>
+                                            </a>
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </c:forEach>
@@ -68,18 +127,16 @@
         </c:choose>
     </div>
 </main>
+<div class="container">
+    <fmt:message key="label.next" var="next"/>
+    <fmt:message key="label.prev" var="previous"/>
+    <ctg:pagination commandName="myReservations" totalPages="${pageNumber}" currentPage="${currentPage}" nextTitle="${next}" previousTitle="${previous}"/>
+</div>
 <c:if test="${reservations.size() != 0}">
     <jsp:include page="fragments/footer.jsp"/>
 </c:if>
 <script>
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if (lightTheme === "false" && darkTheme === "true") {
-        getDarkTheme();
-    }
-    if (lightTheme === "true" && darkTheme === "false") {
-        getLightTheme();
-    }
+    checkForTheme();
 </script>
 </body>
 </html>

@@ -1,33 +1,21 @@
 package com.epam.web.entitiy;
 
+import java.math.BigDecimal;
+
 public class Hotel implements Identifiable {
 
-    private long id;
+    private final long id;
     private final String name;
     private final String description;
-    private final long imageId;
-    private double balance;
+    private final String imagePath;
+    private final BigDecimal balance;
 
-    public Hotel(long id, String name, String description, long imageId) {
+    public Hotel(long id, String name, String description, String imagePath, BigDecimal balance) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.imageId = imageId;
-    }
-
-    public Hotel(long id, String name, String description, long imageId, double balance) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.imageId = imageId;
+        this.imagePath = imagePath;
         this.balance = balance;
-    }
-
-    public Hotel(String name, String description, long imageId) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.imageId = imageId;
     }
 
     public String getName() {
@@ -38,11 +26,11 @@ public class Hotel implements Identifiable {
         return this.description;
     }
 
-    public long getImageId() {
-        return this.imageId;
+    public String getImagePath() {
+        return this.imagePath;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return this.balance;
     }
 

@@ -8,6 +8,10 @@ import java.util.List;
 
 public class AdminAllOrdersPageCommand implements Command {
 
+    private final static String ALL_ORDERS_PAGE = "/WEB-INF/view/admin/adminallorders.jsp";
+    private final static String ORDERS = "orders";
+    private final static int RECORDS_PER_PAGE = 9;
+
     private final OrderService service;
 
     public AdminAllOrdersPageCommand(OrderService service) {
@@ -16,9 +20,17 @@ public class AdminAllOrdersPageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        List<Order> orders = service.getAllOrders();
-        request.setAttribute("orders", orders);
-        return CommandResult.forward("/WEB-INF/view/admin/adminallorders.jsp");
+        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        List<Order> orders = service.getAllOrders(currentPage, RECORDS_PER_PAGE);
+        request.setAttribute(ORDERS, orders);
+        int orderCount = service.getOrderCount();
+        int pageNumber = orderCount / RECORDS_PER_PAGE;
+        if (pageNumber % RECORDS_PER_PAGE > 0 & !(orderCount % RECORDS_PER_PAGE == 0)) {
+            pageNumber++;
+        }
+        request.setAttribute("pageNumber", pageNumber);
+        request.setAttribute("currentPage", currentPage);
+        return CommandResult.forward(ALL_ORDERS_PAGE);
     }
 
 }

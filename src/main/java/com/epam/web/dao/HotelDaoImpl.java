@@ -4,56 +4,90 @@ import com.epam.web.connection.ProxyConnection;
 import com.epam.web.entitiy.Hotel;
 import com.epam.web.exception.DaoException;
 import com.epam.web.mapper.HotelMapper;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class HotelDaoImpl extends AbstractDao<Hotel> implements HotelDao {
 
     private static final String TABLE = "hotel";
+    private final static String GET_ALL_HOTELS_LIMIT = "SELECT * FROM hotel LIMIT ?, ?";
     private final static String GET_ALL_HOTELS = "SELECT * FROM hotel";
-    private final static String ADD_HOTEL = "INSERT INTO hotel (name, description, image_id) VALUES (?, ?, ?)";
+    private final static String CREATE = "INSERT INTO hotel (name, description, image_path) VALUES (?, ?, ?)";
+    private final static String UPDATE = "UPDATE hotel SET name = ?, description = ?, image_path = ?, balance = ? WHERE id = ?";
     private final static String FIND_HOTEL_ID_BY_NAME = "SELECT * FROM hotel WHERE name = ?";
     private final static String TOP_UP_BALANCE = "UPDATE hotel SET balance = ? WHERE id = ?";
     private final static String GET_BALANCE = "SELECT * FROM hotel WHERE id = ?";
+    private final static String GET_COUNT = "SELECT COUNT(*) FROM hotel";
 
     public HotelDaoImpl(ProxyConnection connection) {
         super(connection, new HotelMapper(), TABLE);
     }
 
     @Override
-    public List<Hotel> getAllHotels() throws SQLException {
-        return executeQuery(GET_ALL_HOTELS);
+    public List<Hotel> getAllHotels(int currentPage, int recordsPerPage) throws DaoException {
+        return executeQuery(GET_ALL_HOTELS_LIMIT, (currentPage - 1) * recordsPerPage, recordsPerPage);
     }
 
+
+
+
     @Override
-    public void addHotel(Hotel hotel) throws DaoException {
+    protected void create(Hotel hotel) throws DaoException {
         String name = hotel.getName();
         String description = hotel.getDescription();
-        long photoId = hotel.getImageId();
-        executeUpdate(ADD_HOTEL, name, description, photoId);
+        String photoId = hotel.getImagePath();
+        executeUpdate(CREATE, name, description, photoId);
     }
 
     @Override
-    public Optional<Hotel> getHotelIdByName(String hotel) throws SQLException {
+    protected void update(Hotel hotel) throws DaoException {
+        Optional<Hotel> optionalHotel = findById(hotel.getId());
+        if (optionalHotel.isEmpty()) {
+            throw new DaoException("Hotel has not been found. Id is invalid: " + hotel.getId());
+        }
+        executeUpdate(UPDATE, hotel.getName(), hotel.getDescription(), hotel.getImagePath(), hotel.getBalance(), hotel.getId());
+    }
+
+
+//    @Override
+//    public void topUpBalance(Hotel hotel) throws DaoException {
+//
+//        BigDecimal price = hotel.getBalance();
+//        BigDecimal balanceToToppedUp = price.add(getHotelBalance(hotel.getId()));
+//        executeUpdate(TOP_UP_BALANCE, balanceToToppedUp, hotel.getId());
+//    }
+
+
+
+
+
+
+
+
+    @Override
+    public Optional<Hotel> findHotelById(long id) throws DaoException {
+        return super.findById(id);
+    }
+
+    @Override
+    public Optional<Hotel> getHotelIdByName(String hotel) throws DaoException {
         return executeForSingleResult(FIND_HOTEL_ID_BY_NAME, hotel);
     }
 
-    @Override
-    public double getHotelBalance(long id) throws SQLException {
-        Optional<Hotel> optionalHotel = executeForSingleResult(GET_BALANCE, id);
-        Hotel hotel = optionalHotel.get();
-        return hotel.getBalance();
-    }
+//    @Override
+//    public BigDecimal getHotelBalance(long id) throws DaoException {
+//        Optional<Hotel> optionalHotel = executeForSingleResult(GET_BALANCE, id);
+//        BigDecimal balance = null;
+//        if(optionalHotel.isPresent()) {
+//            Hotel hotel = optionalHotel.get();
+//            balance = hotel.getBalance();
+//        }
+//        return balance;
+//    }
 
     @Override
-    public void topUpBalance(double price, long hotelId) throws DaoException {
-        try {
-            price += getHotelBalance(hotelId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        executeUpdate(TOP_UP_BALANCE, price, hotelId);
+    public int countHotels() throws DaoException {
+        return getCount(GET_COUNT);
     }
 
 }

@@ -1,10 +1,11 @@
 package com.epam.web.service;
 
 import com.epam.web.dao.*;
+import com.epam.web.entitiy.Hotel;
 import com.epam.web.entitiy.Reservation;
 import com.epam.web.entitiy.User;
 import com.epam.web.exception.DaoException;
-
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -22,47 +23,82 @@ public class UserService {
             UserDao dao = helper.createUserDao();
             user = dao.findUserByLoginAndPassword(login, password);
         } catch (DaoException | SQLException e) {
-            e.printStackTrace();
+            throw new SecurityException(e);
         }
         return user;
     }
 
-    public double getCurrentUserBalance(User user) {
-        double balance = 0;
+    public BigDecimal getCurrentUserBalance(User user) {
+        BigDecimal balance = null;
         try (DaoHelper helper = factory.createDaoHelper()) {
             UserDao dao = helper.createUserDao();
             balance = dao.getCurrentUserBalance(user.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException | DaoException e) {
+            throw new SecurityException(e);
         }
         return balance;
     }
 
-    public void topUpBalance(double balance, long id) {
+    public void topUpBalance(BigDecimal balance, long id) {
         try (DaoHelper helper = factory.createDaoHelper()) {
             UserDao dao = helper.createUserDao();
             dao.topUpBalance(balance, id);
-        } catch (SQLException | DaoException e) {
-            e.printStackTrace();
+        } catch (DaoException e) {
+            throw new SecurityException(e);
         }
     }
 
-    public void withdraw(long userId, long reservationId) {
+    public boolean withdraw(long userId, long reservationId) {
+        boolean userAbleToPay = checkForUserBalance(userId, reservationId);
+        if (userAbleToPay) {
+            try (DaoHelper helper = factory.createDaoHelper()) {
+                ReservationDao reservationDao = helper.createReservationDao();
+                UserDao userDao = helper.createUserDao();
+                HotelDao hotelDao = helper.createHotelDao();
+                Optional<Reservation> optionalReservation = reservationDao.findById(reservationId);
+                if (optionalReservation.isEmpty()) {
+                    throw new DaoException("Reservation has not been found. Id is invalid: " + reservationId);
+                }
+                Reservation reservation = optionalReservation.get();
+
+
+                BigDecimal price = reservation.getPrice();
+                long hotelId = reservation.getHotelId();
+                helper.startTransaction();
+                userDao.topUpBalance(price.negate(), userId);
+
+                Optional<Hotel> optionalHotel = hotelDao.findHotelById(hotelId);
+                if (optionalHotel.isEmpty()) {
+                    throw new DaoException("Reservation has not been found. Id is invalid: " + hotelId);
+                }
+                Hotel hotel = optionalHotel.get();
+                BigDecimal hotelBalance = hotel.getBalance();
+                BigDecimal newHotelBalance = price.add(hotelBalance);
+                Hotel hotelUpdated = new Hotel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getImagePath(), newHotelBalance);
+                hotelDao.save(hotelUpdated);
+                Reservation updatedReservation = new Reservation(reservationId, reservation.getOrderId(), reservation.getHotelId(), reservation.getRoomId(), reservation.getUserId(), reservation.getPrice(), true);
+                reservationDao.save(updatedReservation);
+                helper.endTransaction();
+            } catch (SQLException | DaoException e) {
+                throw new SecurityException(e);
+            }
+        }
+        return userAbleToPay;
+    }
+
+    private boolean checkForUserBalance(long userId, long reservationId) {
+        BigDecimal userBalance = null;
+        BigDecimal reservationPrice = null;
         try (DaoHelper helper = factory.createDaoHelper()) {
             ReservationDao reservationDao = helper.createReservationDao();
             UserDao userDao = helper.createUserDao();
-            HotelDao hotelDao = helper.createHotelDao();
+            userBalance = userDao.getCurrentUserBalance(userId);
             Reservation reservation = reservationDao.findById(reservationId).get();
-            double price = reservation.getPrice();
-            long hotelId = reservation.getHotelId();
-            helper.startTransaction();
-            //CHECK FOR ENOUGH MONEY
-            userDao.topUpBalance(-price, userId);
-            hotelDao.topUpBalance(price, hotelId);
-            reservationDao.markReservationAsPaidById(reservation.getId());
-            helper.endTransaction();
+            reservationPrice = reservation.getPrice();
         } catch (SQLException | DaoException e) {
-            e.printStackTrace();
+            throw new SecurityException(e);
         }
+        return userBalance.compareTo(reservationPrice) >= 1;
     }
+
 }

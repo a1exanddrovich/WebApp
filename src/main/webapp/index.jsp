@@ -3,10 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
 
-<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<%--<c:set var="lang" value="${not empty param.lang ? param.lang : not empty sessionScope.lang ? sessionScope.lang : pageContext.request.locale}" scope="session"/>--%>
+<%--<fmt:setLocale value="${lang}" scope="session"/>--%>
+<%--<fmt:setBundle basename="messages" scope="session"/>--%>
+
+<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
 
-<html lang="${sessionScope.lang}">
+<html lang="${lang}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,14 +34,37 @@
     <div class="container">
         <div class="header__container">
             <h1 class="header__title">Bookit</h1>
-            <div class="login__actions">
-                <a href="${pageContext.request.contextPath}/controller?command=enIndex" class="header__language">en</a>
-                <a href="${pageContext.request.contextPath}/controller?command=ruIndex" class="header__language">ru</a>
-                <a href="${pageContext.request.contextPath}/controller?command=esIndex" class="header__language">es</a>
-                <div class="theme login__theme" onclick="setUpTheme()">
-                    <img class="theme__image" src="images/icons/moon.png">
+            <div style="display: flex; align-content: center">
+                <div style="margin-right: 20px" class="theme" onclick="setUpTheme()">
+                    <img class="theme__image moon" src="images/icons/moon.png">
+                </div>
+                <div class="dropdown lang">
+                    <div class="theme" onclick="dropdown()">
+                        <img class="dropbutton theme__image" src="images/icons/lang_light.png">
+                    </div>
+                    <div class="dropdown-content" id="drop">
+                        <a href="controller?command=index&lang=en" class="menu__list-link dropdown-link">
+                            En
+                        </a>
+                        <a href="controller?command=index&lang=ru" class="menu__list-link dropdown-link">
+                            Ru
+                        </a>
+                        <a href="controller?command=index&lang=es" class="menu__list-link dropdown-link">
+                            Esp
+                        </a>
+                    </div>
                 </div>
             </div>
+<%--            <div class="login__actions">--%>
+<%--                <a href="${pageContext.request.contextPath}/controller?command=index&lang=en" class="header__language">en</a>--%>
+<%--                <a href="${pageContext.request.contextPath}/controller?command=index&lang=ru" class="header__language">ru</a>--%>
+<%--                <a href="${pageContext.request.contextPath}/controller?command=index&lang=es" class="header__language">esp</a>--%>
+<%--            </div>--%>
+<%--            <div class="login__actions">--%>
+<%--                <a href="${pageContext.request.contextPath}/controller?${pageContext.request.queryString}&lang=en" class="header__language">en</a>--%>
+<%--                <a href="${pageContext.request.contextPath}/controller?command=ruIndex" class="header__language">ru</a>--%>
+<%--                <a href="${pageContext.request.contextPath}/controller?command=esIndex" class="header__language">es</a>--%>
+<%--            </div>--%>
         </div>
     </div>
 </header>

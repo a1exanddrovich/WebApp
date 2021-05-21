@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="true" %>
 
-<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
 
 <html lang="${sessionScope.lang}">
@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>
-        Looking for a room...
+        <fmt:message key="label.lookForRoom"/>
     </title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap"
@@ -33,19 +33,19 @@
                             <div class="app__info">
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">
-                                        Hotel id
+                                        <fmt:message key="label.id"/>
                                     </h3>
                                     <p class="app__info-text-data">#${room.getHotelId()}</p>
                                 </div>
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">
-                                        Class
+                                        <fmt:message key="label.class"/>
                                     </h3>
                                     <p class="app__info-text-data">${room.getRoomClass()}</p>
                                 </div>
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">
-                                        Places
+                                        <fmt:message key="label.places"/>
                                     </h3>
                                     <p class="app__info-text-data">${room.getPlaceCount()}</p>
                                 </div>
@@ -53,7 +53,7 @@
                             <div class="app__actions">
                                 <button class="app__button button-hover" type="submit">
                                     <a href="controller?command=makeReservation&userId=${param.userId}&hotelId=${room.getHotelId()}&roomId=${room.getId()}&orderId=${param.orderId}">
-                                        Apply
+                                        <fmt:message key="label.apply"/>
                                     </a>
                                 </button>
                             </div>
@@ -70,14 +70,7 @@
     </div>
 </main>
 <script>
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if (lightTheme === "false" && darkTheme === "true") {
-        getDarkTheme();
-    }
-    if (lightTheme === "true" && darkTheme === "false") {
-        getLightTheme();
-    }
+    checkForTheme();
 </script>
 </body>
 </html>

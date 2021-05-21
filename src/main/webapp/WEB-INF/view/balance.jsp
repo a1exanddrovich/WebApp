@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="true" %>
 
-<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
 
 <html lang="${sessionScope.lang}">
@@ -35,7 +35,7 @@
                 <fmt:message key="label.topUp"/>
             </button>
         </form>
-        <c:if test="${error != null}">
+        <c:if test="${invalidCash != null or error != null}">
             <p style="color: darkred; margin-top: 10px">
                 <fmt:message key="label.invalidSum"/>
             </p>
@@ -43,14 +43,7 @@
     </div>
 </main>
 <script>
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if(lightTheme === "false" && darkTheme === "true") {
-        getDarkTheme();
-    }
-    if(lightTheme === "true" && darkTheme === "false") {
-        getLightTheme();
-    }
+    checkForTheme();
 </script>
 </body>
 </html>

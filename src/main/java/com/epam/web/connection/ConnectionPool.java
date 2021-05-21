@@ -1,6 +1,8 @@
 package com.epam.web.connection;
 
 import com.epam.web.exception.ConnectionPoolException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayDeque;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
 
+    private final static Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
     private final static AtomicReference<ConnectionPool> INSTANCE = new AtomicReference<>();
     private final static ReentrantLock INSTANCE_LOCK = new ReentrantLock();
 
@@ -71,7 +74,8 @@ public class ConnectionPool {
             this.connectionsInUse.add(connection);
             return connection;
         } catch (InterruptedException e) {
-            throw new ConnectionPoolException();
+            LOGGER.fatal(e.getMessage());
+            throw new ConnectionPoolException(e);
         } finally {
             connectionsLock.unlock();
         }

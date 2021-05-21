@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Order implements Identifiable {
 
-    private long id;
+    private final long id;
     private final long userId;
     private final String hotelName;
     private final String roomClass;
@@ -15,16 +15,6 @@ public class Order implements Identifiable {
 
     public Order(long id, long userId, String hotelName, String roomClass, int placeCount, Date arrivalDate, Date departureDate, OrderStatus status) {
         this.id = id;
-        this.userId = userId;
-        this.hotelName = hotelName;
-        this.roomClass = roomClass;
-        this.placeCount = placeCount;
-        this.arrivalDate = arrivalDate;
-        this.departureDate = departureDate;
-        this.status = status;
-    }
-
-    public Order(long userId, String hotelName, String roomClass, int placeCount, Date arrivalDate, Date departureDate, OrderStatus status) {
         this.userId = userId;
         this.hotelName = hotelName;
         this.roomClass = roomClass;

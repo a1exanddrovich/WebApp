@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix = "ctg" uri = "/WEB-INF/custom.tld" %>
 <%@ page session="true" %>
 
-<fmt:setLocale value="${sessionScope.lang}" scope="session"/>
+<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
 
 <html lang="${sessionScope.lang}">
@@ -31,12 +32,6 @@
                     <c:forEach items="${orders}" var="order">
                         <div class="section__card">
                             <div class="app__info">
-                                <div class="app__info-text">
-                                    <h3 class="app__info-text-title">
-                                        <fmt:message key="label.orderNumber"/>
-                                    </h3>
-                                    <p class="app__info-text-data">#${order.getId()}</p>
-                                </div>
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">
                                         <fmt:message key="label.hotelName"/>
@@ -71,20 +66,48 @@
                                     <h3 class="app__info-text-title">
                                         <fmt:message key="label.status"/>
                                     </h3>
-                                    <p class="app__info-text-data">${order.getStatus()}</p>
+                                    <c:choose>
+                                        <c:when test="${order.getStatus() == 'ACCEPTED'}">
+                                            <p class="app__info-text-data">
+                                                <fmt:message key="label.acceptedStatus"/>
+                                            </p>
+                                        </c:when>
+                                        <c:when test="${order.getStatus() == 'PROCESSING'}">
+                                            <p class="app__info-text-data">
+                                                <fmt:message key="label.processingStatus"/>
+                                            </p>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p class="app__info-text-data">
+                                                <fmt:message key="label.declinedStatus"/>
+                                            </p>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                             <div class="app__actions">
-                                <button class="app__button button-hover" type="submit">
-                                    <a href="controller?command=editOrderPage&orderId=${order.getId()}">
-                                        <fmt:message key="label.edit"/>
-                                    </a>
-                                </button>
-                                <button class="app__button button-hover" type="submit">
-                                    <a href="controller?command=deleteOrder&orderId=${order.getId()}">
-                                        <fmt:message key="label.delete"/>
-                                    </a>
-                                </button>
+                                <c:choose>
+                                    <c:when test="${order.getStatus() == 'ACCEPTED'}">
+                                        <button style="cursor: unset" class="app__button" type="submit" disabled>
+                                            <fmt:message key="label.edit"/>
+                                        </button>
+                                        <button style="cursor: unset" class="app__button" type="submit" disabled>
+                                            <fmt:message key="label.delete"/>
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button class="app__button button-hover" type="submit">
+                                            <a href="controller?command=editOrderPage&orderId=${order.getId()}">
+                                                <fmt:message key="label.edit"/>
+                                            </a>
+                                        </button>
+                                        <button class="app__button button-hover" type="submit">
+                                            <a href="controller?command=deleteOrder&orderId=${order.getId()}">
+                                                <fmt:message key="label.delete"/>
+                                            </a>
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </c:forEach>
@@ -98,18 +121,16 @@
         </c:choose>
     </div>
 </main>
+<div class="container">
+    <fmt:message key="label.next" var="next"/>
+    <fmt:message key="label.prev" var="previous"/>
+    <ctg:pagination commandName="myOrders" totalPages="${pageNumber}" currentPage="${currentPage}" nextTitle="${next}" previousTitle="${previous}"/>
+</div>
 <c:if test="${orders.size() != 0}">
     <jsp:include page="fragments/footer.jsp"/>
 </c:if>
 <script>
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if (lightTheme === "false" && darkTheme === "true") {
-        getDarkTheme();
-    }
-    if (lightTheme === "true" && darkTheme === "false") {
-        getLightTheme();
-    }
+    checkForTheme();
 </script>
 </body>
 </html>

@@ -23,13 +23,13 @@ public class LoginCommand implements Command {
             User user = optionalUser.get();
             request.getSession().setAttribute("user", user);
             if("ADMIN".equals(user.getRole())) {
-                return CommandResult.redirect("controller?command=adminAllOrders");
+                return CommandResult.redirect("controller?command=adminAllOrders&currentPage=1");
             }
         } else {
             request.setAttribute("errorMessage", "something");
             return CommandResult.forward("/index.jsp");
         }
-        return CommandResult.redirect("controller?command=mainPage");
+        return CommandResult.redirect("controller?command=mainPage&currentPage=1");
     }
 
 }

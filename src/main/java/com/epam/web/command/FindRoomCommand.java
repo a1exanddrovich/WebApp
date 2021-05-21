@@ -1,6 +1,7 @@
 package com.epam.web.command;
 
 import com.epam.web.entitiy.Room;
+import com.epam.web.entitiy.RoomClass;
 import com.epam.web.service.HotelService;
 import com.epam.web.service.RoomService;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class FindRoomCommand implements Command {
         request.setAttribute("orderId", request.getParameter("orderId"));
         request.setAttribute("userId", request.getParameter("userId"));
         String hotel = request.getParameter("hotel");
-        String roomClass = request.getParameter("class");
+        RoomClass roomClass = RoomClass.valueOf(request.getParameter("class"));
         int places = Integer.parseInt(request.getParameter("places"));
         Date arrival = null;
         Date departure = null;
@@ -40,7 +41,7 @@ public class FindRoomCommand implements Command {
             e.printStackTrace();
         }
         long hotelId = hotelService.getHotelIdByName(hotel);
-        Room room = new Room(hotelId, roomClass, places, arrival, departure);
+        Room room = new Room(0, hotelId, roomClass, places, arrival, departure);
         List<Room> rooms = roomService.findRoom(room);
         request.setAttribute("rooms", rooms);
         return CommandResult.forward("/WEB-INF/view/admin/adminfindroompage.jsp");

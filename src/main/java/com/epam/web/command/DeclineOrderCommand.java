@@ -17,7 +17,7 @@ public class DeclineOrderCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         long orderId = Long.parseLong(request.getParameter("orderId"));
         service.declineOrderById(orderId);
-        return CommandResult.forward("/WEB-INF/view/admin/adminsuccessfulpage.jsp");
+        return CommandResult.redirect("controller?command=adminAllOrders&currentPage=1");
     }
 
 }

@@ -2,116 +2,142 @@ package com.epam.web.command;
 
 import com.epam.web.dao.DaoHelperFactory;
 import com.epam.web.service.*;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class CommandFactory {
 
-    //TO-DO
-    //ADMIN
-    //1.show orders with processing status only
-    //2.validation of input on add hotel page
-    //3.validation of input on add room page
-    //4.if hotel with given name doesnt exist then show "no such hotel" inscription instead of 500 error
-    //5.search only rooms with null booked until dates
-    //USER
-    //1.validation of input on booking page
-    //2.if order has accepted status then disable edit and delete buttons
-    //3.validation of input on edit page
-    //4.if reservation has is_paid true status then disable refuse and pay buttons
-    //5.check for enough user's money before starting payment process
-    //6.validation of input on top up balance page
-    //7.think og showing proper data on reservation info cards
-    //OTHER
-    //1.come up with a Calculator class which is able to calculate price of a reservation
-    //2.finish up internationalization
-    //3.money has to have decimal type instead of double
-    //FURTHER REFACTORING OF THE CODE
+    private final static String LOGIN = "login";
+    private final static String LOGOUT = "logout";
+    private final static String MAIN = "mainPage";
+    private final static String MY_ORDERS = "myOrders";
+    private final static String MY_RESERVATIONS = "myReservations";
+    private final static String BOOKING = "booking";
+    private final static String SHOW_EDIT = "editOrderPage";
+    private final static String ALL_ORDERS = "adminAllOrders";
+    private final static String FIND_ROOM = "findProperRoom";
+    private final static String DECLINE_ORDER = "declineOrder";
+    private final static String MAKE_RESERVATION = "makeReservation";
+    private final static String SHOW_ADD_ROOM = "adminShowAddRoomPage";
+    private final static String SHOW_ADD_HOTEL = "adminShowAddHotelPage";
+    private final static String ADD_HOTEL = "adminAddHotel";
+    private final static String ADD_ROOM = "adminAddRoom";
+    private final static String SHOW_BALANCE = "showBalance";
+    private final static String TOP_UP_BALANCE = "topUpBalance";
+    private final static String MAKE_PAYMENT = "makePayment";
+    private final static String REFUSE_RESERVATION = "refuseReservation";
+    private final static String EDIT_ORDER = "editOrder";
+    private final static String DELETE_ORDER = "deleteOrder";
+    private final static String MAKE_ORDER = "makeOrder";
+    private final static String CHANGE_LANGUAGE = "changeLocalization";
+    private final static String INDEX = "index";
+//    private final static String PHOTO = "adminAddHotelImage";
+
+    private final UserService userService;
+    private final HotelService hotelService;
+    private final OrderService orderService;
+    private final ReservationService reservationService;
+    private final RoomService roomService;
+
+    public CommandFactory() {
+        DaoHelperFactory daoHelperFactory = new DaoHelperFactory();
+        userService = new UserService(daoHelperFactory);
+        hotelService = new HotelService(daoHelperFactory);
+        orderService = new OrderService(daoHelperFactory);
+        reservationService = new ReservationService(daoHelperFactory);
+        roomService = new RoomService(daoHelperFactory);
+    }
 
     public Command create(String type) {
         switch (type) {
-            case "login" :
-                return new LoginCommand(new UserService(new DaoHelperFactory()));
+            case LOGIN:
+                return new LoginCommand(userService);
 
-            case "logout" :
+            case LOGOUT:
                 return new LogoutCommand();
 
-            case "mainPage" :
-                return new MainPageCommand(new HotelService(new DaoHelperFactory()));
+            case MAIN:
+                return new MainPageCommand(hotelService);
 
-            case "myOrders" :
-                return new MyOrdersCommand(new OrderService(new DaoHelperFactory()));
+            case MY_ORDERS:
+                return new MyOrdersCommand(orderService);
 
-            case "myReservations" :
-                return new MyReservationsCommand(new ReservationService(new DaoHelperFactory()));
+            case MY_RESERVATIONS:
+                return new MyReservationsCommand(reservationService, orderService);
 
-            case "booking" :
+            case BOOKING:
                 return new ShowPageCommand("/WEB-INF/view/booking.jsp");
 
-            case "about" :
-                return new ShowPageCommand("/WEB-INF/view/about.jsp");
-
-            case "editOrderPage" :
+            case SHOW_EDIT:
                 return new ShowPageCommand("/WEB-INF/view/edit.jsp");
 
-            case "adminAllOrders" :
-                return new AdminAllOrdersPageCommand(new OrderService(new DaoHelperFactory()));
+            case INDEX:
+                return new ShowPageCommand("/index.jsp");
 
-            case "findProperRoom" :
-                return new FindRoomCommand(new RoomService(new DaoHelperFactory()),
-                                           new HotelService(new DaoHelperFactory()));
+            case ALL_ORDERS:
+                return new AdminAllOrdersPageCommand(orderService);
 
-            case "declineOrder" :
-                return new DeclineOrderCommand(new OrderService(new DaoHelperFactory()));
+            case FIND_ROOM:
+                return new FindRoomCommand(roomService, hotelService);
 
-            case "makeReservation" :
-                return new MakeReservationCommand(new ReservationService(new DaoHelperFactory()),
-                                                  new RoomService(new DaoHelperFactory()),
-                                                  new OrderService(new DaoHelperFactory()));
+            case DECLINE_ORDER:
+                return new DeclineOrderCommand(orderService);
 
-            case "adminShowAddRoomPage" :
+            case MAKE_RESERVATION:
+                return new MakeReservationCommand(reservationService, roomService, orderService);
+
+            case SHOW_ADD_ROOM:
                 return new ShowPageCommand("/WEB-INF/view/admin/adminaddroom.jsp");
 
-            case "adminShowAddHotelPage" :
+            case SHOW_ADD_HOTEL:
                 return new ShowPageCommand("/WEB-INF/view/admin/adminaddhotel.jsp");
 
-            case "adminAddHotel" :
-                return new AdminAddHotelCommand(new HotelService(new DaoHelperFactory()));
+            case ADD_HOTEL:
+                ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
+                return new AdminAddHotelCommand(hotelService, servletFileUpload);
 
-            case "adminAddRoom" :
-                return new AdminAddRoomCommand(new RoomService(new DaoHelperFactory()));
+            case ADD_ROOM:
+                return new AdminAddRoomCommand(roomService, hotelService);
 
-            case "showBalance" :
-                return new ShowBalanceCommand(new UserService(new DaoHelperFactory()));
+            case SHOW_BALANCE:
+                return new ShowBalanceCommand(userService);
 
-            case "topUpBalance" :
-                return new TopUpBalanceCommand(new UserService(new DaoHelperFactory()));
+            case TOP_UP_BALANCE:
+                return new TopUpBalanceCommand(userService);
 
-            case "makePayment" :
-                return new PaymentCommand(new UserService(new DaoHelperFactory()),
-                                          new HotelService(new DaoHelperFactory()));
+            case MAKE_PAYMENT:
+                return new PaymentCommand(userService, hotelService);
 
-            case "refuseReservation" :
-                return new RefuseReservationCommand(new ReservationService(new DaoHelperFactory()));
+            case REFUSE_RESERVATION:
+                return new RefuseReservationCommand(reservationService);
 
-            case "editOrder" :
-                return new EditOrderCommand(new OrderService(new DaoHelperFactory()));
+            case EDIT_ORDER:
+                return new EditOrderCommand(orderService);
 
-            case "deleteOrder" :
-                return new DeleteOrderCommand(new OrderService(new DaoHelperFactory()));
+            case DELETE_ORDER:
+                return new DeleteOrderCommand(orderService);
 
-            case "enIndex":
-                return new ChangeLanguageCommand("en", "/index.jsp");
+            case MAKE_ORDER:
+                return new MakeOrderCommand(orderService);
 
-            case "ruIndex":
-                return new ChangeLanguageCommand("ru", "/index.jsp");
+//            case PHOTO:
+//                ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
+//                return
 
-            case "esIndex":
-                return new ChangeLanguageCommand("es", "/index.jsp");
+//            case "enIndex":
+//                return new ChangeLanguageCommand("en", "/index.jsp");
+//
+//            case "ruIndex":
+//                return new ChangeLanguageCommand("ru", "/index.jsp");
+//
+//            case "esIndex":
+//                return new ChangeLanguageCommand("es", "/index.jsp");
 
-            case "makeOrder":
-                return new MakeOrderCommand(new OrderService(new DaoHelperFactory()));
+//            case CHANGE_LANGUAGE:
+//                return new ChangeLanguageCommandFull();
 
             default:
-                throw  new IllegalArgumentException("Unknown type " + type);
+                throw new IllegalArgumentException("Unknown type " + type);
         }
     }
 

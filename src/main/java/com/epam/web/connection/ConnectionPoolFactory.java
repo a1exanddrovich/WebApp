@@ -2,6 +2,9 @@ package com.epam.web.connection;
 
 import com.epam.web.exception.ConnectionPoolException;
 import com.epam.web.utils.PropertiesLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +15,7 @@ import java.util.Properties;
 
 public class ConnectionPoolFactory {
 
+    private final static Logger LOGGER = LogManager.getLogger(ConnectionPoolFactory.class);
     private static final String PROPERTIES_FILENAME = "database/database.properties";
 
     private String jdbcUrl;
@@ -47,8 +51,9 @@ public class ConnectionPoolFactory {
             List<ProxyConnection> connections = establishConnections();
             return new ConnectionPool(this.poolSize, connections);
         } catch (ClassNotFoundException | SQLException | IOException e) {
+            LOGGER.fatal(e.getMessage());
             e.printStackTrace();
-            throw new ConnectionPoolException();
+            throw new ConnectionPoolException(e);
         }
     }
 
