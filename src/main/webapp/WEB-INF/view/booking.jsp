@@ -27,19 +27,22 @@
     <div class="container">
         <section class="section">
             <div class="section__container">
-                <form id="addroom" class="section__form" action="controller?command=makeOrder" method="post">
+                <form id="addroom" class="section__form" action="controller?command=makeOrder" method="post" onsubmit="return validateBookingForm()">
                     <c:choose>
                         <c:when test="${hotelName != null}">
                             <fmt:message key="label.hotelName" var="name"/>
-                            <input class="form__input" type="text" placeholder="${name}" name="hotelName"
+                            <input id="nameOfHotel" class="form__input" type="text" placeholder="${name}" name="hotelName"
                                    value="${hotelName}" required>
                         </c:when>
                         <c:otherwise>
                             <fmt:message key="label.hotelName" var="name"/>
-                            <input class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus
+                            <input id="nameOfHotel" class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus
                                    required>
                         </c:otherwise>
                     </c:choose>
+                    <div id="errorHotel" class="error-div">
+                        <fmt:message key="label.enterCorrectNameOfHotel"/>
+                    </div>
                     <select class="classes" id="classes" name="class" form="addroom" required>
                         <option value=""><fmt:message key="label.chooseClass"/></option>
                         <option value="BUDGET">Budget</option>
@@ -49,11 +52,17 @@
                         <option value="URBAN">Urban</option>
                     </select>
                     <fmt:message key="label.places" var="places"/>
-                    <input class="form__input" type="text" placeholder="${places}" name="places" required>
+                    <input id="places" class="form__input" type="text" placeholder="${places}" name="places" required>
+                    <div id="errorPlaces" class="error-div">
+                        <fmt:message key="label.enterCorrectPlaceCount"/>
+                    </div>
                     <fmt:message key="label.arrival" var="arrival"/>
-                    <input class="form__input" type="date" placeholder="${arrival}" name="arrival" required>
+                    <input id="arr" class="form__input" type="date" placeholder="${arrival}" name="arrival" required pattern="\d{4}-\d{2}-\d{2}">
                     <fmt:message key="label.departure" var="departure"/>
-                    <input class="form__input" type="date" placeholder="${departure}" name="departure" required>
+                    <input id="dep" class="form__input" type="date" placeholder="${departure}" name="departure" required pattern="\d{4}-\d{2}-\d{2}">
+                    <div id="errorDates" class="error-div">
+                        <fmt:message key="label.enterCorrectDates"/>
+                    </div>
                     <fmt:message key="label.book" var="book"/>
                     <button class="form__button button-hover" type="submit">${book}</button>
                 </form>
@@ -66,7 +75,7 @@
         </c:if>
         <c:if test="${error != null}">
             <p style="color: darkred; margin-top: 10px">
-                <fmt:message key="label.invalidDate"/>
+                <fmt:message key="label.invalidInfo"/>
             </p>
         </c:if>
     </div>

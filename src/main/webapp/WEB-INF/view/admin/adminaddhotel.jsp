@@ -27,17 +27,24 @@
     <div class="container">
         <section class="section">
             <div class="section__container">
-                <form class="section__form" action="controller?command=adminAddHotel" method="post" enctype="multipart/form-data">
+                <form class="section__form" action="controller?command=adminAddHotel" method="post" enctype="multipart/form-data" onsubmit="return validateHotelForm()">
                     <fmt:message key="label.hotelName" var="name"/>
-                    <input class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>
+                    <input id="nameOfHotel" class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>
+                    <div id="errorHotel" class="error-div">
+                        <fmt:message key="label.enterCorrectNameOfHotel"/>
+                    </div>
                     <fmt:message key="label.description" var="description"/>
-                    <input class="form__input" type="text" placeholder="${description}" name="description" required>
-<%--                    <input class="form__input" type="text" placeholder="Main photo id" name="photoId" required>--%>
-                    <input type="file" name="file"  accept="image/*"/>
+                    <input class="form__input" type="text" placeholder="${description}" name="description" maxlength="256" required>
+                    <input type="file" name="file" accept="image/*"/>
                     <button class="form__button button-hover" type="submit">
                         <fmt:message key="label.add"/>
                     </button>
                 </form>
+                <c:if test="${error != null}">
+                    <p style="color: darkred; margin-top: 10px">
+                        <fmt:message key="label.invalidInfo"/>
+                    </p>
+                </c:if>
             </div>
         </section>
     </div>

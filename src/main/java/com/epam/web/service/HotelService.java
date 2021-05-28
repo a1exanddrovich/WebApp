@@ -5,18 +5,20 @@ import com.epam.web.dao.DaoHelperFactory;
 import com.epam.web.dao.HotelDao;
 import com.epam.web.entitiy.Hotel;
 import com.epam.web.exception.DaoException;
+import com.epam.web.exception.ServiceException;
 import org.apache.commons.fileupload.FileItem;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class HotelService {
+
+    private final static String JPG_FORMAT = "jpg";
 
     private final DaoHelperFactory factory;
 
@@ -24,52 +26,48 @@ public class HotelService {
         this.factory = factory;
     }
 
-    public List<Hotel> getAllHotels(int currentPage, int recordsPerPage) {
+    public List<Hotel> getAllHotels(int currentPage, int recordsPerPage) throws ServiceException {
         List<Hotel> hotels = new ArrayList<>();
         try(DaoHelper helper = factory.createDaoHelper()) {
             HotelDao dao = helper.createHotelDao();
             List<Hotel> retrievedHotels = dao.getAllHotels(currentPage, recordsPerPage);
             hotels.addAll(retrievedHotels);
-        } catch (SQLException | DaoException e) {
-            throw new SecurityException(e);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
         return hotels;
     }
 
-    public void addHotel(Hotel hotel, String filePath, FileItem item) {
-        try {
+    public void addHotel(Hotel hotel, String filePath, FileItem item) throws ServiceException {
+        try(DaoHelper helper = factory.createDaoHelper()) {
             InputStream fileContent = item.getInputStream();
             BufferedImage image = ImageIO.read(fileContent);
-            ImageIO.write(image, "jpg", new File(filePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try(DaoHelper helper = factory.createDaoHelper()) {
+            ImageIO.write(image, JPG_FORMAT, new File(filePath));
             HotelDao dao = helper.createHotelDao();
             dao.save(hotel);
-        } catch (DaoException e) {
-            throw new SecurityException(e);
+        } catch (DaoException | IOException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
-    public long getHotelIdByName(String hotelName) {
+    public long getHotelIdByName(String hotelName) throws ServiceException {
         Optional<Hotel> hotel = null;
         try(DaoHelper helper = factory.createDaoHelper()) {
             HotelDao dao = helper.createHotelDao();
             hotel = dao.getHotelIdByName(hotelName);
-        } catch (SQLException | DaoException e) {
-            throw new SecurityException(e);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
         return hotel.get().getId();
     }
 
-    public int getHotelCount() {
+    public int getHotelCount() throws ServiceException {
         int recordCount = 0;
         try(DaoHelper helper = factory.createDaoHelper()) {
             HotelDao dao = helper.createHotelDao();
             recordCount = dao.countHotels();
-        } catch (SQLException | DaoException e) {
-            throw new SecurityException(e);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
         return recordCount;
     }

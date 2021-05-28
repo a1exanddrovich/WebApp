@@ -2,6 +2,7 @@ package com.epam.web.command;
 
 import com.epam.web.entitiy.Order;
 import com.epam.web.entitiy.User;
+import com.epam.web.exception.ServiceException;
 import com.epam.web.service.OrderService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ public class MyOrdersCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         int currentPage = Integer.parseInt(request.getParameter("currentPage"));
         User user = (User) request.getSession().getAttribute("user");
         List<Order> orders = service.getCurrentUserOrders(user, currentPage, RECORDS_PER_PAGE);

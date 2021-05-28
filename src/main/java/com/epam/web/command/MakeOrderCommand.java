@@ -3,8 +3,9 @@ package com.epam.web.command;
 import com.epam.web.entitiy.Order;
 import com.epam.web.entitiy.OrderStatus;
 import com.epam.web.entitiy.User;
+import com.epam.web.exception.ServiceException;
 import com.epam.web.service.OrderService;
-import com.epam.web.validator.OrderDateValidator;
+import com.epam.web.validator.OrderValidator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
@@ -18,14 +19,15 @@ public class MakeOrderCommand implements Command {
 
     private final OrderService service;
     private final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-    private final OrderDateValidator validator = new OrderDateValidator();
+    private final OrderValidator validator;
 
-    public MakeOrderCommand(OrderService service) {
+    public MakeOrderCommand(OrderService service, OrderValidator validator) {
         this.service = service;
+        this.validator = validator;
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         User user = (User) request.getSession().getAttribute("user");
         String hotelName = request.getParameter("hotelName");
         String roomClass = request.getParameter("class");
@@ -33,7 +35,7 @@ public class MakeOrderCommand implements Command {
         try {
             places = Integer.parseInt(request.getParameter("places"));
         } catch (NumberFormatException e) {
-            request.setAttribute("invalidPlaceCount", "something");
+            request.setAttribute("invalidPlaceCount", "incorrectData");
             return CommandResult.forward("/WEB-INF/view/booking.jsp");
         }
         Date arrivalDate = null;
@@ -48,7 +50,7 @@ public class MakeOrderCommand implements Command {
         if(validator.validate(order)) {
             service.makeOrder(order);
         } else {
-            request.setAttribute("error", "something");
+            request.setAttribute("error", "incorrectData");
             return CommandResult.forward("/WEB-INF/view/booking.jsp");
         }
         return CommandResult.redirect("controller?command=booking");

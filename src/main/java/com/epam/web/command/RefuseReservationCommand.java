@@ -1,6 +1,7 @@
 package com.epam.web.command;
 
 import com.epam.web.entitiy.Reservation;
+import com.epam.web.exception.ServiceException;
 import com.epam.web.service.OrderService;
 import com.epam.web.service.ReservationService;
 import com.epam.web.service.RoomService;
@@ -17,7 +18,7 @@ public class RefuseReservationCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         long reservationId = Long.parseLong(request.getParameter("reservationId"));
         Reservation reservation = service.findById(reservationId);
         service.refuseReservation(reservation);

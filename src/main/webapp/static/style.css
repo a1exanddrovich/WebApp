@@ -1,6 +1,7 @@
 *,
 *::after,
 *::before {
+    font-family: Roboto Condensed;
     box-sizing: border-box;
 }
 
@@ -60,7 +61,6 @@ input::placeholder {
 .body {
     background-color: var(--body-background-color-light);
     color: var(--text-color-light);
-    font-family: Roboto Condensed;
     font-weight: 300;
     font-size: 18px;
     line-height: 21px;
@@ -641,7 +641,7 @@ a {
 
     .error {
         line-height: 32px;
-        font-size: 30px;
+        F-size: 30px;
     }
 
     .form__input {
@@ -736,4 +736,13 @@ a {
         margin-left: 0;
     }
 
+}
+
+.error_input {
+    border: 3px darkred solid;
+}
+
+.error-div {
+    display: none;
+    color: darkred;
 }

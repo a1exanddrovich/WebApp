@@ -2,6 +2,7 @@ package com.epam.web.command;
 
 import com.epam.web.entitiy.Room;
 import com.epam.web.entitiy.RoomClass;
+import com.epam.web.exception.ServiceException;
 import com.epam.web.service.HotelService;
 import com.epam.web.service.RoomService;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class FindRoomCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         request.setAttribute("orderId", request.getParameter("orderId"));
         request.setAttribute("userId", request.getParameter("userId"));
         String hotel = request.getParameter("hotel");

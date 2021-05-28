@@ -9,13 +9,6 @@ import java.util.Optional;
 
 public interface RoomDao extends Dao<Room> {
 
-//    void addRoom(Room room) throws DaoException;
+    List<Room> findProperRoom(Room room) throws DaoException;
 
-    List<Room> findProperRoom(Room room) throws SQLException, DaoException;
-
-    Optional<Room> findRoomById(long roomId) throws SQLException, DaoException;
-
-    void updateRoom(Room room, Date arrivalDate, Date departureDate) throws DaoException;
-//
-//    void unbookRoomById(long roomId) throws DaoException;
 }

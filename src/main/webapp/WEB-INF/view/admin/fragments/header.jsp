@@ -29,6 +29,11 @@
                             <fmt:message key="label.addHotel"/>
                         </a>
                     </li>
+                    <li class="menu__list-item">
+                        <a href="controller?command=adminAllUsers&currentPage=1" class="menu__list-link">
+                            <fmt:message key="label.users"/>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <a href="controller?command=logout" class="header__logout"><fmt:message key="label.logout"/></a>

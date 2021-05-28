@@ -4,6 +4,7 @@ import com.epam.web.dto.ReservationDto;
 import com.epam.web.entitiy.Order;
 import com.epam.web.entitiy.Reservation;
 import com.epam.web.entitiy.User;
+import com.epam.web.exception.ServiceException;
 import com.epam.web.service.OrderService;
 import com.epam.web.service.ReservationService;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ public class MyReservationsCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         int currentPage = Integer.parseInt(request.getParameter("currentPage"));
         User user = (User) request.getSession().getAttribute("user");
         List<Reservation> reservationList = reservationService.getCurrentUserReservations(user, currentPage, RECORDS_PER_PAGE);

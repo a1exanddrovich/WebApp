@@ -4,6 +4,7 @@ import com.epam.web.calculator.ReservationPriceCalculator;
 import com.epam.web.dao.*;
 import com.epam.web.entitiy.*;
 import com.epam.web.exception.DaoException;
+import com.epam.web.exception.ServiceException;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -20,42 +21,30 @@ public class ReservationService {
         this.factory = factory;
     }
 
-    public List<Reservation> getAllReservations() {
-        List<Reservation> reservations = new ArrayList<>();
-        try(DaoHelper helper = factory.createDaoHelper()) {
-            ReservationDao dao = helper.createReservationDao();
-            List<Reservation> retrievedReservations = dao.getAllReservations();
-            reservations.addAll(retrievedReservations);
-        } catch (SQLException | DaoException e) {
-            throw new SecurityException(e);
-        }
-        return reservations;
-    }
-
-    public List<Reservation> getCurrentUserReservations(User user, int currentPage, int recordsPerPage) {
+    public List<Reservation> getCurrentUserReservations(User user, int currentPage, int recordsPerPage) throws ServiceException {
         List<Reservation> reservations = new ArrayList<>();
         try(DaoHelper helper = factory.createDaoHelper()) {
             ReservationDao dao = helper.createReservationDao();
             List<Reservation> retrievedReservations = dao.getCurrentUserReservations(user, currentPage, recordsPerPage);
             reservations.addAll(retrievedReservations);
-        } catch (SQLException | DaoException e) {
-            throw new SecurityException(e);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
         return reservations;
     }
 
-    public Reservation findById(long id) {
+    public Reservation findById(long id) throws ServiceException {
         Optional<Reservation> reservation = null;
         try (DaoHelper helper = factory.createDaoHelper()) {
             ReservationDao dao = helper.createReservationDao();
             reservation = dao.findById(id);
-        } catch (SQLException | DaoException e) {
-            throw new SecurityException(e);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
         return reservation.get();
     }
 
-    public void makeReservation(Reservation reservation, Order order, Room room) {
+    public void makeReservation(Reservation reservation, Order order, Room room) throws ServiceException {
         BigDecimal price = calculator.calculatePrice(order.getArrivalDate(), order.getDepartureDate(), room.getRoomClass().toString());
         Reservation newReservation = new Reservation(reservation.getId(),
                                                      reservation.getOrderId(),
@@ -70,17 +59,29 @@ public class ReservationService {
             OrderDao orderDao = helper.createOrderDao();
             helper.startTransaction();
             reservationDao.save(newReservation);
-            Room updatedRoom = new Room(room.getId(), room.getHotelId(), room.getRoomClass(), room.getPlaceCount(), order.getArrivalDate(), order.getDepartureDate());
+            Room updatedRoom = new Room(room.getId(),
+                                        room.getHotelId(),
+                                        room.getRoomClass(),
+                                        room.getPlaceCount(),
+                                        order.getArrivalDate(),
+                                        order.getDepartureDate());
             roomDao.save(updatedRoom);
-            Order updatedOrder = new Order(order.getId(), order.getUserId(), order.getHotelName(), order.getRoomClass(), order.getPlaceCount(), order.getArrivalDate(), order.getDepartureDate(), OrderStatus.ACCEPTED);
+            Order updatedOrder = new Order(order.getId(),
+                                           order.getUserId(),
+                                           order.getHotelName(),
+                                           order.getRoomClass(),
+                                           order.getPlaceCount(),
+                                           order.getArrivalDate(),
+                                           order.getDepartureDate(),
+                                           OrderStatus.ACCEPTED);
             orderDao.save(updatedOrder);
             helper.endTransaction();
         } catch (DaoException e) {
-            throw new SecurityException(e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
-    public void refuseReservation(Reservation reservation) {
+    public void refuseReservation(Reservation reservation) throws ServiceException {
         long reservationId = reservation.getId();
         long orderId = reservation.getOrderId();
         long roomId = reservation.getRoomId();
@@ -89,7 +90,7 @@ public class ReservationService {
             OrderDao orderDao = helper.createOrderDao();
             RoomDao roomDao = helper.createRoomDao();
             helper.startTransaction();
-            Optional<Room> optionalRoom = roomDao.findRoomById(roomId);
+            Optional<Room> optionalRoom = roomDao.findById(roomId);
             if (optionalRoom.isEmpty()) {
                 throw new DaoException("Room has not been found. Id is invalid: " + roomId);
             }
@@ -97,20 +98,20 @@ public class ReservationService {
             Room updatedRoom = new Room(roomId, room.getHotelId(), room.getRoomClass(), room.getPlaceCount(), null, null);
             roomDao.save(updatedRoom);
             reservationDao.deleteById(reservationId);
-            orderDao.deleteOrder(orderId);
+            orderDao.deleteById(orderId);
             helper.endTransaction();
-        } catch (DaoException | SQLException e) {
-            throw new SecurityException(e);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
-    public int getReservationCount(long userId) {
+    public int getReservationCount(long userId) throws ServiceException {
         int recordCount = 0;
         try(DaoHelper helper = factory.createDaoHelper()) {
             ReservationDao dao = helper.createReservationDao();
             recordCount = dao.countCurrentUserReservations(userId);
-        } catch (DaoException | SQLException e) {
-            throw new SecurityException(e);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
         return recordCount;
     }

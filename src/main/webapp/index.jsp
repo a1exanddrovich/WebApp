@@ -3,10 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
 
-<%--<c:set var="lang" value="${not empty param.lang ? param.lang : not empty sessionScope.lang ? sessionScope.lang : pageContext.request.locale}" scope="session"/>--%>
-<%--<fmt:setLocale value="${lang}" scope="session"/>--%>
-<%--<fmt:setBundle basename="messages" scope="session"/>--%>
-
 <fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
 
@@ -55,16 +51,6 @@
                     </div>
                 </div>
             </div>
-<%--            <div class="login__actions">--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=index&lang=en" class="header__language">en</a>--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=index&lang=ru" class="header__language">ru</a>--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=index&lang=es" class="header__language">esp</a>--%>
-<%--            </div>--%>
-<%--            <div class="login__actions">--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?${pageContext.request.queryString}&lang=en" class="header__language">en</a>--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=ruIndex" class="header__language">ru</a>--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=esIndex" class="header__language">es</a>--%>
-<%--            </div>--%>
         </div>
     </div>
 </header>
@@ -72,12 +58,18 @@
     <div class="container">
         <section class="section">
             <div class="login__container">
-                <form class="section__form login__form" action="${pageContext.request.contextPath}/controller?command=login"
+                <form id="loginForm" class="section__form login__form" action="${pageContext.request.contextPath}/controller?command=login" onsubmit="return validateLoginForm()"
                       method="post">
                     <fmt:message key="label.loginUsername" var="username"/>
-                    <input class="form__input login form__input-login" type="text" placeholder="${username}" name="username" autofocus>
+                    <input id="login" class="form__input login form__input-login" type="text" placeholder="${username}" name="username" autofocus>
+                    <div id="errorLogin" class="error-div">
+                        <fmt:message key="label.enterCorrectLogin"/>
+                    </div>
                     <fmt:message key="label.loginPassword" var="password"/>
-                    <input class="form__input login form__input-login" type="password" placeholder="${password}" name="password">
+                    <input id="password" class="form__input login form__input-login" type="password" placeholder="${password}" name="password">
+                    <div id="errorPassword" class="error-div">
+                        <fmt:message key="label.enterCorrectPassword"/>
+                    </div>
                     <fmt:message key="label.login" var="loginButton"/>
                     <button class="form__button button-hover" type="submit">${loginButton}</button>
                 </form>
@@ -85,6 +77,12 @@
                 <c:if test="${errorMessage != null}">
                     <div class="invalid__login-div">
                         <h2 class="invalid__login">${invalidLogin}</h2>
+                    </div>
+                </c:if>
+                <fmt:message key="label.userBlocked" var="blocked"/>
+                <c:if test="${userBlocked != null}">
+                    <div class="invalid__login-div">
+                        <h2 class="invalid__login">${blocked}</h2>
                     </div>
                 </c:if>
             </div>

@@ -8,15 +8,10 @@ import java.util.Optional;
 
 public interface HotelDao extends Dao<Hotel> {
 
-    List<Hotel> getAllHotels(int currentPage, int recordsPerPage) throws SQLException, DaoException;
+    List<Hotel> getAllHotels(int currentPage, int recordsPerPage) throws DaoException;
 
-    Optional<Hotel> getHotelIdByName(String hotel) throws SQLException, DaoException;
+    Optional<Hotel> getHotelIdByName(String hotel) throws DaoException;
 
-//    BigDecimal getHotelBalance(long id) throws SQLException, DaoException;
-//
-//    void topUpBalance(Hotel hotel) throws DaoException;
+    int countHotels() throws DaoException;
 
-    int countHotels() throws SQLException, DaoException;
-
-    Optional<Hotel> findHotelById(long hotelId) throws DaoException;
 }

@@ -21,7 +21,7 @@ public class ConnectionPool {
     private final Queue<ProxyConnection> connectionsInUse;
     private final ReentrantLock connectionsLock;
 
-    private int poolSize;
+    private final int poolSize;
     private Semaphore semaphore;
 
     ConnectionPool(int poolSize, List<ProxyConnection> connections) {
@@ -75,7 +75,7 @@ public class ConnectionPool {
             return connection;
         } catch (InterruptedException e) {
             LOGGER.fatal(e.getMessage());
-            throw new ConnectionPoolException(e);
+            throw new ConnectionPoolException(e.getMessage(), e);
         } finally {
             connectionsLock.unlock();
         }

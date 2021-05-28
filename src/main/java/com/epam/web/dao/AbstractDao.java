@@ -14,6 +14,7 @@ public class AbstractDao<T extends Identifiable> implements Dao<T> {
     private static final String FIND_BY_ID = "SELECT * FROM %s WHERE id = ?";
     private static final String DELETE_BY_ID = "DELETE FROM %s WHERE id = ?";
     private static final String FIND_ALL = "SELECT * FROM %s";
+    private static final String MULTIPLE_RECORDS_FOUND = "More than one record found";
 
     private final ProxyConnection connection;
     private final Mapper<T> mapper;
@@ -46,7 +47,7 @@ public class AbstractDao<T extends Identifiable> implements Dao<T> {
         if (users.size() == 1) {
             return Optional.of(users.get(0));
         } else if (users.size() > 1) {
-            throw new IllegalArgumentException("More than one record found");
+            throw new IllegalArgumentException(MULTIPLE_RECORDS_FOUND);
         } else {
             return Optional.empty();
         }

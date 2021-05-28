@@ -1,6 +1,7 @@
 package com.epam.web.command;
 
 import com.epam.web.entitiy.User;
+import com.epam.web.exception.ServiceException;
 import com.epam.web.service.HotelService;
 import com.epam.web.service.UserService;
 
@@ -18,7 +19,7 @@ public class PaymentCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         User user = (User) request.getSession().getAttribute("user");
         long reservationId = Long.parseLong(request.getParameter("reservationId"));
         boolean successfulPayment = userService.withdraw(user.getId(), reservationId);

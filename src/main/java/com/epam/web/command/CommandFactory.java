@@ -2,6 +2,10 @@ package com.epam.web.command;
 
 import com.epam.web.dao.DaoHelperFactory;
 import com.epam.web.service.*;
+import com.epam.web.validator.HotelValidator;
+import com.epam.web.validator.LoginValidator;
+import com.epam.web.validator.OrderValidator;
+import com.epam.web.validator.RoomValidator;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -29,9 +33,17 @@ public class CommandFactory {
     private final static String EDIT_ORDER = "editOrder";
     private final static String DELETE_ORDER = "deleteOrder";
     private final static String MAKE_ORDER = "makeOrder";
-    private final static String CHANGE_LANGUAGE = "changeLocalization";
+    private final static String BLOCKING = "adminBlocking";
+    private final static String ALL_USERS = "adminAllUsers";
     private final static String INDEX = "index";
-//    private final static String PHOTO = "adminAddHotelImage";
+
+    private final static String BOOKING_PAGE = "/WEB-INF/view/booking.jsp";
+    private final static String EDITING_PAGE = "/WEB-INF/view/edit.jsp";
+    private final static String INDEX_PAGE = "/index.jsp";
+    private final static String ADD_ROOM_PAGE = "/WEB-INF/view/admin/adminaddroom.jsp";
+    private final static String ADD_HOTEL_PAGE = "/WEB-INF/view/admin/adminaddhotel.jsp";
+
+    private final static String UNKNOWN_TYPE = "Unknown type ";
 
     private final UserService userService;
     private final HotelService hotelService;
@@ -51,7 +63,7 @@ public class CommandFactory {
     public Command create(String type) {
         switch (type) {
             case LOGIN:
-                return new LoginCommand(userService);
+                return new LoginCommand(userService, new LoginValidator());
 
             case LOGOUT:
                 return new LogoutCommand();
@@ -66,13 +78,13 @@ public class CommandFactory {
                 return new MyReservationsCommand(reservationService, orderService);
 
             case BOOKING:
-                return new ShowPageCommand("/WEB-INF/view/booking.jsp");
+                return new ShowPageCommand(BOOKING_PAGE);
 
             case SHOW_EDIT:
-                return new ShowPageCommand("/WEB-INF/view/edit.jsp");
+                return new ShowPageCommand(EDITING_PAGE);
 
             case INDEX:
-                return new ShowPageCommand("/index.jsp");
+                return new ShowPageCommand(INDEX_PAGE);
 
             case ALL_ORDERS:
                 return new AdminAllOrdersPageCommand(orderService);
@@ -87,17 +99,17 @@ public class CommandFactory {
                 return new MakeReservationCommand(reservationService, roomService, orderService);
 
             case SHOW_ADD_ROOM:
-                return new ShowPageCommand("/WEB-INF/view/admin/adminaddroom.jsp");
+                return new ShowPageCommand(ADD_ROOM_PAGE);
 
             case SHOW_ADD_HOTEL:
-                return new ShowPageCommand("/WEB-INF/view/admin/adminaddhotel.jsp");
+                return new ShowPageCommand(ADD_HOTEL_PAGE);
 
             case ADD_HOTEL:
                 ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
-                return new AdminAddHotelCommand(hotelService, servletFileUpload);
+                return new AdminAddHotelCommand(hotelService, new HotelValidator(), servletFileUpload);
 
             case ADD_ROOM:
-                return new AdminAddRoomCommand(roomService, hotelService);
+                return new AdminAddRoomCommand(roomService, hotelService, new RoomValidator());
 
             case SHOW_BALANCE:
                 return new ShowBalanceCommand(userService);
@@ -112,32 +124,22 @@ public class CommandFactory {
                 return new RefuseReservationCommand(reservationService);
 
             case EDIT_ORDER:
-                return new EditOrderCommand(orderService);
+                return new EditOrderCommand(orderService , new OrderValidator());
 
             case DELETE_ORDER:
                 return new DeleteOrderCommand(orderService);
 
             case MAKE_ORDER:
-                return new MakeOrderCommand(orderService);
+                return new MakeOrderCommand(orderService, new OrderValidator());
 
-//            case PHOTO:
-//                ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
-//                return
+            case ALL_USERS:
+                return new AllUsersPageCommand(userService);
 
-//            case "enIndex":
-//                return new ChangeLanguageCommand("en", "/index.jsp");
-//
-//            case "ruIndex":
-//                return new ChangeLanguageCommand("ru", "/index.jsp");
-//
-//            case "esIndex":
-//                return new ChangeLanguageCommand("es", "/index.jsp");
-
-//            case CHANGE_LANGUAGE:
-//                return new ChangeLanguageCommandFull();
+            case BLOCKING:
+                return new BlockingUsersCommand(userService);
 
             default:
-                throw new IllegalArgumentException("Unknown type " + type);
+                throw new IllegalArgumentException(UNKNOWN_TYPE + type);
         }
     }
 

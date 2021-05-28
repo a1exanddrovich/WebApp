@@ -27,11 +27,17 @@
     <div class="container">
         <section class="section">
             <div class="section__container">
-                <form id="addroom" class="section__form" action="controller?command=adminAddRoom" method="post">
+                <form id="addroom" class="section__form" action="controller?command=adminAddRoom" method="post" onsubmit="return validateRoomForm()">
                     <fmt:message key="label.hotelName" var="name"/>
-                    <input class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>
+                    <input id="nameOfHotel" class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>
+                    <div id="errorHotelName" class="error-div">
+                        <fmt:message key="label.enterCorrectNameOfHotel"/>
+                    </div>
                     <fmt:message key="label.places" var="places"/>
-                    <input class="form__input" type="text" placeholder="${places}" name="places" required>
+                    <input id="places" class="form__input" type="text" placeholder="${places}" name="places" required>
+                    <div id="errorPlaces" class="error-div">
+                        <fmt:message key="label.enterCorrectPlaceCount"/>
+                    </div>
                     <select class="classes" id="classes" name="class" form="addroom" required>
                         <option value=""><fmt:message key="label.chooseClass"/></option>
                         <option value="BUDGET">Budget</option>
@@ -44,7 +50,11 @@
                         <fmt:message key="label.add"/>
                     </button>
                 </form>
-
+                <c:if test="${error != null}">
+                    <p style="color: darkred; margin-top: 10px">
+                        <fmt:message key="label.invalidInfo"/>
+                    </p>
+                </c:if>
             </div>
         </section>
     </div>

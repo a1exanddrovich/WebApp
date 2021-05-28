@@ -86,7 +86,6 @@ public class PaginationTag implements Tag {
     }
 
     @Override
-    public void release() {
-    }
+    public void release() { }
 
 }

@@ -4,7 +4,8 @@ create table user
     login varchar(50) not null,
     password varchar(256) not null,
     role enum('USER', 'ADMIN') not null,
-    balance DECIMAL default 0 null,
+    balance DECIMAL(10, 2) default 0 null,
+    is_blocked boolean default false not null,
 
     primary key (id)
 );
@@ -14,8 +15,8 @@ create table hotel
     id bigint auto_increment,
     name varchar(50) not null,
     description varchar(256) not null,
-    image_id BIGINT,
-    balance DECIMAL default 0 null,
+    image_path varchar(256) not null ,
+    balance DECIMAL(10, 2) default 0 null,
 
     primary key (id)
 );
@@ -39,7 +40,7 @@ create table room
 (
     id bigint auto_increment,
     hotel_id bigint not null,
-    class varchar(50) not null,
+    class enum('BUDGET', 'URBAN', 'BEACH', 'SKI', 'THEMED'),
     places int not null,
     booked_from date,
     booked_until date,
@@ -55,8 +56,8 @@ create table reservation
     hotel_id bigint not null,
     room_id bigint not null,
     user_id bigint not null,
-    price decimal not null,
-    is_paid boolean not null,
+    price DECIMAL(10, 2) not null,
+    is_paid boolean default false not null,
 
     primary key (id),
     foreign key (order_id) references order(id),

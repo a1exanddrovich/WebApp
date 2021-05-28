@@ -27,10 +27,13 @@
 <jsp:include page="fragments/header.jsp"/>
 <main class="main">
     <div class="container">
-        <form class="section__form login__form balance balance_form" action="controller?command=topUpBalance" method="post">
+        <form id="balanceForm" class="section__form login__form balance balance_form" action="controller?command=topUpBalance" method="post" onsubmit="return validateBalanceForm()">
             <h2 class="inscription"><fmt:message key="label.yourBalance"/> ${balance} $</h2>
             <fmt:message key="label.money" var="enterSum"/>
-            <input class="form__input login form__input-login" type="text" placeholder="${enterSum}, $" name="topUpBalance" autofocus>
+            <input id="balance" class="form__input login form__input-login" type="text" placeholder="${enterSum}, $" name="topUpBalance" autofocus>
+            <div id="errorBalance" class="error-div">
+                <fmt:message key="label.enterCorrectBalance"/>
+            </div>
             <button class="form__button button-hover" type="submit">
                 <fmt:message key="label.topUp"/>
             </button>
