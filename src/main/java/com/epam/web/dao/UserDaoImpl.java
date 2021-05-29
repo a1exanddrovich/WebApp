@@ -1,14 +1,12 @@
 package com.epam.web.dao;
 
 import com.epam.web.connection.ProxyConnection;
-import com.epam.web.entitiy.Order;
 import com.epam.web.entitiy.User;
 import com.epam.web.exception.DaoException;
 import com.epam.web.mapper.UserMapper;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-
 
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
@@ -18,7 +16,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     private final static String GET_BALANCE = "SELECT * FROM user WHERE id = ?";
     private final static String TOP_UP_BALANCE = "UPDATE user SET balance = ? WHERE id = ?";
     private final static String BLOCK_USER = "UPDATE user SET is_blocked = ? WHERE id = ?";
-    private final static String GET_ALL_USERS = "SELECT * FROM user LIMIT ?, ?";
+    private final static String GET_ALL_USERS = "SELECT * FROM user WHERE role = 'USER' LIMIT ?, ?";
     private final static String GET_COUNT = "SELECT COUNT(*) FROM user";
 
     public UserDaoImpl(ProxyConnection connection) {

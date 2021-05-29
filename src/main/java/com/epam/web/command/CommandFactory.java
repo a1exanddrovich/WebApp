@@ -1,6 +1,7 @@
 package com.epam.web.command;
 
 import com.epam.web.dao.DaoHelperFactory;
+import com.epam.web.extractor.*;
 import com.epam.web.service.*;
 import com.epam.web.validator.HotelValidator;
 import com.epam.web.validator.LoginValidator;
@@ -63,7 +64,7 @@ public class CommandFactory {
     public Command create(String type) {
         switch (type) {
             case LOGIN:
-                return new LoginCommand(userService, new LoginValidator());
+                return new LoginCommand(userService, new LoginValidator(), new UserExtractor());
 
             case LOGOUT:
                 return new LogoutCommand();
@@ -90,13 +91,13 @@ public class CommandFactory {
                 return new AdminAllOrdersPageCommand(orderService);
 
             case FIND_ROOM:
-                return new FindRoomCommand(roomService, hotelService);
+                return new FindRoomCommand(roomService, hotelService, new RoomExtractor());
 
             case DECLINE_ORDER:
                 return new DeclineOrderCommand(orderService);
 
             case MAKE_RESERVATION:
-                return new MakeReservationCommand(reservationService, roomService, orderService);
+                return new MakeReservationCommand(reservationService, roomService, orderService, new ReservationExtractor());
 
             case SHOW_ADD_ROOM:
                 return new ShowPageCommand(ADD_ROOM_PAGE);
@@ -109,7 +110,7 @@ public class CommandFactory {
                 return new AdminAddHotelCommand(hotelService, new HotelValidator(), servletFileUpload);
 
             case ADD_ROOM:
-                return new AdminAddRoomCommand(roomService, hotelService, new RoomValidator());
+                return new AdminAddRoomCommand(roomService, hotelService, new RoomValidator(), new RoomExtractor());
 
             case SHOW_BALANCE:
                 return new ShowBalanceCommand(userService);
@@ -124,13 +125,13 @@ public class CommandFactory {
                 return new RefuseReservationCommand(reservationService);
 
             case EDIT_ORDER:
-                return new EditOrderCommand(orderService , new OrderValidator());
+                return new EditOrderCommand(orderService , new OrderValidator(), new OrderExtractor());
 
             case DELETE_ORDER:
                 return new DeleteOrderCommand(orderService);
 
             case MAKE_ORDER:
-                return new MakeOrderCommand(orderService, new OrderValidator());
+                return new MakeOrderCommand(orderService, new OrderValidator(), new OrderExtractor());
 
             case ALL_USERS:
                 return new AllUsersPageCommand(userService);

@@ -30,7 +30,7 @@ create table order
     class varchar(50) not null,
     arrival_date date not null,
     departure_date date not null,
-    status enum('PROCESSING', 'ACCEPTED', 'DECLINED'),
+    status enum('PROCESSING', 'ACCEPTED', 'DECLINED') not null ,
 
     primary key (id),
     foreign key (user_id) references user(id)
@@ -40,7 +40,7 @@ create table room
 (
     id bigint auto_increment,
     hotel_id bigint not null,
-    class enum('BUDGET', 'URBAN', 'BEACH', 'SKI', 'THEMED'),
+    class enum('BUDGET', 'URBAN', 'BEACH', 'SKI', 'THEMED') not null ,
     places int not null,
     booked_from date,
     booked_until date,

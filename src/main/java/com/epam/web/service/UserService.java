@@ -85,7 +85,7 @@ public class UserService {
         return userAbleToPay;
     }
 
-    private boolean checkForUserBalance(long userId, long reservationId) throws ServiceException {
+    public boolean checkForUserBalance(long userId, long reservationId) throws ServiceException {
         BigDecimal userBalance = null;
         BigDecimal reservationPrice = null;
         try (DaoHelper helper = factory.createDaoHelper()) {
