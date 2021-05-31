@@ -13,6 +13,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     private static final String CREATE = "INSERT INTO room (hotel_id, class, places) VALUES (?, ?, ?)";
     private static final String UPDATE = "UPDATE room SET hotel_id = ?, class = ?, places = ?, booked_until = ?, booked_from = ? WHERE id = ?";
     private final static String FIND_PROPER_ROOM = "SELECT * FROM room WHERE hotel_id = ? AND class = ? AND places = ? AND booked_until IS NULL";
+    private final static String INVALID_ROOM_ID = "Room has not been found. Id is invalid: ";
 
     protected RoomDaoImpl(ProxyConnection connection) {
         super(connection, new RoomMapper(), TABLE);
@@ -28,7 +29,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     protected void update(Room room) throws DaoException {
         Optional<Room> optionalRoom = findById(room.getId());
         if (optionalRoom.isEmpty()) {
-            throw new DaoException("Room has not been found. Id is invalid: " + room.getId());
+            throw new DaoException(INVALID_ROOM_ID + room.getId());
         }
         executeUpdate(UPDATE, room.getHotelId(), room.getRoomClass().toString(), room.getPlaceCount(), room.getBookedUntil(), room.getBookedFrom(), room.getId());
     }

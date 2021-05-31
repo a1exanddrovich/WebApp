@@ -7,16 +7,14 @@ import com.epam.web.service.OrderService;
 import com.epam.web.validator.OrderValidator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class MakeOrderCommand implements Command {
 
-    private final static String DATE_FORMAT = "yyyy-MM-dd";
+    private final static String BOOKING_PAGE = "/WEB-INF/view/booking.jsp";
+    private final static String BOOKING_COMMAND = "controller?command=booking";
 
     private final OrderService service;
-    private final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
     private final OrderValidator validator;
     private final OrderExtractor extractor;
 
@@ -33,7 +31,7 @@ public class MakeOrderCommand implements Command {
             extractedOrder = extractor.extract(request);
         } catch (NumberFormatException e) {
             request.setAttribute("invalidPlaceCount", "incorrectData");
-            return CommandResult.forward("/WEB-INF/view/booking.jsp");
+            return CommandResult.forward(BOOKING_PAGE);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -41,9 +39,9 @@ public class MakeOrderCommand implements Command {
             service.makeOrder(extractedOrder);
         } else {
             request.setAttribute("error", "incorrectData");
-            return CommandResult.forward("/WEB-INF/view/booking.jsp");
+            return CommandResult.forward(BOOKING_PAGE);
         }
-        return CommandResult.redirect("controller?command=booking");
+        return CommandResult.redirect(BOOKING_COMMAND);
     }
 
 }

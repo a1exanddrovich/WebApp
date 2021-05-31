@@ -15,6 +15,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     private final static String UPDATE = "UPDATE reservation SET order_id = ?, hotel_id = ?, room_id = ?, user_id = ?, price = ?, is_paid = ? WHERE id = ?";
     private final static String GET_COUNT_CURRENT_USER = "SELECT COUNT(*) FROM reservation WHERE user_id = ";
     private final static String GET_CURRENT_USER_RESERVATION_LIMIT = "SELECT * FROM reservation WHERE user_id = ? LIMIT ?, ?";
+    private final static String INVALID_RESERVATION_ID = "Reservation has not been found. Id is invalid: ";
 
 
     public ReservationDaoImpl(ProxyConnection connection) {
@@ -35,7 +36,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     protected void update(Reservation reservation) throws DaoException {
         Optional<Reservation> optionalHotel = findById(reservation.getId());
         if (optionalHotel.isEmpty()) {
-            throw new DaoException("Reservation has not been found. Id is invalid: " + reservation.getId());
+            throw new DaoException(INVALID_RESERVATION_ID + reservation.getId());
         }
         executeUpdate(UPDATE, reservation.getOrderId(), reservation.getHotelId(), reservation.getRoomId(), reservation.getUserId(), reservation.getPrice(), reservation.isPaid(), reservation.getId());
     }

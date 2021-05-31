@@ -15,6 +15,7 @@ public class HotelDaoImpl extends AbstractDao<Hotel> implements HotelDao {
     private final static String UPDATE = "UPDATE hotel SET name = ?, description = ?, image_path = ?, balance = ? WHERE id = ?";
     private final static String FIND_HOTEL_ID_BY_NAME = "SELECT * FROM hotel WHERE name = ?";
     private final static String GET_COUNT = "SELECT COUNT(*) FROM hotel";
+    private final static String INVALID_HOTEL_ID = "Hotel has not been found. Id is invalid: ";
 
     public HotelDaoImpl(ProxyConnection connection) {
         super(connection, new HotelMapper(), TABLE);
@@ -28,17 +29,14 @@ public class HotelDaoImpl extends AbstractDao<Hotel> implements HotelDao {
 
     @Override
     protected void create(Hotel hotel) throws DaoException {
-        String name = hotel.getName();
-        String description = hotel.getDescription();
-        String photoId = hotel.getImagePath();
-        executeUpdate(CREATE, name, description, photoId);
+        executeUpdate(CREATE, hotel.getName(), hotel.getDescription(), hotel.getImagePath());
     }
 
     @Override
     protected void update(Hotel hotel) throws DaoException {
         Optional<Hotel> optionalHotel = findById(hotel.getId());
         if (optionalHotel.isEmpty()) {
-            throw new DaoException("Hotel has not been found. Id is invalid: " + hotel.getId());
+            throw new DaoException(INVALID_HOTEL_ID + hotel.getId());
         }
         executeUpdate(UPDATE, hotel.getName(), hotel.getDescription(), hotel.getImagePath(), hotel.getBalance(), hotel.getId());
     }

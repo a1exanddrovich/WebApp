@@ -88,7 +88,7 @@ public class CommandFactory {
                 return new ShowPageCommand(INDEX_PAGE);
 
             case ALL_ORDERS:
-                return new AdminAllOrdersPageCommand(orderService);
+                return new AllOrdersPageCommand(orderService);
 
             case FIND_ROOM:
                 return new FindRoomCommand(roomService, hotelService, new RoomExtractor());
@@ -107,10 +107,10 @@ public class CommandFactory {
 
             case ADD_HOTEL:
                 ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
-                return new AdminAddHotelCommand(hotelService, new HotelValidator(), servletFileUpload);
+                return new AddHotelCommand(hotelService, new HotelValidator(), servletFileUpload);
 
             case ADD_ROOM:
-                return new AdminAddRoomCommand(roomService, hotelService, new RoomValidator(), new RoomExtractor());
+                return new AddRoomCommand(roomService, new RoomValidator(), new RoomExtractor());
 
             case SHOW_BALANCE:
                 return new ShowBalanceCommand(userService);
@@ -119,7 +119,7 @@ public class CommandFactory {
                 return new TopUpBalanceCommand(userService);
 
             case MAKE_PAYMENT:
-                return new PaymentCommand(userService, hotelService);
+                return new PaymentCommand(userService);
 
             case REFUSE_RESERVATION:
                 return new RefuseReservationCommand(reservationService);

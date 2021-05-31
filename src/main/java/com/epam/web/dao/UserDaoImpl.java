@@ -11,11 +11,11 @@ import java.util.Optional;
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     private final static String TABLE = "user";
-    private final static String UPDATE = "UPDATE user SET login = ?, password = MD5(?), role = ?, balance = ? WHERE id = ?";
+    private final static String INVALID_USER_ID = "User has not been found. Id is invalid: ";
+    private final static String CREATE = "INSERT INTO user (login, password, role, balance, is_blocked) VALUES (?, MD5(?), ?, ?, ?)";
+    private final static String UPDATE = "UPDATE user SET login = ?, password = ?, role = ?, balance = ?, is_blocked = ? WHERE id = ?";
     private final static String FIND_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM user WHERE login = ? AND password = MD5(?)";
     private final static String GET_BALANCE = "SELECT * FROM user WHERE id = ?";
-    private final static String TOP_UP_BALANCE = "UPDATE user SET balance = ? WHERE id = ?";
-    private final static String BLOCK_USER = "UPDATE user SET is_blocked = ? WHERE id = ?";
     private final static String GET_ALL_USERS = "SELECT * FROM user WHERE role = 'USER' LIMIT ?, ?";
     private final static String GET_COUNT = "SELECT COUNT(*) FROM user";
 
@@ -40,19 +40,18 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public void topUpBalance(BigDecimal balance, long id) throws DaoException {
-        BigDecimal balanceToToppedUp = balance.add(getCurrentUserBalance(id));
-        executeUpdate(TOP_UP_BALANCE, balanceToToppedUp, id);
+    protected void create(User user) throws DaoException {
+        executeUpdate(CREATE, user.getLogin(), user.getPassword(), user.getRole(), user.getBalance(), user.getIsBlocked());
     }
 
-//    @Override
-//    protected void update(User user) throws DaoException {
-//        Optional<User> optionalUser = findById(user.getId());
-//        if (optionalUser.isEmpty()) {
-//            throw new DaoException("User has not been found. Id is invalid: " + user.getId());
-//        }
-//        executeUpdate(UPDATE, user.getLogin(), user.getPassword(), user.getRole(), user.getBalance(), user.getId());
-//    }
+    @Override
+    protected void update(User user) throws DaoException {
+        Optional<User> optionalUser = findById(user.getId());
+        if (optionalUser.isEmpty()) {
+            throw new DaoException(INVALID_USER_ID + user.getId());
+        }
+        executeUpdate(UPDATE, user.getLogin(), user.getPassword(), user.getRole(), user.getBalance(), user.getIsBlocked(), user.getId());
+    }
 
     @Override
     public List<User> getAllUsers(int currentPage, int recordPerPage) throws DaoException {
@@ -62,11 +61,6 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     @Override
     public int countUsers() throws DaoException {
         return getCount(GET_COUNT);
-    }
-
-    @Override
-    public void blockUser(long userId, boolean block) throws DaoException {
-        executeUpdate(BLOCK_USER, block, userId);
     }
 
 }

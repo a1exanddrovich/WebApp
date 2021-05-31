@@ -3,7 +3,6 @@ package com.epam.web.dao;
 import com.epam.web.entitiy.Order;
 import com.epam.web.entitiy.User;
 import com.epam.web.exception.DaoException;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface OrderDao extends Dao<Order>{

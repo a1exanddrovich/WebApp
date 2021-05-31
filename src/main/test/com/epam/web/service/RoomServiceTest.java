@@ -4,7 +4,6 @@ import com.epam.web.dao.DaoHelper;
 import com.epam.web.dao.DaoHelperFactory;
 import com.epam.web.dao.RoomDao;
 import com.epam.web.dao.RoomDaoImpl;
-import com.epam.web.entitiy.Hotel;
 import com.epam.web.entitiy.Room;
 import com.epam.web.exception.DaoException;
 import com.epam.web.exception.ServiceException;
@@ -12,12 +11,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -57,7 +53,7 @@ public class RoomServiceTest {
         when(roomDao.findById(anyLong())).thenReturn(Optional.of(room));
 
         //when
-        Optional<Room> room = Optional.of(service.findRoomById(1));
+        Optional<Room> room = service.findRoomById(1);
 
         //then
         Assert.assertTrue(room.isPresent());

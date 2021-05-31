@@ -10,7 +10,12 @@ import java.util.List;
 
 public class MyOrdersCommand implements Command {
 
+    private final static String USER = "user";
+    private final static String ORDERS = "orders";
     private final static int RECORDS_PER_PAGE = 9;
+    private final static String PAGE_NUMBER = "pageNumber";
+    private final static String CURRENT_PAGE = "currentPage";
+    private final static String MY_ORDERS_PAGE = "/WEB-INF/view/myorders.jsp";
 
     private final OrderService service;
 
@@ -20,18 +25,18 @@ public class MyOrdersCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
-        User user = (User) request.getSession().getAttribute("user");
+        int currentPage = Integer.parseInt(request.getParameter(CURRENT_PAGE));
+        User user = (User) request.getSession().getAttribute(USER);
         List<Order> orders = service.getCurrentUserOrders(user, currentPage, RECORDS_PER_PAGE);
-        request.setAttribute("orders", orders);
+        request.setAttribute(ORDERS, orders);
         int orderCount = service.getCurrentUserOrdersCount(user.getId());
         int pageNumber = orderCount / RECORDS_PER_PAGE;
         if (pageNumber % RECORDS_PER_PAGE > 0 && !(orderCount % RECORDS_PER_PAGE == 0)) {
             pageNumber++;
         }
-        request.setAttribute("pageNumber", pageNumber);
-        request.setAttribute("currentPage", currentPage);
-        return CommandResult.forward("/WEB-INF/view/myorders.jsp");
+        request.setAttribute(PAGE_NUMBER, pageNumber);
+        request.setAttribute(CURRENT_PAGE, currentPage);
+        return CommandResult.forward(MY_ORDERS_PAGE);
     }
 
 }

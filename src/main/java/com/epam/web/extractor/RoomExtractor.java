@@ -15,9 +15,11 @@ import java.util.Date;
 public class RoomExtractor implements Extractor<Room> {
 
     private final static String DATE_FORMAT = "yyyy-MM-dd";
-    private final static String HOTEL_NAME = "hotel";
+    private final static String HOTEL_NAME = "hotelName";
     private final static String ROOM_CLASS = "class";
     private final static String PLACES = "places";
+    private final static String ARRIVAL = "arrival";
+    private final static String DEPARTURE = "departure";
 
     private final HotelService hotelService = new HotelService(new DaoHelperFactory());
     private final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
@@ -30,10 +32,10 @@ public class RoomExtractor implements Extractor<Room> {
         long hotelId = 0;
         Date arrival = null;
         Date departure = null;
-        if (request.getParameter("arrival") != null && request.getParameter("departure") != null) {
+        if (request.getParameter(ARRIVAL) != null && request.getParameter(DEPARTURE) != null) {
             try {
-                arrival = dateFormat.parse(request.getParameter("arrival"));
-                departure = dateFormat.parse(request.getParameter("departure"));
+                arrival = dateFormat.parse(request.getParameter(ARRIVAL));
+                departure = dateFormat.parse(request.getParameter(DEPARTURE));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

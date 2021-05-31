@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix = "ctg" uri = "/WEB-INF/custom.tld" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/custom.tld" %>
 <%@ page session="true" %>
 
 <fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
@@ -130,8 +130,17 @@
 <div class="container">
     <fmt:message key="label.next" var="next"/>
     <fmt:message key="label.prev" var="previous"/>
-    <ctg:pagination commandName="myReservations" totalPages="${pageNumber}" currentPage="${currentPage}" nextTitle="${next}" previousTitle="${previous}"/>
+    <ctg:pagination commandName="myReservations" totalPages="${pageNumber}" currentPage="${currentPage}"
+                    nextTitle="${next}" previousTitle="${previous}"/>
 </div>
+<c:if test="${success == false}">
+    <fmt:message key="label.failedMessage" var="mes"/>
+    <script>
+        window.onload = function () {
+            alert("${mes}");
+        }
+    </script>
+</c:if>
 <c:if test="${reservations.size() != 0}">
     <jsp:include page="fragments/footer.jsp"/>
 </c:if>

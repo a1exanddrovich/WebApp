@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="app__actions">
                                         <button class="app__button button-hover" type="submit">
-                                            <a href="controller?command=findProperRoom&orderId=${order.getId()}&userId=${order.getUserId()}&hotel=${order.getHotelName()}&class=${order.getRoomClass()}&places=${order.getPlaceCount()}&arrival=${order.getArrivalDate()}&departure=${order.getDepartureDate()}">
+                                            <a href="controller?command=findProperRoom&orderId=${order.getId()}&userId=${order.getUserId()}&hotelName=${order.getHotelName()}&class=${order.getRoomClass()}&places=${order.getPlaceCount()}&arrival=${order.getArrivalDate()}&departure=${order.getDepartureDate()}">
                                                 <fmt:message key="label.findRoom"/>
                                             </a>
                                         </button>

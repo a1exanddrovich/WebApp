@@ -14,6 +14,8 @@ import java.util.Optional;
 
 public class ReservationService {
 
+    private final static String INVALID_ROOM_ID = "Room has not been found. Id is invalid: ";
+
     private final DaoHelperFactory factory;
     private final ReservationPriceCalculator calculator = new ReservationPriceCalculator();
 
@@ -33,7 +35,7 @@ public class ReservationService {
         return reservations;
     }
 
-    public Reservation findById(long id) throws ServiceException {
+    public Optional<Reservation> findById(long id) throws ServiceException {
         Optional<Reservation> reservation = null;
         try (DaoHelper helper = factory.createDaoHelper()) {
             ReservationDao dao = helper.createReservationDao();
@@ -41,7 +43,7 @@ public class ReservationService {
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
-        return reservation.get();
+        return reservation;
     }
 
     public void makeReservation(Reservation reservation, Order order, Room room) throws ServiceException {
@@ -92,7 +94,7 @@ public class ReservationService {
             helper.startTransaction();
             Optional<Room> optionalRoom = roomDao.findById(roomId);
             if (optionalRoom.isEmpty()) {
-                throw new DaoException("Room has not been found. Id is invalid: " + roomId);
+                throw new DaoException(INVALID_ROOM_ID + roomId);
             }
             Room room = optionalRoom.get();
             Room updatedRoom = new Room(roomId, room.getHotelId(), room.getRoomClass(), room.getPlaceCount(), null, null);

@@ -18,6 +18,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao{
     private final static String CREATE = "INSERT INTO `order` (user_id, hotel_name, places, class, arrival_date, departure_date, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private final static String GET_COUNT = "SELECT COUNT(*) FROM `order` WHERE status = 'PROCESSING'";
     private final static String GET_COUNT_CURRENT_USER = "SELECT COUNT(*) FROM `order` WHERE user_id = ";
+    private final static String INVALID_ORDER_ID = "Order has not been found. Id is invalid: ";
 
 
     public OrderDaoImpl(ProxyConnection connection) {
@@ -38,7 +39,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao{
     protected void update(Order order) throws DaoException {
         Optional<Order> optionalHotel = findById(order.getId());
         if (optionalHotel.isEmpty()) {
-            throw new DaoException("Order has not been found. Id is invalid: " + order.getId());
+            throw new DaoException(INVALID_ORDER_ID + order.getId());
         }
         executeUpdate(UPDATE, order.getUserId(), order.getHotelName(), order.getPlaceCount(), order.getRoomClass(), order.getArrivalDate(), order.getDepartureDate(), order.getStatus(), order.getId());
     }

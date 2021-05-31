@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DeclineOrderCommand implements Command {
 
     private final static String ORDER_ID = "orderId";
-    private final static String ALL_ORDERS_PAGE = "controller?command=adminAllOrders&currentPage=1";
+    private final static String ALL_ORDERS_COMMAND = "controller?command=adminAllOrders&currentPage=1";
 
     private final OrderService service;
 
@@ -20,7 +20,7 @@ public class DeclineOrderCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         long orderId = Long.parseLong(request.getParameter(ORDER_ID));
         service.declineOrderById(orderId);
-        return CommandResult.redirect(ALL_ORDERS_PAGE);
+        return CommandResult.redirect(ALL_ORDERS_COMMAND);
     }
 
 }

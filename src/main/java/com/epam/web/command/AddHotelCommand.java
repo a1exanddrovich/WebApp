@@ -13,19 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class AdminAddHotelCommand implements Command {
+public class AddHotelCommand implements Command {
 
     private final static String HOTEL_NAME = "hotelName";
     private final static String DESCRIPTION = "description";
     private final static String DELIMITER = "\\";
     private final static String INIT_PARAMETER = "file-upload";
-    private final static String ADD_HOTEL_PAGE = "controller?command=adminShowAddHotelPage";
+    private final static String ADD_HOTEL_COMMAND = "controller?command=adminShowAddHotelPage";
+    private final static String ADD_HOTEL_PAGE = "/WEB-INF/view/admin/adminaddhotel.jsp";
 
     private final HotelService service;
     private final ServletFileUpload servletFileUpload;
     private final HotelValidator validator;
 
-    public AdminAddHotelCommand(HotelService service, HotelValidator validator, ServletFileUpload servletFileUpload) {
+    public AddHotelCommand(HotelService service, HotelValidator validator, ServletFileUpload servletFileUpload) {
         this.service = service;
         this.validator = validator;
         this.servletFileUpload = servletFileUpload;
@@ -59,10 +60,10 @@ public class AdminAddHotelCommand implements Command {
         Hotel hotel = new Hotel(0, hotelName, description, fileName, new BigDecimal(0));
         if (!validator.validate(hotel)) {
             request.setAttribute("error", "incorrectData");
-            return CommandResult.forward("/WEB-INF/view/admin/adminaddhotel.jsp");
+            return CommandResult.forward(ADD_HOTEL_PAGE);
         }
         service.addHotel(hotel, filePath, image);
-        return CommandResult.redirect(ADD_HOTEL_PAGE);
+        return CommandResult.redirect(ADD_HOTEL_COMMAND);
     }
 
 }

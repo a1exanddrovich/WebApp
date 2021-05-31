@@ -12,12 +12,8 @@ public interface UserDao extends Dao<User> {
 
     BigDecimal getCurrentUserBalance(long id) throws DaoException;
 
-    void topUpBalance(BigDecimal balance, long id) throws DaoException;
-
     List<User> getAllUsers(int currentPage, int recordPerPage) throws DaoException;
 
     int countUsers() throws DaoException;
-
-    void blockUser(long userId, boolean block) throws DaoException;
 
 }

@@ -40,7 +40,7 @@ public class RoomService {
         return rooms;
     }
 
-    public Room findRoomById(long roomId) throws ServiceException {
+    public Optional<Room> findRoomById(long roomId) throws ServiceException {
         Optional<Room> room;
         try (DaoHelper helper = factory.createDaoHelper()) {
             RoomDao dao = helper.createRoomDao();
@@ -48,6 +48,6 @@ public class RoomService {
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
-        return room.get();
+        return room;
     }
 }

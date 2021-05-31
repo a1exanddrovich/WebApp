@@ -11,6 +11,9 @@ import java.text.ParseException;
 
 public class EditOrderCommand implements Command {
 
+    private final static String MY_ORDERS_COMMAND = "controller?command=myOrders&currentPage=1";
+    private final static String EDIT_PAGE = "/WEB-INF/view/edit.jsp";
+
     private final OrderService service;
     private final OrderValidator validator;
     private final OrderExtractor extractor;
@@ -28,7 +31,7 @@ public class EditOrderCommand implements Command {
             extractedOrder = extractor.extract(request);
         } catch (NumberFormatException e) {
             request.setAttribute("invalidPlaceCount", "incorrectData");
-            return CommandResult.forward("/WEB-INF/view/booking.jsp");
+            return CommandResult.forward(EDIT_PAGE);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -36,9 +39,9 @@ public class EditOrderCommand implements Command {
             service.editOrder(extractedOrder);
         } else {
             request.setAttribute("error", "incorrectData");
-            return CommandResult.forward("/WEB-INF/view/edit.jsp");
+            return CommandResult.forward(EDIT_PAGE);
         }
-        return CommandResult.redirect("controller?command=myOrders&currentPage=1");
+        return CommandResult.redirect(MY_ORDERS_COMMAND);
     }
 
 }

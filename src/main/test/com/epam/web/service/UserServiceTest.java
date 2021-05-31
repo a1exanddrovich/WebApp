@@ -82,7 +82,7 @@ public class UserServiceTest {
         service.topUpBalance(new BigDecimal("45"), MOCK_ID);
 
         //then
-        Mockito.verify(userDao, Mockito.times(1)).topUpBalance(new BigDecimal("45"), MOCK_ID);
+        Mockito.verify(userDao, Mockito.times(1)).save(user);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class UserServiceTest {
         service.withdraw(MOCK_ID, 1);
 
         //then
-        Mockito.verify(userDao, Mockito.times(1)).topUpBalance(new BigDecimal("-50"), MOCK_ID);
+        Mockito.verify(userDao, Mockito.times(1)).save(user);
         Mockito.verify(hotelDao, Mockito.times(1)).save(new Hotel(0, "name", "description", "imagePath", new BigDecimal("50")));
         Mockito.verify(reservationDao, Mockito.times(1)).save(new Reservation(0, 0, 0, 0, MOCK_ID, new BigDecimal("50"), true));
     }
@@ -157,7 +157,7 @@ public class UserServiceTest {
         service.blockUser(MOCK_ID, true);
 
         //then
-        Mockito.verify(userDao, Mockito.times(1)).blockUser(MOCK_ID, true);
+        Mockito.verify(userDao, Mockito.times(1)).save(user);
     }
 
 }

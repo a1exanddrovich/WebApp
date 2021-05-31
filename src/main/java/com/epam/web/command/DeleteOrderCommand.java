@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteOrderCommand implements Command {
 
     private final static String ORDER_ID = "orderId";
-    private final static String MY_ORDERS_PAGE = "controller?command=myOrders&currentPage=1";
+    private final static String MY_ORDERS_COMMAND = "controller?command=myOrders&currentPage=1";
 
     private final OrderService service;
 
@@ -21,7 +21,7 @@ public class DeleteOrderCommand implements Command {
         String orderId = request.getParameter(ORDER_ID);
         long id = Long.parseLong(orderId);
         service.deleteOrder(id);
-        return CommandResult.redirect(MY_ORDERS_PAGE);
+        return CommandResult.redirect(MY_ORDERS_COMMAND);
     }
 
 }

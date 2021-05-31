@@ -11,6 +11,12 @@ import java.util.Optional;
 
 public class LoginCommand implements Command {
 
+    private final static String ADMIN = "ADMIN";
+    private final static String USER_MAIN_PAGE = "controller?command=mainPage&currentPage=1";
+    private final static String ADMIN_MAIN_PAGE = "controller?command=adminAllOrders&currentPage=1";
+    private final static String INDEX = "/index.jsp";
+    private final static String ERROR_MESSAGE = "errorMessage";
+
     private final UserService service;
     private final LoginValidator validator;
     private final UserExtractor extractor;
@@ -25,25 +31,25 @@ public class LoginCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         User extractedUser = extractor.extract(request);
         if (!validator.validate(extractedUser)) {
-            request.setAttribute("errorMessage", "invalid login");
-            return CommandResult.forward("/index.jsp");
+            request.setAttribute(ERROR_MESSAGE, "invalid login");
+            return CommandResult.forward(INDEX);
         }
         Optional<User> optionalUser = service.login(extractedUser.getLogin(), extractedUser.getPassword());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (user.getIsBlocked()) {
                 request.setAttribute("userBlocked", "blocked");
-                return CommandResult.forward("/index.jsp");
+                return CommandResult.forward(INDEX);
             }
             request.getSession().setAttribute("user", user);
-            if ("ADMIN".equals(user.getRole())) {
-                return CommandResult.redirect("controller?command=adminAllOrders&currentPage=1");
+            if (ADMIN.equals(user.getRole())) {
+                return CommandResult.redirect(ADMIN_MAIN_PAGE);
             }
         } else {
-            request.setAttribute("errorMessage", "invalid login");
-            return CommandResult.forward("/index.jsp");
+            request.setAttribute(ERROR_MESSAGE, "invalid login");
+            return CommandResult.forward(INDEX);
         }
-        return CommandResult.redirect("controller?command=mainPage&currentPage=1");
+        return CommandResult.redirect(USER_MAIN_PAGE);
     }
 
 }

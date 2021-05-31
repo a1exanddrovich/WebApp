@@ -8,8 +8,12 @@ import com.epam.web.service.RoomService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 public class RefuseReservationCommand implements Command {
+
+    private final static String RESERVATION_ID = "reservationId";
+    private final static String MY_RESERVATIONS_COMMAND = "controller?command=myReservations&currentPage=1";
 
     private final ReservationService service;
 
@@ -19,10 +23,10 @@ public class RefuseReservationCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        long reservationId = Long.parseLong(request.getParameter("reservationId"));
-        Reservation reservation = service.findById(reservationId);
-        service.refuseReservation(reservation);
-        return CommandResult.redirect("controller?command=myReservations&currentPage=1");
+        long reservationId = Long.parseLong(request.getParameter(RESERVATION_ID));
+        Optional<Reservation> optionalReservation = service.findById(reservationId);
+        service.refuseReservation(optionalReservation.get());
+        return CommandResult.redirect(MY_RESERVATIONS_COMMAND);
     }
 
 }

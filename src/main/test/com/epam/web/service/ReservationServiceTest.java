@@ -74,7 +74,7 @@ public class ReservationServiceTest {
         when(reservationDao.findById(anyLong())).thenReturn(Optional.of(reservation));
 
         //when
-        Optional<Reservation> reservation = Optional.of(service.findById(1));
+        Optional<Reservation> reservation = service.findById(1);
 
         //then
         Assert.assertTrue(reservation.isPresent());

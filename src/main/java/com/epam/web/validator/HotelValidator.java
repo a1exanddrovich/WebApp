@@ -4,7 +4,7 @@ import com.epam.web.entitiy.Hotel;
 
 public class HotelValidator implements Validator<Hotel> {
 
-    private final static String HOTEL_NAME_PATTERN = "[a-zA-Z]{1,50}";
+    private final static String HOTEL_NAME_PATTERN = "[a-zA-Z_ ]{1,50}";
     private final static String DESCRIPTION_PATTERN = "[a-zA-Z1-9_ ]{1,256}";
     private final static String FILE_NAME_PATTERN = "[a-zA-Z1-9]{1,256}.[a-zA-Z1-9]{1,10}";
 

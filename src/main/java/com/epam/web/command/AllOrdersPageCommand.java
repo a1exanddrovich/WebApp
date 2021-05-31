@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class AdminAllOrdersPageCommand implements Command {
+public class AllOrdersPageCommand implements Command {
 
     private final static String ORDERS = "orders";
     private final static int RECORDS_PER_PAGE = 9;
@@ -17,7 +17,7 @@ public class AdminAllOrdersPageCommand implements Command {
 
     private final OrderService service;
 
-    public AdminAllOrdersPageCommand(OrderService service) {
+    public AllOrdersPageCommand(OrderService service) {
         this.service = service;
     }
 

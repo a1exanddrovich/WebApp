@@ -14,6 +14,8 @@ import java.util.Optional;
 
 public class OrderService {
 
+    private final static String INVALID_ORDER_ID = "Order has not been found. Id is invalid: ";
+
     private final DaoHelperFactory factory;
 
     public OrderService(DaoHelperFactory factory) {
@@ -76,7 +78,7 @@ public class OrderService {
             OrderDao dao = helper.createOrderDao();
             Optional<Order> optionalOrder = dao.findById(orderId);
             if (optionalOrder.isEmpty()) {
-                throw new DaoException("Order has not been found. Id is invalid: " + orderId);
+                throw new DaoException(INVALID_ORDER_ID + orderId);
             }
             Order order = optionalOrder.get();
             dao.save(new Order(order.getId(),
@@ -92,7 +94,7 @@ public class OrderService {
         }
     }
 
-    public Order findOrderById(long orderId) throws ServiceException {
+    public Optional<Order> findOrderById(long orderId) throws ServiceException {
         Optional<Order> order = null;
         try (DaoHelper helper = factory.createDaoHelper()) {
             OrderDao dao = helper.createOrderDao();
@@ -100,7 +102,7 @@ public class OrderService {
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
-        return order.get();
+        return order;
     }
 
     public int getOrderCount() throws ServiceException {

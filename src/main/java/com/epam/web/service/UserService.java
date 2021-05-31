@@ -4,6 +4,7 @@ import com.epam.web.dao.*;
 import com.epam.web.entitiy.Hotel;
 import com.epam.web.entitiy.Reservation;
 import com.epam.web.entitiy.User;
+import com.epam.web.entitiy.UserRole;
 import com.epam.web.exception.DaoException;
 import com.epam.web.exception.ServiceException;
 import java.math.BigDecimal;
@@ -13,6 +14,10 @@ import java.util.Optional;
 
 public class UserService {
 
+    private final static String INVALID_RESERVATION_ID = "Reservation has not been found. Id is invalid: ";
+    private final static String INVALID_HOTEL_ID = "Hotel has not been found. Id is invalid: ";
+    private final static String INVALID_USER_ID = "User has not been found. Id is invalid: ";
+
     private final DaoHelperFactory factory;
 
     public UserService(DaoHelperFactory factory) {
@@ -20,7 +25,7 @@ public class UserService {
     }
 
     public Optional<User> login(String login, String password) throws ServiceException {
-        Optional<User> user = Optional.empty();
+        Optional<User> user;
         try (DaoHelper helper = factory.createDaoHelper()) {
             UserDao dao = helper.createUserDao();
             user = dao.findUserByLoginAndPassword(login, password);
@@ -44,7 +49,17 @@ public class UserService {
     public void topUpBalance(BigDecimal balance, long id) throws ServiceException {
         try (DaoHelper helper = factory.createDaoHelper()) {
             UserDao dao = helper.createUserDao();
-            dao.topUpBalance(balance, id);
+            Optional<User> optionalUser = dao.findById(id);
+            if (optionalUser.isEmpty()) {
+                throw new DaoException(INVALID_USER_ID + id);
+            }
+            User user = optionalUser.get();
+            BigDecimal userBalance = user.getBalance();
+            BigDecimal newUserBalance = balance.add(userBalance);
+            User updatedUser = new User(user.getId(), user.getLogin(),
+                                        user.getPassword(), newUserBalance,
+                                        UserRole.valueOf(user.getRole()), user.getIsBlocked());
+            dao.save(updatedUser);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -59,23 +74,38 @@ public class UserService {
                 HotelDao hotelDao = helper.createHotelDao();
                 Optional<Reservation> optionalReservation = reservationDao.findById(reservationId);
                 if (optionalReservation.isEmpty()) {
-                    throw new DaoException("Reservation has not been found. Id is invalid: " + reservationId);
+                    throw new DaoException(INVALID_RESERVATION_ID + reservationId);
                 }
                 Reservation reservation = optionalReservation.get();
                 BigDecimal price = reservation.getPrice();
                 long hotelId = reservation.getHotelId();
+                Optional<User> optionalUser = userDao.findById(userId);
+                if (optionalUser.isEmpty()) {
+                    throw new DaoException(INVALID_USER_ID + userId);
+                }
+                User user = optionalUser.get();
+                BigDecimal userBalance = user.getBalance();
+                BigDecimal newUserBalance = userBalance.subtract(price);
+                User updatedUser = new User(user.getId(), user.getLogin(),
+                                            user.getPassword(), newUserBalance,
+                                            UserRole.valueOf(user.getRole()), user.getIsBlocked());
                 helper.startTransaction();
-                userDao.topUpBalance(price.negate(), userId);
+                userDao.save(updatedUser);
                 Optional<Hotel> optionalHotel = hotelDao.findById(hotelId);
                 if (optionalHotel.isEmpty()) {
-                    throw new DaoException("Hotel has not been found. Id is invalid: " + hotelId);
+                    throw new DaoException(INVALID_HOTEL_ID + hotelId);
                 }
                 Hotel hotel = optionalHotel.get();
                 BigDecimal hotelBalance = hotel.getBalance();
                 BigDecimal newHotelBalance = price.add(hotelBalance);
                 Hotel hotelUpdated = new Hotel(hotel.getId(), hotel.getName(), hotel.getDescription(), hotel.getImagePath(), newHotelBalance);
                 hotelDao.save(hotelUpdated);
-                Reservation updatedReservation = new Reservation(reservationId, reservation.getOrderId(), reservation.getHotelId(), reservation.getRoomId(), reservation.getUserId(), reservation.getPrice(), true);
+                Reservation updatedReservation = new Reservation(reservationId,
+                                                                 reservation.getOrderId(),
+                                                                 reservation.getHotelId(),
+                                                                 reservation.getRoomId(),
+                                                                 reservation.getUserId(),
+                                                                 reservation.getPrice(), true);
                 reservationDao.save(updatedReservation);
                 helper.endTransaction();
             } catch (DaoException e) {
@@ -102,7 +132,7 @@ public class UserService {
 
     public List<User> getAllUsers(int currentPage, int recordPerPage) throws ServiceException {
         List<User> users = new ArrayList<>();
-        try(DaoHelper helper = factory.createDaoHelper()) {
+        try (DaoHelper helper = factory.createDaoHelper()) {
             UserDao dao = helper.createUserDao();
             List<User> retrievedUsers = dao.getAllUsers(currentPage, recordPerPage);
             users.addAll(retrievedUsers);
@@ -114,7 +144,7 @@ public class UserService {
 
     public int getUserCount() throws ServiceException {
         int recordCount = 0;
-        try(DaoHelper helper = factory.createDaoHelper()) {
+        try (DaoHelper helper = factory.createDaoHelper()) {
             UserDao dao = helper.createUserDao();
             recordCount = dao.countUsers();
         } catch (DaoException e) {
@@ -126,7 +156,15 @@ public class UserService {
     public void blockUser(long userId, boolean block) throws ServiceException {
         try (DaoHelper helper = factory.createDaoHelper()) {
             UserDao dao = helper.createUserDao();
-            dao.blockUser(userId, block);
+            Optional<User> optionalUser = dao.findById(userId);
+            if (optionalUser.isEmpty()) {
+                throw new DaoException(INVALID_USER_ID + userId);
+            }
+            User user = optionalUser.get();
+            User updatedUser = new User(user.getId(), user.getLogin(),
+                                        user.getPassword(), user.getBalance(),
+                                        UserRole.valueOf(user.getRole()), block);
+            dao.save(updatedUser);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
