@@ -11,21 +11,21 @@
 <header class="header">
     <div class="container">
         <div class="header__container">
-            <h1 class="header__title">[admin page]</h1>
+            <h1 class="header__title">[admin]</h1>
             <nav class="menu">
                 <ul class="menu__list">
                     <li class="menu__list-item">
-                        <a href="controller?command=adminAllOrders&currentPage=1" class="menu__list-link">
+                        <a href="controller?command=adminAllOrders&currentPage=1&showCancel=false&showRev=false" class="menu__list-link">
                             <fmt:message key="label.allOrders"/>
                         </a>
                     </li>
                     <li class="menu__list-item">
-                        <a href="controller?command=adminShowAddRoomPage" class="menu__list-link">
+                        <a href="controller?command=adminShowAddRoomPage&showMes=false" class="menu__list-link">
                             <fmt:message key="label.addRoom"/>
                         </a>
                     </li>
                     <li class="menu__list-item">
-                        <a href="controller?command=adminShowAddHotelPage" class="menu__list-link">
+                        <a href="controller?command=adminShowAddHotelPage&showMes=false" class="menu__list-link">
                             <fmt:message key="label.addHotel"/>
                         </a>
                     </li>

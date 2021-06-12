@@ -27,9 +27,17 @@
     <div class="container">
         <section class="section">
             <div class="section__container">
-                <form id="addroom" class="section__form" action="controller?command=adminAddRoom" method="post" onsubmit="return validateRoomForm()">
+                <form id="addroom" class="section__form" action="controller?command=adminAddRoom" method="post"
+                      onsubmit="return validateRoomForm()">
                     <fmt:message key="label.hotelName" var="name"/>
-                    <input id="nameOfHotel" class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>
+                    <select class="classes" id="classes" name="hotelName" form="addroom" required>
+                        <option value="">
+                            <fmt:message key="label.chooseHotel"/>
+                        </option>
+                        <c:forEach items="${hotels}" var="hotel">
+                            <option value="${hotel.getName()}">${hotel.getName()}</option>
+                        </c:forEach>
+                    </select>
                     <div id="errorHotelName" class="error-div">
                         <fmt:message key="label.enterCorrectNameOfHotel"/>
                     </div>
@@ -49,12 +57,17 @@
                     <button class="form__button button-hover" type="submit">
                         <fmt:message key="label.add"/>
                     </button>
+                    <c:if test="${error != null}">
+                        <p style="color: darkred; margin-top: 10px">
+                            <fmt:message key="label.invalidInfo"/>
+                        </p>
+                    </c:if>
+                    <c:if test="${roomAddedSuccessfully != null}">
+                        <p style="color: forestgreen; margin-top: 10px">
+                            <fmt:message key="label.roomAddedSuccess"/>
+                        </p>
+                    </c:if>
                 </form>
-                <c:if test="${error != null}">
-                    <p style="color: darkred; margin-top: 10px">
-                        <fmt:message key="label.invalidInfo"/>
-                    </p>
-                </c:if>
             </div>
         </section>
     </div>

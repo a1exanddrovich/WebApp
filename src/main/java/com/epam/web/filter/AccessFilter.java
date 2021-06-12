@@ -21,6 +21,34 @@ public class AccessFilter implements Filter {
     private final static String USER_FORWARD_PAGE = "controller?command=mainPage&currentPage=1";
     private final static String ADMIN_FORWARD_PAGE = "controller?command=adminAllOrders&currentPage=1";
 
+    private final static String LOGIN = "login";
+    private final static String LOGOUT = "logout";
+    private final static String INDEX = "index";
+    private final static String SIGNUP = "signup";
+    private final static String SIGNUP_PAGE = "signupPage";
+    private final static String MAIN_PAGE = "mainPage";
+    private final static String ORDERS_PAGE = "myOrders";
+    private final static String RESERVATIONS_PAGE = "myReservations";
+    private final static String BOOKING = "booking";
+    private final static String EDIT_PAGE = "editOrderPage";
+    private final static String EDIT = "editOrder";
+    private final static String MAKE_ORDER = "makeOrder";
+    private final static String DELETE_ORDER = "deleteOrder";
+    private final static String REFUSE_RESERVATION = "refuseReservation";
+    private final static String SHOW_BALANCE = "showBalance";
+    private final static String TOP_UP_BALANCE = "topUpBalance";
+    private final static String MAKE_PAYMENT = "makePayment";
+    private final static String ALL_ORDERS = "adminAllOrders";
+    private final static String ALL_USERS = "adminAllUsers";
+    private final static String BLOCKING = "adminBlocking";
+    private final static String DECLINE = "declineOrder";
+    private final static String MAKE_RESERVATION = "makeReservation";
+    private final static String FIND_ROOM = "findProperRoom";
+    private final static String ADD_ROOM = "adminAddRoom";
+    private final static String ADD_HOTEL = "adminAddHotel";
+    private final static String ADD_ROOM_PAGE = "adminShowAddRoomPage";
+    private final static String ADD_HOTEL_PAGE = "adminShowAddHotelPage";
+
     @Override
     public void init(FilterConfig filterConfig) {
         setAccess();
@@ -56,13 +84,13 @@ public class AccessFilter implements Filter {
     public void destroy() { }
 
     private void setAccess() {
-        commands.put(ANONYMOUS, Arrays.asList("login", "index"));
-        commands.put(UserRole.USER.name(), Arrays.asList("login", "logout", "mainPage", "myOrders", "myReservations", "booking",
-                                                         "editOrderPage", "showBalance", "topUpBalance", "makePayment", "refuseReservation",
-                                                         "editOrder", "deleteOrder", "makeOrder", "index"));
-        commands.put(UserRole.ADMIN.name(), Arrays.asList("login", "logout", "adminAllOrders", "findProperRoom", "declineOrder", "makeReservation",
-                                                          "adminShowAddRoomPage", "adminShowAddHotelPage", "adminAddHotel", "adminAddRoom",
-                                                          "adminBlocking", "adminAllUsers", "index"));
+        commands.put(ANONYMOUS, Arrays.asList(LOGIN, INDEX, SIGNUP_PAGE, SIGNUP));
+        commands.put(UserRole.USER.name(), Arrays.asList(LOGIN, LOGOUT, MAIN_PAGE, ORDERS_PAGE, RESERVATIONS_PAGE, BOOKING,
+                                                         EDIT_PAGE, SHOW_BALANCE, TOP_UP_BALANCE, MAKE_PAYMENT, REFUSE_RESERVATION,
+                                                         EDIT, DELETE_ORDER, MAKE_ORDER, INDEX));
+        commands.put(UserRole.ADMIN.name(), Arrays.asList(LOGIN, LOGOUT, ALL_ORDERS, FIND_ROOM, DECLINE, MAKE_RESERVATION,
+                                                          ADD_ROOM_PAGE,ADD_HOTEL_PAGE, ADD_HOTEL, ADD_ROOM,
+                                                          BLOCKING, ALL_USERS, INDEX));
     }
 
 }

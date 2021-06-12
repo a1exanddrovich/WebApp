@@ -35,6 +35,15 @@ public class UserService {
         return user;
     }
 
+    public void addUser(User user) throws ServiceException {
+        try (DaoHelper helper = factory.createDaoHelper()) {
+            UserDao dao = helper.createUserDao();
+            dao.save(user);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
     public BigDecimal getCurrentUserBalance(User user) throws ServiceException {
         BigDecimal balance = null;
         try (DaoHelper helper = factory.createDaoHelper()) {
@@ -165,6 +174,16 @@ public class UserService {
                                         user.getPassword(), user.getBalance(),
                                         UserRole.valueOf(user.getRole()), block);
             dao.save(updatedUser);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    public boolean findByLogin(User user) throws ServiceException {
+        try (DaoHelper helper = factory.createDaoHelper()) {
+            UserDao dao = helper.createUserDao();
+            Optional<User> optionalUser = dao.findByLogin(user.getLogin());
+            return optionalUser.isPresent();
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

@@ -39,12 +39,17 @@
                     <button class="form__button button-hover" type="submit">
                         <fmt:message key="label.add"/>
                     </button>
+                    <c:if test="${error != null}">
+                        <p style="color: darkred; margin-top: 10px">
+                            <fmt:message key="label.invalidInfo"/>
+                        </p>
+                    </c:if>
+                    <c:if test="${hotelAddedSuccessfully != null}">
+                        <p style="color: forestgreen; margin-top: 10px">
+                            <fmt:message key="label.hotelAddedSuccess"/>
+                        </p>
+                    </c:if>
                 </form>
-                <c:if test="${error != null}">
-                    <p style="color: darkred; margin-top: 10px">
-                        <fmt:message key="label.invalidInfo"/>
-                    </p>
-                </c:if>
             </div>
         </section>
     </div>

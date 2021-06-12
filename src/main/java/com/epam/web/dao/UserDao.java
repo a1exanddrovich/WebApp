@@ -16,4 +16,6 @@ public interface UserDao extends Dao<User> {
 
     int countUsers() throws DaoException;
 
+    Optional<User> findByLogin(String login) throws DaoException;
+
 }

@@ -34,7 +34,7 @@ public class User implements Identifiable {
     }
 
     public String getRole() {
-        return this.role.toString();
+        return this.role.name();
     }
 
     public BigDecimal getBalance() {

@@ -15,6 +15,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     private final static String CREATE = "INSERT INTO user (login, password, role, balance, is_blocked) VALUES (?, MD5(?), ?, ?, ?)";
     private final static String UPDATE = "UPDATE user SET login = ?, password = ?, role = ?, balance = ?, is_blocked = ? WHERE id = ?";
     private final static String FIND_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM user WHERE login = ? AND password = MD5(?)";
+    private final static String FIND_USER_BY_LOGIN = "SELECT * FROM user WHERE login = ?";
     private final static String GET_BALANCE = "SELECT * FROM user WHERE id = ?";
     private final static String GET_ALL_USERS = "SELECT * FROM user WHERE role = 'USER' LIMIT ?, ?";
     private final static String GET_COUNT = "SELECT COUNT(*) FROM user";
@@ -61,6 +62,11 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     @Override
     public int countUsers() throws DaoException {
         return getCount(GET_COUNT);
+    }
+
+    @Override
+    public Optional<User> findByLogin(String login) throws DaoException {
+        return executeForSingleResult(FIND_USER_BY_LOGIN, login);
     }
 
 }

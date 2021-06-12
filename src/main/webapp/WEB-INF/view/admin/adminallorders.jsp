@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix = "ctg" uri = "/WEB-INF/custom.tld" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/custom.tld" %>
 <%@ page session="true" %>
 
 <fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
@@ -62,13 +62,17 @@
                                             <h3 class="app__info-text-title">
                                                 <fmt:message key="label.arrivalDate"/>
                                             </h3>
-                                            <p class="app__info-text-data">${order.getArrivalDate()}</p>
+                                            <fmt:formatDate value="${order.getArrivalDate()}" type="date"
+                                                            dateStyle="short" timeStyle="short" var="arr"/>
+                                            <p class="app__info-text-data">${arr}</p>
                                         </div>
                                         <div class="app__info-text">
                                             <h3 class="app__info-text-title">
                                                 <fmt:message key="label.departureDate"/>
                                             </h3>
-                                            <p class="app__info-text-data">${order.getDepartureDate()}</p>
+                                            <fmt:formatDate value="${order.getDepartureDate()}" type="date"
+                                                            dateStyle="short" timeStyle="short" var="dep"/>
+                                            <p class="app__info-text-data">${dep}</p>
                                         </div>
                                     </div>
                                     <div class="app__actions">
@@ -100,8 +104,25 @@
 <div class="container">
     <fmt:message key="label.next" var="next"/>
     <fmt:message key="label.prev" var="previous"/>
-    <ctg:pagination commandName="adminAllOrders" totalPages="${pageNumber}" currentPage="${currentPage}" nextTitle="${next}" previousTitle="${previous}"/>
+    <ctg:pagination commandName="adminAllOrders" totalPages="${pageNumber}" currentPage="${currentPage}"
+                    nextTitle="${next}" previousTitle="${previous}"/>
 </div>
+<c:if test="${orderCancelled != null}">
+    <fmt:message key="label.declineSuccess" var="mes"/>
+    <script>
+        window.onload = function () {
+            alert("${mes}");
+        }
+    </script>
+</c:if>
+<c:if test="${roomFound != null}">
+    <fmt:message key="label.reserveSuccess" var="mes"/>
+    <script>
+        window.onload = function () {
+            alert("${mes}");
+        }
+    </script>
+</c:if>
 <script>
     checkForTheme();
 </script>

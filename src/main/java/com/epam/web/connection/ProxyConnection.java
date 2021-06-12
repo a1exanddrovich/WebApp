@@ -10,11 +10,8 @@ public class ProxyConnection implements Connection {
     private final Connection connection;
     private ConnectionPool connectionPool;
 
-    public ProxyConnection(Connection connection) {
+    /*package-private*/ ProxyConnection(Connection connection, ConnectionPool pool) {
         this.connection = connection;
-    }
-
-    public void setUpConnectionPool(ConnectionPool pool) {
         this.connectionPool = pool;
     }
 

@@ -38,6 +38,18 @@ public class HotelService {
         return hotels;
     }
 
+    public List<Hotel> getAllHotels() throws ServiceException {
+        List<Hotel> hotels = new ArrayList<>();
+        try(DaoHelper helper = factory.createDaoHelper()) {
+            HotelDao dao = helper.createHotelDao();
+            List<Hotel> retrievedHotels = dao.findAll();
+            hotels.addAll(retrievedHotels);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+        return hotels;
+    }
+
     public void addHotel(Hotel hotel, String filePath, FileItem item) throws ServiceException {
         try(DaoHelper helper = factory.createDaoHelper()) {
             InputStream fileContent = item.getInputStream();

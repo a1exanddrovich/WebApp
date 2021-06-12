@@ -38,7 +38,7 @@ public class Order implements Identifiable {
     }
 
     public String getStatus() {
-        return this.status.toString();
+        return this.status.name();
     }
 
     public String getHotelName() {

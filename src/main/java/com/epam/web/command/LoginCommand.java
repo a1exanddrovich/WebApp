@@ -16,6 +16,8 @@ public class LoginCommand implements Command {
     private final static String ADMIN_MAIN_PAGE = "controller?command=adminAllOrders&currentPage=1";
     private final static String INDEX = "/index.jsp";
     private final static String ERROR_MESSAGE = "errorMessage";
+    private final static String USER = "user";
+    private final static String USER_BLOCKED = "userBlocked";
 
     private final UserService service;
     private final LoginValidator validator;
@@ -31,22 +33,22 @@ public class LoginCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         User extractedUser = extractor.extract(request);
         if (!validator.validate(extractedUser)) {
-            request.setAttribute(ERROR_MESSAGE, "invalid login");
+            request.setAttribute(ERROR_MESSAGE, true);
             return CommandResult.forward(INDEX);
         }
         Optional<User> optionalUser = service.login(extractedUser.getLogin(), extractedUser.getPassword());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (user.getIsBlocked()) {
-                request.setAttribute("userBlocked", "blocked");
+                request.setAttribute(USER_BLOCKED, true);
                 return CommandResult.forward(INDEX);
             }
-            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute(USER, user);
             if (ADMIN.equals(user.getRole())) {
                 return CommandResult.redirect(ADMIN_MAIN_PAGE);
             }
         } else {
-            request.setAttribute(ERROR_MESSAGE, "invalid login");
+            request.setAttribute(ERROR_MESSAGE, true);
             return CommandResult.forward(INDEX);
         }
         return CommandResult.redirect(USER_MAIN_PAGE);

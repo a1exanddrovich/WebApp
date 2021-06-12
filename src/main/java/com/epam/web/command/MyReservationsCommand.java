@@ -9,6 +9,7 @@ import com.epam.web.service.OrderService;
 import com.epam.web.service.ReservationService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,13 @@ public class MyReservationsCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        HttpSession session = request.getSession();
+        if("false".equals(request.getParameter("showRef"))) {
+            session.removeAttribute("refusedSuccessfully");
+        }
+        if("false".equals(request.getParameter("showPay"))) {
+            session.removeAttribute("paidSuccessfully");
+        }
         int currentPage = Integer.parseInt(request.getParameter(CURRENT_PAGE));
         User user = (User) request.getSession().getAttribute(USER);
         List<Reservation> reservationList = reservationService.getCurrentUserReservations(user, currentPage, RECORDS_PER_PAGE);

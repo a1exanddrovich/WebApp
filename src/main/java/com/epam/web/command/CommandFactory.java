@@ -3,10 +3,7 @@ package com.epam.web.command;
 import com.epam.web.dao.DaoHelperFactory;
 import com.epam.web.extractor.*;
 import com.epam.web.service.*;
-import com.epam.web.validator.HotelValidator;
-import com.epam.web.validator.LoginValidator;
-import com.epam.web.validator.OrderValidator;
-import com.epam.web.validator.RoomValidator;
+import com.epam.web.validator.*;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -37,11 +34,11 @@ public class CommandFactory {
     private final static String BLOCKING = "adminBlocking";
     private final static String ALL_USERS = "adminAllUsers";
     private final static String INDEX = "index";
+    private final static String SIGNUP_INDEX = "signupPage";
+    private final static String SIGNUP = "signup";
 
-    private final static String BOOKING_PAGE = "/WEB-INF/view/booking.jsp";
-    private final static String EDITING_PAGE = "/WEB-INF/view/edit.jsp";
     private final static String INDEX_PAGE = "/index.jsp";
-    private final static String ADD_ROOM_PAGE = "/WEB-INF/view/admin/adminaddroom.jsp";
+    private final static String SIGNUP_PAGE = "/signup.jsp";
     private final static String ADD_HOTEL_PAGE = "/WEB-INF/view/admin/adminaddhotel.jsp";
 
     private final static String UNKNOWN_TYPE = "Unknown type ";
@@ -79,10 +76,10 @@ public class CommandFactory {
                 return new MyReservationsCommand(reservationService, orderService);
 
             case BOOKING:
-                return new ShowPageCommand(BOOKING_PAGE);
+                return new BookingCommand(hotelService);
 
             case SHOW_EDIT:
-                return new ShowPageCommand(EDITING_PAGE);
+                return new EditCommand(hotelService);
 
             case INDEX:
                 return new ShowPageCommand(INDEX_PAGE);
@@ -91,7 +88,7 @@ public class CommandFactory {
                 return new AllOrdersPageCommand(orderService);
 
             case FIND_ROOM:
-                return new FindRoomCommand(roomService, hotelService, new RoomExtractor());
+                return new FindRoomCommand(roomService, new RoomExtractor());
 
             case DECLINE_ORDER:
                 return new DeclineOrderCommand(orderService);
@@ -100,7 +97,7 @@ public class CommandFactory {
                 return new MakeReservationCommand(reservationService, roomService, orderService, new ReservationExtractor());
 
             case SHOW_ADD_ROOM:
-                return new ShowPageCommand(ADD_ROOM_PAGE);
+                return new NewRoomCommand(hotelService);
 
             case SHOW_ADD_HOTEL:
                 return new ShowPageCommand(ADD_HOTEL_PAGE);
@@ -138,6 +135,12 @@ public class CommandFactory {
 
             case BLOCKING:
                 return new BlockingUsersCommand(userService);
+
+            case SIGNUP:
+                return new SignupCommand(userService, new LoginValidator());
+
+            case SIGNUP_INDEX:
+                return new ShowPageCommand(SIGNUP_PAGE);
 
             default:
                 throw new IllegalArgumentException(UNKNOWN_TYPE + type);

@@ -5,6 +5,7 @@ import com.epam.web.exception.ServiceException;
 import com.epam.web.service.HotelService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class MainPageCommand implements Command {
@@ -23,6 +24,10 @@ public class MainPageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        HttpSession session = request.getSession();
+        if("false".equals(request.getParameter("showMes"))) {
+            session.removeAttribute("registeredSuccessfully");
+        }
         int currentPage = Integer.parseInt(request.getParameter(CURRENT_PAGE));
         List<Hotel> hotels = service.getAllHotels(currentPage, RECORDS_PER_PAGE);
         request.setAttribute(HOTELS, hotels);

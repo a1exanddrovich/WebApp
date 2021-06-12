@@ -54,13 +54,17 @@
                                     <h3 class="app__info-text-title">
                                         <fmt:message key="label.arrivalDate"/>
                                     </h3>
-                                    <p class="app__info-text-data">${reservation.getArrivalDate()}</p>
+                                    <fmt:formatDate value="${reservation.getArrivalDate()}" type="date"
+                                                    dateStyle="short" timeStyle="short" var="arr"/>
+                                    <p class="app__info-text-data">${arr}</p>
                                 </div>
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">
                                         <fmt:message key="label.departureDate"/>
                                     </h3>
-                                    <p class="app__info-text-data">${reservation.getDepartureDate()}</p>
+                                    <fmt:formatDate value="${reservation.getDepartureDate()}" type="date"
+                                                    dateStyle="short" timeStyle="short" var="dep"/>
+                                    <p class="app__info-text-data">${dep}</p>
                                 </div>
                                 <div class="app__info-text">
                                     <h3 class="app__info-text-title">
@@ -133,8 +137,26 @@
     <ctg:pagination commandName="myReservations" totalPages="${pageNumber}" currentPage="${currentPage}"
                     nextTitle="${next}" previousTitle="${previous}"/>
 </div>
-<c:if test="${success == false}">
-    <fmt:message key="label.failedMessage" var="mes"/>
+<c:if test="${paidSuccessfully != null}">
+    <c:if test="${paidSuccessfully == false}">
+        <fmt:message key="label.paidUnsuccess" var="mes"/>
+        <script>
+            window.onload = function () {
+                alert("${mes}");
+            }
+        </script>
+    </c:if>
+    <c:if test="${paidSuccessfully == true}">
+        <fmt:message key="label.paidSuccess" var="mes"/>
+        <script>
+            window.onload = function () {
+                alert("${mes}");
+            }
+        </script>
+    </c:if>
+</c:if>
+<c:if test="${refusedSuccessfully != null}">
+    <fmt:message key="label.refuseSuccess" var="mes"/>
     <script>
         window.onload = function () {
             alert("${mes}");

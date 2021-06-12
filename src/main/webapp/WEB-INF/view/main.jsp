@@ -1,11 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix = "ctg" uri = "/WEB-INF/custom.tld" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/custom.tld" %>
 <%@ page session="true" %>
-
-<%--<fmt:setLocale value="${sessionScope.lang}" scope="session"/>--%>
-<%--<fmt:setBundle basename="messages" scope="session"/>--%>
 
 <fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : 'en'}" scope="session"/>
 <fmt:setBundle basename="messages" scope="session"/>
@@ -39,7 +36,7 @@
                             <h4 class="hotel__name">${hotel.getName()}</h4>
                             <p class="hotel__info">${hotel.getDescription()}</p>
                         </div>
-                        <a href="controller?command=booking&hotelName=${hotel.getName()}"
+                        <a href="controller?command=booking&hotelName=${hotel.getName()}&showMes=false"
                            class="button-hover card-button">
                             <fmt:message key="label.apply"/>
                         </a>
@@ -52,9 +49,18 @@
 <div class="container">
     <fmt:message key="label.next" var="next"/>
     <fmt:message key="label.prev" var="previous"/>
-    <ctg:pagination commandName="mainPage" totalPages="${pageNumber}" currentPage="${currentPage}" nextTitle="${next}" previousTitle="${previous}"/>
+    <ctg:pagination commandName="mainPage" totalPages="${pageNumber}" currentPage="${currentPage}" nextTitle="${next}"
+                    previousTitle="${previous}"/>
 </div>
 <jsp:include page="fragments/footer.jsp"/>
+<c:if test="${registeredSuccessfully != null}">
+    <fmt:message key="label.signUpSuccess" var="mes"/>
+    <script>
+        window.onload = function () {
+            alert("${mes}");
+        }
+    </script>
+</c:if>
 <script>
     checkForTheme();
 </script>

@@ -27,19 +27,35 @@
     <div class="container">
         <section class="section">
             <div class="section__container">
-                <form id="addroom" class="section__form" action="controller?command=makeOrder" method="post" onsubmit="return validateBookingForm()">
-                    <c:choose>
-                        <c:when test="${hotelName != null}">
-                            <fmt:message key="label.hotelName" var="name"/>
-                            <input id="nameOfHotel" class="form__input" type="text" placeholder="${name}" name="hotelName"
-                                   value="${hotelName}" required>
-                        </c:when>
-                        <c:otherwise>
-                            <fmt:message key="label.hotelName" var="name"/>
-                            <input id="nameOfHotel" class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus
-                                   required>
-                        </c:otherwise>
-                    </c:choose>
+                <form id="addroom" class="section__form" action="controller?command=makeOrder" method="post"
+                      onsubmit="return validateBookingForm()">
+                    <select class="classes" id="classes" name="hotelName" form="addroom" required>
+                        <c:choose>
+                            <c:when test="${hotelName != null}">
+                                <c:forEach items="${hotels}" var="itemList">
+                                    <c:if test="${itemList.getName() == hotelName}">
+                                        <option value="${itemList.getName()}">${hotelName}</option>
+                                    </c:if>
+                                </c:forEach>
+                                <c:forEach items="${hotels}" var="hotel">
+                                    <c:if test="${hotel.getName() != hotelName}">
+                                        <option value="${hotel.getName()}">${hotel.getName()}</option>
+                                    </c:if>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="">
+                                    <fmt:message key="label.chooseHotel"/>
+                                </option>
+                                <c:forEach items="${hotels}" var="hotel">
+                                    <option value="${hotel.getName()}">${hotel.getName()}</option>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+                        <c:forEach items="${hotels}" var="hotel">
+                            <option value="${hotel.getName()}">${hotel.getName()}</option>
+                        </c:forEach>
+                    </select>
                     <div id="errorHotel" class="error-div">
                         <fmt:message key="label.enterCorrectNameOfHotel"/>
                     </div>
@@ -57,9 +73,11 @@
                         <fmt:message key="label.enterCorrectPlaceCount"/>
                     </div>
                     <fmt:message key="label.arrival" var="arrival"/>
-                    <input id="arr" class="form__input" type="date" placeholder="${arrival}" name="arrival" required pattern="\d{4}-\d{2}-\d{2}">
+                    <input id="arr" class="form__input" type="date" placeholder="${arrival}" name="arrival" required
+                           pattern="\d{4}-\d{2}-\d{2}">
                     <fmt:message key="label.departure" var="departure"/>
-                    <input id="dep" class="form__input" type="date" placeholder="${departure}" name="departure" required pattern="\d{4}-\d{2}-\d{2}">
+                    <input id="dep" class="form__input" type="date" placeholder="${departure}" name="departure" required
+                           pattern="\d{4}-\d{2}-\d{2}">
                     <div id="errorDates" class="error-div">
                         <fmt:message key="label.enterCorrectDates"/>
                     </div>
@@ -76,6 +94,11 @@
         <c:if test="${error != null}">
             <p style="color: darkred; margin-top: 10px">
                 <fmt:message key="label.invalidInfo"/>
+            </p>
+        </c:if>
+        <c:if test="${bookedSuccessfully == true}">
+            <p style="color: forestgreen; margin-top: 10px">
+                <fmt:message key="label.bookSuccess"/>
             </p>
         </c:if>
     </div>

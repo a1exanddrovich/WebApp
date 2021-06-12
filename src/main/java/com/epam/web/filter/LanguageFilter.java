@@ -9,6 +9,8 @@ import java.util.Map;
 
 public class LanguageFilter implements Filter {
 
+    private final static String LANGUAGE_PARAMETER = "lang";
+
     @Override
     public void init(FilterConfig filterConfig) { }
 
@@ -16,20 +18,20 @@ public class LanguageFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        String lang = request.getParameter("lang");
-        if(lang != null) {
+        String lang = request.getParameter(LANGUAGE_PARAMETER);
+        if (lang != null) {
             Map<String, String[]> parameterMap = request.getParameterMap();
             StringBuilder requestString = new StringBuilder(request.getContextPath() + "/controller?");
-            for(Map.Entry<String, String[]> param : parameterMap.entrySet()) {
+            for (Map.Entry<String, String[]> param : parameterMap.entrySet()) {
                 String key = param.getKey();
                 String[] value = param.getValue();
-                if(!key.equals("lang")) {
+                if (!key.equals(LANGUAGE_PARAMETER)) {
                     requestString.append(key).append("=").append(value[0]).append("&");
                 }
             }
-            requestString.deleteCharAt(requestString.length()-1);
+            requestString.deleteCharAt(requestString.length() - 1);
             HttpSession session = request.getSession();
-            session.setAttribute("lang", lang);
+            session.setAttribute(LANGUAGE_PARAMETER, lang);
             response.sendRedirect(requestString.toString());
             return;
         }

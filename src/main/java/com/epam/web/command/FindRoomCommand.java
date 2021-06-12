@@ -3,7 +3,6 @@ package com.epam.web.command;
 import com.epam.web.entitiy.Room;
 import com.epam.web.exception.ServiceException;
 import com.epam.web.extractor.RoomExtractor;
-import com.epam.web.service.HotelService;
 import com.epam.web.service.RoomService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,12 +16,10 @@ public class FindRoomCommand implements Command {
     private final static String FIND_ROOM_PAGE = "/WEB-INF/view/admin/adminfindroompage.jsp";
 
     private final RoomService roomService;
-    private final HotelService hotelService;
     private final RoomExtractor extractor;
 
-    public FindRoomCommand(RoomService roomService, HotelService hotelService, RoomExtractor extractor) {
+    public FindRoomCommand(RoomService roomService, RoomExtractor extractor) {
         this.roomService = roomService;
-        this.hotelService = hotelService;
         this.extractor = extractor;
     }
 

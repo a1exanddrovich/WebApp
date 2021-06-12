@@ -6,6 +6,7 @@ import com.epam.web.service.UserService;
 import com.epam.web.validator.CashValidator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
 public class TopUpBalanceCommand implements Command {
@@ -14,6 +15,9 @@ public class TopUpBalanceCommand implements Command {
     private final static String TOP_UP_BALANCE = "topUpBalance";
     private final static String BALANCE_PAGE = "/controller?command=showBalance";
     private final static String BALANCE_COMMAND = "controller?command=showBalance";
+    private final static String INVALID_CASH = "invalidCash";
+    private final static String ERROR = "error";
+    private final static String TOPPED_UP_SUCCESSFULLY = "toppedUpSuccessfully";
 
 
     private final UserService service;
@@ -25,6 +29,7 @@ public class TopUpBalanceCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        HttpSession session = request.getSession();
         User user = (User) request.getSession().getAttribute(USER);
         String topUpBalance = request.getParameter(TOP_UP_BALANCE);
         double balanceToTopUp;
@@ -32,16 +37,17 @@ public class TopUpBalanceCommand implements Command {
         try {
             balanceToTopUp = Double.parseDouble(topUpBalance);
         } catch (NumberFormatException e) {
-            request.setAttribute("invalidCash", "something");
+            request.setAttribute(INVALID_CASH, true);
             return CommandResult.forward(BALANCE_PAGE);
         }
         balance = new BigDecimal(balanceToTopUp);
         if (cashValidator.validate(balance)) {
             service.topUpBalance(balance, user.getId());
         } else {
-            request.setAttribute("error", "validationError");
+            request.setAttribute(ERROR, true);
             return CommandResult.forward(BALANCE_PAGE);
         }
+        session.setAttribute(TOPPED_UP_SUCCESSFULLY, true);
         return CommandResult.redirect(BALANCE_COMMAND);
     }
 

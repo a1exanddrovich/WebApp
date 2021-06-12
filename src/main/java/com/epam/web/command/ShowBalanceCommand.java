@@ -5,6 +5,7 @@ import com.epam.web.exception.ServiceException;
 import com.epam.web.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
 public class ShowBalanceCommand implements Command {
@@ -21,6 +22,10 @@ public class ShowBalanceCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        HttpSession session = request.getSession();
+        if("false".equals(request.getParameter("showMes"))) {
+            session.removeAttribute("toppedUpSuccessfully");
+        }
         User user = (User) request.getSession().getAttribute(USER);
         BigDecimal balance = service.getCurrentUserBalance(user);
         request.setAttribute(BALANCE, balance);

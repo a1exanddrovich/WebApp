@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>
-        Users
+        <fmt:message key="label.users"/>
     </title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap"
@@ -24,67 +24,65 @@
 </head>
 <body class="body">
 <jsp:include page="fragments/header.jsp"/>
-
-
 <main class="main">
     <div class="container">
         <c:choose>
             <c:when test="${users.size() != 0}">
                 <section class="section">
                     <c:forEach items="${users}" var="user">
-                            <div class="section__card">
-                                <div class="app__info">
-                                    <div class="app__info-text">
-                                        <h3 class="app__info-text-title">
-                                            <fmt:message key="label.userId"/>
-                                        </h3>
-                                        <p class="app__info-text-data">#${user.getId()}</p>
-                                    </div>
-                                    <div class="app__info-text">
-                                        <h3 class="app__info-text-title">
-                                            <fmt:message key="label.userLogin"/>
-                                        </h3>
-                                        <p class="app__info-text-data">${user.getLogin()}</p>
-                                    </div>
-                                    <div class="app__info-text">
-                                        <h3 class="app__info-text-title">
-                                            <fmt:message key="label.balance"/>
-                                        </h3>
-                                        <p class="app__info-text-data">${user.getBalance()}$</p>
-                                    </div>
-                                    <div class="app__info-text">
-                                        <h3 class="app__info-text-title">
-                                            <fmt:message key="label.userStatus"/>
-                                        </h3>
-                                        <c:choose>
-                                            <c:when test="${user.getIsBlocked() == true}">
-                                                <p class="app__info-text-data">
-                                                    <fmt:message key="label.userBlockedStatus"/>
-                                                </p>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <p class="app__info-text-data">
-                                                    <fmt:message key="label.userUnblockedStatus"/>
-                                                </p>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
+                        <div class="section__card">
+                            <div class="app__info">
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.userId"/>
+                                    </h3>
+                                    <p class="app__info-text-data">#${user.getId()}</p>
                                 </div>
-                                <div class="app__actions">
-                                    <button class="app__button button-hover" type="submit">
-                                        <a href="controller?command=adminBlocking&userId=${user.getId()}&block=${not user.getIsBlocked()}">
-                                            <c:choose>
-                                                <c:when test="${user.getIsBlocked() == false}">
-                                                    <fmt:message key="label.blockUser"/>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <fmt:message key="label.unblockUser"/>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </a>
-                                    </button>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.userLogin"/>
+                                    </h3>
+                                    <p class="app__info-text-data">${user.getLogin()}</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.balance"/>
+                                    </h3>
+                                    <p class="app__info-text-data">${user.getBalance()}$</p>
+                                </div>
+                                <div class="app__info-text">
+                                    <h3 class="app__info-text-title">
+                                        <fmt:message key="label.userStatus"/>
+                                    </h3>
+                                    <c:choose>
+                                        <c:when test="${user.getIsBlocked() == true}">
+                                            <p class="app__info-text-data">
+                                                <fmt:message key="label.userBlockedStatus"/>
+                                            </p>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p class="app__info-text-data">
+                                                <fmt:message key="label.userUnblockedStatus"/>
+                                            </p>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
+                            <div class="app__actions">
+                                <button class="app__button button-hover" type="submit">
+                                    <a href="controller?command=adminBlocking&userId=${user.getId()}&block=${not user.getIsBlocked()}">
+                                        <c:choose>
+                                            <c:when test="${user.getIsBlocked() == false}">
+                                                <fmt:message key="label.blockUser"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:message key="label.unblockUser"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
                     </c:forEach>
                 </section>
             </c:when>
@@ -96,12 +94,11 @@
         </c:choose>
     </div>
 </main>
-
-
 <div class="container">
     <fmt:message key="label.next" var="next"/>
     <fmt:message key="label.prev" var="previous"/>
-    <ctg:pagination commandName="adminAllOrders" totalPages="${pageNumber}" currentPage="${currentPage}" nextTitle="${next}" previousTitle="${previous}"/>
+    <ctg:pagination commandName="adminAllOrders" totalPages="${pageNumber}" currentPage="${currentPage}"
+                    nextTitle="${next}" previousTitle="${previous}"/>
 </div>
 <script>
     checkForTheme();

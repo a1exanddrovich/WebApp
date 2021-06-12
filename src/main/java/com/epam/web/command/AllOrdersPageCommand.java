@@ -5,6 +5,7 @@ import com.epam.web.exception.ServiceException;
 import com.epam.web.service.OrderService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class AllOrdersPageCommand implements Command {
@@ -23,6 +24,13 @@ public class AllOrdersPageCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        HttpSession session = request.getSession();
+        if("false".equals(request.getParameter("showCancel"))) {
+            session.removeAttribute("orderCancelled");
+        }
+        if("false".equals(request.getParameter("showRev"))) {
+            session.removeAttribute("roomFound");
+        }
         int currentPage = Integer.parseInt(request.getParameter(CURRENT_PAGE));
         List<Order> orders = service.getAllOrders(currentPage, RECORDS_PER_PAGE);
         request.setAttribute(ORDERS, orders);

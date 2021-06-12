@@ -10,11 +10,13 @@ import com.epam.web.service.ReservationService;
 import com.epam.web.service.RoomService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class MakeReservationCommand implements Command {
 
     private final static String ALL_ORDERS_COMMAND = "controller?command=adminAllOrders&currentPage=1";
+    private final static String ROOM_FOUND = "roomFound";
 
     private final ReservationService reservationService;
     private final RoomService roomService;
@@ -30,10 +32,12 @@ public class MakeReservationCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        HttpSession session = request.getSession();
         Reservation extractedReservation = extractor.extract(request);
         Optional<Room> optionalRoom = roomService.findRoomById(extractedReservation.getRoomId());
         Optional<Order> optionalOrder = orderService.findOrderById(extractedReservation.getOrderId());
         reservationService.makeReservation(extractedReservation, optionalOrder.get(), optionalRoom.get());
+        session.setAttribute(ROOM_FOUND, true);
         return CommandResult.redirect(ALL_ORDERS_COMMAND);
     }
 }

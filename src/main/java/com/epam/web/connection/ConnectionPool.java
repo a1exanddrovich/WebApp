@@ -3,9 +3,9 @@ package com.epam.web.connection;
 import com.epam.web.exception.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayDeque;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
@@ -15,34 +15,30 @@ public class ConnectionPool {
 
     private final static Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
     private final static AtomicReference<ConnectionPool> INSTANCE = new AtomicReference<>();
+    private final static int POOL_SIZE = 10;
     private final static ReentrantLock INSTANCE_LOCK = new ReentrantLock();
 
     private final Queue<ProxyConnection> availableConnections;
     private final Queue<ProxyConnection> connectionsInUse;
+    private final ConnectionFactory factory;
     private final ReentrantLock connectionsLock;
+    private final Semaphore semaphore;
 
-    private final int poolSize;
-    private Semaphore semaphore;
-
-    ConnectionPool(int poolSize, List<ProxyConnection> connections) {
-        this.poolSize = poolSize;
-        this.semaphore = new Semaphore(poolSize, true);
+    private ConnectionPool() {
+        factory = new ConnectionFactory();
+        this.semaphore = new Semaphore(POOL_SIZE, true);
         this.availableConnections = new ArrayDeque<>();
         this.connectionsInUse = new ArrayDeque<>();
         this.connectionsLock = new ReentrantLock();
-        for(ProxyConnection connection : connections) {
-            connection.setUpConnectionPool(this);
-        }
-        this.availableConnections.addAll(connections);
+        establishConnections();
     }
 
     public static ConnectionPool getInstance() {
-        if(INSTANCE.get() == null) {
-            try{
+        if (INSTANCE.get() == null) {
+            try {
                 INSTANCE_LOCK.lock();
-                if(INSTANCE.get() == null) {
-                    ConnectionPoolFactory factory = new ConnectionPoolFactory();
-                    ConnectionPool pool = factory.createConnectionPool();
+                if (INSTANCE.get() == null) {
+                    ConnectionPool pool = new ConnectionPool();
                     INSTANCE.getAndSet(pool);
                 }
             } finally {
@@ -50,6 +46,20 @@ public class ConnectionPool {
             }
         }
         return INSTANCE.get();
+    }
+
+    private void establishConnections() {
+        try {
+            for (int i = 0; i < POOL_SIZE; i++) {
+                Connection connection = factory.establishConnection();
+                ProxyConnection proxyConnection = new ProxyConnection(connection, this);
+                availableConnections.add(proxyConnection);
+            }
+            LOGGER.info("Pool created");
+        } catch (SQLException throwables) {
+            LOGGER.fatal(throwables.getMessage());
+            throw new ConnectionPoolException(throwables.getMessage(), throwables);
+        }
     }
 
     public void returnConnection(ProxyConnection connection) {

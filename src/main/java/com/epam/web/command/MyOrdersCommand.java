@@ -6,6 +6,7 @@ import com.epam.web.exception.ServiceException;
 import com.epam.web.service.OrderService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class MyOrdersCommand implements Command {
@@ -25,7 +26,14 @@ public class MyOrdersCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        HttpSession session = request.getSession();
         int currentPage = Integer.parseInt(request.getParameter(CURRENT_PAGE));
+        if("false".equals(request.getParameter("showDel"))) {
+            session.removeAttribute("orderDeleted");
+        }
+        if("false".equals(request.getParameter("showEd"))) {
+            session.removeAttribute("editedSuccessfully");
+        }
         User user = (User) request.getSession().getAttribute(USER);
         List<Order> orders = service.getCurrentUserOrders(user, currentPage, RECORDS_PER_PAGE);
         request.setAttribute(ORDERS, orders);

@@ -14,7 +14,8 @@
         <fmt:message key="label.editTitle"/>
     </title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="static/reset.css">
     <link rel="stylesheet" href="static/style.css">
     <script src="script/main.js"></script>
@@ -25,9 +26,18 @@
     <div class="container">
         <section class="section">
             <div class="section__container">
-                <form id="addroom" class="section__form" action="controller?command=editOrder&orderId=${orderId}" method="post" onsubmit="return validateBookingForm()">
+                <form id="addroom" class="section__form" action="controller?command=editOrder&orderId=${orderId}"
+                      method="post" onsubmit="return validateBookingForm()">
                     <fmt:message key="label.hotelName" var="name"/>
-                    <input id="nameOfHotel" class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>
+                    <%--                    <input id="nameOfHotel" class="form__input" type="text" placeholder="${name}" name="hotelName" autofocus required>--%>
+                    <select class="classes" id="classes" name="hotelName" form="addroom" required>
+                        <option value="">
+                            <fmt:message key="label.chooseHotel"/>
+                        </option>
+                        <c:forEach items="${hotels}" var="hotel">
+                            <option value="${hotel.getName()}">${hotel.getName()}</option>
+                        </c:forEach>
+                    </select>
                     <div id="errorHotel" class="error-div">
                         <fmt:message key="label.enterCorrectNameOfHotel"/>
                     </div>
@@ -47,7 +57,8 @@
                     <fmt:message key="label.arrival" var="arrival"/>
                     <input id="arr" class="form__input" type="date" placeholder="${arrival}" name="arrival" required>
                     <fmt:message key="label.departure" var="departure"/>
-                    <input id="dep" class="form__input" type="date" placeholder="${departure}" name="departure" required>
+                    <input id="dep" class="form__input" type="date" placeholder="${departure}" name="departure"
+                           required>
                     <div id="errorDates" class="error-div">
                         <fmt:message key="label.enterCorrectDates"/>
                     </div>

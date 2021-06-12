@@ -15,27 +15,27 @@
             <nav class="menu">
                 <ul class="menu__list">
                     <li class="menu__list-item">
-                        <a href="controller?command=mainPage&currentPage=1" class="menu__list-link">
+                        <a href="controller?command=mainPage&currentPage=1&showMes=false" class="menu__list-link">
                             <fmt:message key="label.main"/>
                         </a>
                     </li>
                     <li class="menu__list-item">
-                        <a href="controller?command=booking" class="menu__list-link">
+                        <a href="controller?command=booking&showMes=false" class="menu__list-link">
                             <fmt:message key="label.booking"/>
                         </a>
                     </li>
                     <li class="menu__list-item">
-                        <a href="controller?command=myOrders&currentPage=1" class="menu__list-link">
+                        <a href="controller?command=myOrders&currentPage=1&showDel=false&showEd=false" class="menu__list-link">
                             <fmt:message key="label.orders"/>
                         </a>
                     </li>
                     <li class="menu__list-item">
-                        <a href="controller?command=myReservations&currentPage=1" class="menu__list-link">
+                        <a href="controller?command=myReservations&currentPage=1&showRef=false&showPay=false" class="menu__list-link">
                             <fmt:message key="label.reservations"/>
                         </a>
                     </li>
                     <li class="menu__list-item">
-                        <a href="controller?command=showBalance" class="menu__list-link">
+                        <a href="controller?command=showBalance&showMes=false" class="menu__list-link">
                             <fmt:message key="label.balance"/>
                         </a>
                     </li>
