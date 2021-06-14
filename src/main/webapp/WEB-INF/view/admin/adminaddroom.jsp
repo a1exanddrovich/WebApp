@@ -38,9 +38,6 @@
                             <option value="${hotel.getName()}">${hotel.getName()}</option>
                         </c:forEach>
                     </select>
-                    <div id="errorHotelName" class="error-div">
-                        <fmt:message key="label.enterCorrectNameOfHotel"/>
-                    </div>
                     <fmt:message key="label.places" var="places"/>
                     <input id="places" class="form__input" type="text" placeholder="${places}" name="places" required>
                     <div id="errorPlaces" class="error-div">
@@ -73,7 +70,7 @@
     </div>
 </main>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

@@ -28,9 +28,11 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     @Override
     protected void update(Room room) throws DaoException {
         Optional<Room> optionalRoom = findById(room.getId());
+
         if (optionalRoom.isEmpty()) {
             throw new DaoException(INVALID_ROOM_ID + room.getId());
         }
+
         executeUpdate(UPDATE, room.getHotelId(), room.getRoomClass().toString(), room.getPlaceCount(), room.getBookedUntil(), room.getBookedFrom(), room.getId());
     }
 
@@ -39,6 +41,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
         long hotelId = room.getHotelId();
         String roomClass = room.getRoomClass().toString();
         int places = room.getPlaceCount();
+
         return executeQuery(FIND_PROPER_ROOM, hotelId, roomClass, places);
     }
 

@@ -24,6 +24,7 @@ public class RoomMapper implements Mapper<Room> {
         int places = resultSet.getInt(PLACES);
         Date bookedUntil = resultSet.getDate(BOOKED_UNTIL);
         Date bookedFrom = resultSet.getDate(BOOKED_FROM);
+
         Room room = new Room(id, hotelId, roomClass, places, bookedUntil, bookedFrom);
         return room;
     }

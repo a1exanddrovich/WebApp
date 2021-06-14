@@ -70,7 +70,7 @@
     </div>
 </main>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

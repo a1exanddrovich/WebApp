@@ -33,10 +33,12 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     public BigDecimal getCurrentUserBalance(long id) throws DaoException {
         Optional<User> optionalUser = executeForSingleResult(GET_BALANCE, id);
         BigDecimal balance = null;
+
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             balance = user.getBalance();
         }
+
         return balance;
     }
 
@@ -48,9 +50,11 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     @Override
     protected void update(User user) throws DaoException {
         Optional<User> optionalUser = findById(user.getId());
+
         if (optionalUser.isEmpty()) {
             throw new DaoException(INVALID_USER_ID + user.getId());
         }
+
         executeUpdate(UPDATE, user.getLogin(), user.getPassword(), user.getRole(), user.getBalance(), user.getIsBlocked(), user.getId());
     }
 

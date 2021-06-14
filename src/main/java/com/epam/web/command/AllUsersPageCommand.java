@@ -29,11 +29,14 @@ public class AllUsersPageCommand implements Command {
         request.setAttribute(USERS, users);
         int userCount = service.getUserCount();
         int pageNumber = userCount / RECORDS_PER_PAGE;
+
         if (pageNumber % RECORDS_PER_PAGE > 0 & !(userCount % RECORDS_PER_PAGE == 0)) {
             pageNumber++;
         }
+
         request.setAttribute(PAGE_NUMBER, pageNumber);
         request.setAttribute(CURRENT_PAGE, currentPage);
+
         return CommandResult.forward(ALL_USERS_PAGE);
     }
 

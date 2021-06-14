@@ -4,6 +4,7 @@ import com.epam.web.entitiy.User;
 import com.epam.web.exception.ServiceException;
 import com.epam.web.service.UserService;
 import com.epam.web.validator.CashValidator;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -32,21 +33,26 @@ public class TopUpBalanceCommand implements Command {
         HttpSession session = request.getSession();
         User user = (User) request.getSession().getAttribute(USER);
         String topUpBalance = request.getParameter(TOP_UP_BALANCE);
+
         double balanceToTopUp;
         BigDecimal balance;
+
         try {
             balanceToTopUp = Double.parseDouble(topUpBalance);
         } catch (NumberFormatException e) {
             request.setAttribute(INVALID_CASH, true);
             return CommandResult.forward(BALANCE_PAGE);
         }
+
         balance = new BigDecimal(balanceToTopUp);
+
         if (cashValidator.validate(balance)) {
             service.topUpBalance(balance, user.getId());
         } else {
             request.setAttribute(ERROR, true);
             return CommandResult.forward(BALANCE_PAGE);
         }
+
         session.setAttribute(TOPPED_UP_SUCCESSFULLY, true);
         return CommandResult.redirect(BALANCE_COMMAND);
     }

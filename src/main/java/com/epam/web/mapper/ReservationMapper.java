@@ -25,6 +25,7 @@ public class ReservationMapper implements Mapper<Reservation> {
         long userId = resultSet.getLong(USER_ID);
         BigDecimal price = resultSet.getBigDecimal(PRICE);
         boolean isPaid = resultSet.getBoolean(IS_PAID);
+
         Reservation reservation = new Reservation(id, orderId, hotelId, roomId, userId, price, isPaid);
         return reservation;
     }

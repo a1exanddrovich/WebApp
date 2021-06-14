@@ -24,8 +24,10 @@ public class RefuseReservationCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
         long reservationId = Long.parseLong(request.getParameter(RESERVATION_ID));
+
         Optional<Reservation> optionalReservation = service.findById(reservationId);
         service.refuseReservation(optionalReservation.get());
+
         session.setAttribute(REFUSED_SUCCESSFULLY, true);
         return CommandResult.redirect(MY_RESERVATIONS_COMMAND);
     }

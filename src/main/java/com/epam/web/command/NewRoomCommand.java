@@ -12,6 +12,9 @@ public class NewRoomCommand implements Command {
 
     private final static String HOTELS = "hotels";
     private final static String ADD_ROOM_PAGE = "/WEB-INF/view/admin/adminaddroom.jsp";
+    private final static String FALSE = "false";
+    private final static String ROOM_ADDED_PARAMETER = "showMes";
+    private final static String ROOM_ADDED_ATTRIBUTE = "roomAddedSuccessfully";
 
     private final HotelService service;
 
@@ -22,11 +25,14 @@ public class NewRoomCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
-        if("false".equals(request.getParameter("showMes"))) {
-            session.removeAttribute("roomAddedSuccessfully");
+
+        if(FALSE.equals(request.getParameter(ROOM_ADDED_PARAMETER))) {
+            session.removeAttribute(ROOM_ADDED_ATTRIBUTE);
         }
+
         List<Hotel> hotels = service.getAllHotels();
         request.setAttribute(HOTELS, hotels);
+
         return CommandResult.forward(ADD_ROOM_PAGE);
     }
 

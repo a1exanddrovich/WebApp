@@ -20,10 +20,6 @@
     <link rel="stylesheet" href="static/reset.css">
     <link rel="stylesheet" href="static/style.css">
     <script src="script/main.js"></script>
-    <script>
-        window.sessionStorage.setItem("lightTheme", "true");
-        window.sessionStorage.setItem("darkTheme", "false");
-    </script>
 </head>
 <body class="body">
 <header class="header">
@@ -31,7 +27,7 @@
         <div class="header__container">
             <h1 class="header__title">Bookit</h1>
             <div style="display: flex; align-content: center">
-                <div style="margin-right: 20px" class="theme" onclick="setUpTheme()">
+                <div style="margin-right: 20px" class="theme" onclick="changeTheme()">
                     <img class="theme__image moon" src="images/icons/moon.png">
                 </div>
                 <div class="dropdown lang">
@@ -100,5 +96,8 @@
         </section>
     </div>
 </main>
+<script>
+    makeDark();
+</script>
 </body>
 </html>

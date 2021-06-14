@@ -5,6 +5,7 @@ import com.epam.web.exception.ServiceException;
 import com.epam.web.extractor.OrderExtractor;
 import com.epam.web.service.OrderService;
 import com.epam.web.validator.OrderValidator;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -32,18 +33,21 @@ public class EditOrderCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
         Order extractedOrder = null;
-        try{
+
+        try {
             extractedOrder = extractor.extract(request);
         } catch (NumberFormatException | ParseException e) {
             request.setAttribute(INVALID_PLACE_COUNT, true);
             return CommandResult.forward(EDIT_PAGE);
         }
-        if(validator.validate(extractedOrder)) {
+
+        if (validator.validate(extractedOrder)) {
             service.editOrder(extractedOrder);
         } else {
             request.setAttribute(ERROR, true);
             return CommandResult.forward(EDIT_PAGE);
         }
+
         session.setAttribute(EDITED_SUCCESSFULLY, true);
         return CommandResult.redirect(MY_ORDERS_COMMAND);
     }

@@ -21,6 +21,11 @@ public class MyReservationsCommand implements Command {
     private final static String PAGE_NUMBER = "pageNumber";
     private final static String CURRENT_PAGE = "currentPage";
     private final static String MY_RESERVATIONS_PAGE = "/WEB-INF/view/myreservations.jsp";
+    private final static String FALSE = "false";
+    private final static String REFUSE_MESSAGE_PARAMETER = "showRef";
+    private final static String PAY_MESSAGE_PARAMETER = "showPay";
+    private final static String REFUSE_ATTRIBUTE = "refusedSuccessfully";
+    private final static String PAY_ATTRIBUTE = "paidSuccessfully";
 
     private final ReservationService reservationService;
     private final OrderService orderService;
@@ -33,17 +38,21 @@ public class MyReservationsCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
-        if("false".equals(request.getParameter("showRef"))) {
-            session.removeAttribute("refusedSuccessfully");
+
+        if(FALSE.equals(request.getParameter(REFUSE_MESSAGE_PARAMETER))) {
+            session.removeAttribute(REFUSE_ATTRIBUTE);
         }
-        if("false".equals(request.getParameter("showPay"))) {
-            session.removeAttribute("paidSuccessfully");
+
+        if(FALSE.equals(request.getParameter(PAY_MESSAGE_PARAMETER))) {
+            session.removeAttribute(PAY_ATTRIBUTE);
         }
+
         int currentPage = Integer.parseInt(request.getParameter(CURRENT_PAGE));
         User user = (User) request.getSession().getAttribute(USER);
         List<Reservation> reservationList = reservationService.getCurrentUserReservations(user, currentPage, RECORDS_PER_PAGE);
         List<Order> orderList = orderService.getCurrentUserAllOrders(user);
         List<ReservationDto> reservations = new ArrayList<>();
+
         for (Reservation reservation : reservationList) {
             for (Order order : orderList) {
                 if (order.getId() == reservation.getOrderId()) {
@@ -58,14 +67,18 @@ public class MyReservationsCommand implements Command {
                 }
             }
         }
+
         request.setAttribute(RESERVATIONS, reservations);
         int reservationCount = reservationService.getReservationCount(user.getId());
+
         int pageNumber = reservationCount / RECORDS_PER_PAGE;
         if (pageNumber % RECORDS_PER_PAGE > 0 && !(reservationCount % RECORDS_PER_PAGE == 0)) {
             pageNumber++;
         }
+
         request.setAttribute(PAGE_NUMBER, pageNumber);
         request.setAttribute(CURRENT_PAGE, currentPage);
+
         return CommandResult.forward(MY_RESERVATIONS_PAGE);
     }
 }

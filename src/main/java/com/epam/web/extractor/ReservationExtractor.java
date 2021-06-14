@@ -17,6 +17,7 @@ public class ReservationExtractor implements Extractor<Reservation> {
         long hotelId = Long.parseLong(request.getParameter(HOTEL_ID));
         long roomId = Long.parseLong(request.getParameter(ROOM_ID));
         long userId = Long.parseLong(request.getParameter(USER_ID));
+
         Reservation extractedReservation = new Reservation(0, orderId, hotelId, roomId, userId, new BigDecimal(0), false);
         return extractedReservation;
     }

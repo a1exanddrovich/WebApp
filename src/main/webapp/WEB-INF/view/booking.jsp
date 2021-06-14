@@ -56,9 +56,6 @@
                             <option value="${hotel.getName()}">${hotel.getName()}</option>
                         </c:forEach>
                     </select>
-                    <div id="errorHotel" class="error-div">
-                        <fmt:message key="label.enterCorrectNameOfHotel"/>
-                    </div>
                     <select class="classes" id="classes" name="class" form="addroom" required>
                         <option value=""><fmt:message key="label.chooseClass"/></option>
                         <option value="BUDGET">Budget</option>
@@ -91,6 +88,11 @@
                 <fmt:message key="label.invalidPlaceCount"/>
             </p>
         </c:if>
+        <c:if test="${invalidDate != null}">
+            <p style="color: darkred; margin-top: 10px">
+                <fmt:message key="label.invalidDate"/>
+            </p>
+        </c:if>
         <c:if test="${error != null}">
             <p style="color: darkred; margin-top: 10px">
                 <fmt:message key="label.invalidInfo"/>
@@ -104,7 +106,7 @@
     </div>
 </main>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

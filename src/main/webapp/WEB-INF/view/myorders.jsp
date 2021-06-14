@@ -151,7 +151,7 @@
     </script>
 </c:if>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

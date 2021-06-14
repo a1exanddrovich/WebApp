@@ -18,13 +18,17 @@ public class EditCommand implements Command {
     public EditCommand(HotelService service) {
         this.service = service;
     }
+
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         if(request.getParameter(ORDER_ID) != null) {
             request.setAttribute(ORDER_ID, request.getParameter(ORDER_ID));
         }
+
         List<Hotel> hotels = service.getAllHotels();
         request.setAttribute(HOTELS, hotels);
+
         return CommandResult.forward(EDIT_PAGE);
     }
+
 }

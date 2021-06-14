@@ -5,7 +5,6 @@ import com.epam.web.exception.ServiceException;
 import com.epam.web.extractor.RoomExtractor;
 import com.epam.web.service.RoomService;
 import com.epam.web.validator.RoomValidator;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,12 +30,15 @@ public class AddRoomCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
         Room extractedRoom = extractor.extract(request);
+
         if (!validator.validate(extractedRoom)) {
             request.setAttribute(ERROR, true);
             return CommandResult.forward(ADD_ROOM_PAGE);
         }
+
         roomService.addRoom(extractedRoom);
         session.setAttribute(ROOM_ADDED_SUCCESSFULLY, true);
+
         return CommandResult.redirect(ADD_ROOM_COMMAND);
     }
 

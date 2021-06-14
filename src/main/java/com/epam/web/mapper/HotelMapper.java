@@ -21,6 +21,7 @@ public class HotelMapper implements Mapper{
         String description = resultSet.getString(DESCRIPTION);
         String imagePath = resultSet.getString(IMAGE_PATH);
         BigDecimal balance = resultSet.getBigDecimal(BALANCE);
+
         Hotel hotel = new Hotel(id, name, description, imagePath, balance);
         return hotel;
     }

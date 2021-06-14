@@ -27,6 +27,7 @@ public class PaymentCommand implements Command {
         User user = (User) request.getSession().getAttribute(USER);
         long reservationId = Long.parseLong(request.getParameter(RESERVATION_ID));
         boolean successfulPayment = userService.withdraw(user.getId(), reservationId);
+
         if (successfulPayment) {
             session.setAttribute(PAID_SUCCESSFULLY, true);
             return CommandResult.redirect(MY_RESERVATIONS_COMMAND);

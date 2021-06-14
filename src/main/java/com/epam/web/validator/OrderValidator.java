@@ -18,6 +18,7 @@ public class OrderValidator implements Validator<Order> {
         String status = entity.getStatus();
         //new Date() gives an object initialized with current date
         Date currentDate = new Date();
+
         return  EnumUtils.isValidEnum(RoomClass.class, roomClass) &&
                 placeCount >= 1 &&
                 (arrival.compareTo(currentDate) >= 0) &&

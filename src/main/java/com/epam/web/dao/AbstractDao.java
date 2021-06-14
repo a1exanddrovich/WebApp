@@ -30,20 +30,25 @@ public class AbstractDao<T extends Identifiable> implements Dao<T> {
         List<T> entities = new ArrayList<>();
         PreparedStatement statement = this.createStatement(query, params);
         ResultSet resultSet = null;
+
         try {
             resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
                 T entity = mapper.map(resultSet);
                 entities.add(entity);
             }
+
         } catch (SQLException throwables) {
             throw new DaoException(throwables);
         }
+
         return entities;
     }
 
     protected Optional<T> executeForSingleResult(String query, Object... params) throws DaoException {
         List<T> users = executeQuery(query, params);
+
         if (users.size() == 1) {
             return Optional.of(users.get(0));
         } else if (users.size() > 1) {
@@ -64,31 +69,38 @@ public class AbstractDao<T extends Identifiable> implements Dao<T> {
     protected int getCount(String query) throws DaoException {
         PreparedStatement statement = null;
         int recordCount = 0;
+
         try {
             statement = this.createStatement(query);
             ResultSet resultSet = statement.executeQuery();
+
             while(resultSet.next()) {
                 recordCount = resultSet.getInt(1);
             }
+
         } catch (DaoException | SQLException e) {
             throw new DaoException(e);
         }
+
         return recordCount;
     }
 
     private PreparedStatement createStatement(String query, Object... params) throws DaoException {
         PreparedStatement statement = null;
+
         try {
             statement = connection.prepareStatement(query);
+
             for (int i = 1; i < params.length + 1; i++) {
                 statement.setObject(i, params[i - 1]);
             }
+
         } catch (SQLException throwables) {
             throw  new DaoException(throwables);
         }
+
         return statement;
     }
-
 
     @Override
     public Optional<T> findById(long id) throws DaoException {

@@ -27,8 +27,10 @@ public class FindRoomCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         request.setAttribute(ORDER_ID, request.getParameter(ORDER_ID));
         request.setAttribute(USER_ID, request.getParameter(USER_ID));
+
         Room extractedRoom = extractor.extract(request);
         List<Room> rooms = roomService.findRoom(extractedRoom);
+
         request.setAttribute(ROOMS, rooms);
         return CommandResult.forward(FIND_ROOM_PAGE);
     }

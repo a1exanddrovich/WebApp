@@ -1,7 +1,7 @@
 *,
 *::after,
 *::before {
-    font-family: Roboto Condensed;
+    font-family: Roboto Condensed, serif;
     box-sizing: border-box;
 }
 
@@ -13,18 +13,27 @@ input:focus {
     outline: none;
 }
 
+.button-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.form__button+.form__button {
+    margin-left: 15px;
+}
+
 :root {
     /*colors for light theme*/
     --body-background-color-light: white;
-    --header-color-light: #fdf4b3;
-    --button-color-unhover-light: #048A89;
+    --header-color-light: #927E77;
+    --button-color-unhover-light: #AC9C95;
     --logout-color-hover-light: #F12525;
     --text-color-light: black;
-    --input-text-color-placeholder-light: white;
-    --input-text-color-light: white;
-    --input-color-light: #8D8060;
-    --card-background-color-light: #8D8060;
-    --app-card-background-color-light: #B1DDBA;
+    --input-text-color-placeholder-light: black;
+    --input-text-color-light: black;
+    --input-color-light: #E4DDD3;
+    --card-background-color-light: #DFDAD7;
+    --app-card-background-color-light: #927E77;
     --button-text-color-light: white;
     /*colors for dark theme*/
     --body-background-color-dark: #212A39;
@@ -33,12 +42,81 @@ input:focus {
     --logout-color-hover-dark: #F12525;
     --text-color-dark: #6F8092;
     --input-text-color-placeholder-dark: white;
-    --input-text-color-dark: #6F8092;
+    /*--input-text-color-dark: #6F8092;*/
+    --input-text-color-dark: white;
     --input-color-dark: #243142;
     --card-background-color-dark: #243142;
-    --app-card-background-color-dark: #243142;
+    --app-card-background-color-dark: #19212C;
     --button-text-color-dark: #A5B6C5;
     --background-color-inputs: #394657;
+}
+
+.dark select {
+    background-color: var(--background-color-inputs);
+    color: var(--input-text-color-placeholder-dark);
+}
+
+.dark input::placeholder {
+    color: var(--input-text-color-placeholder-dark);
+}
+
+.dark .body {
+    background-color: var(--body-background-color-dark);
+    color: var(--text-color-dark);
+}
+
+.dark .header {
+    background-color: var(--header-color-dark);
+}
+
+.dark .header__logout:hover {
+    color: var(--logout-color-hover-dark);
+}
+
+.dark .form__button {
+    background-color: var(--button-color-unhover-dark);
+    color: var(--button-text-color-dark);
+}
+
+.dark .form__input{
+    color: var(--input-text-color-dark);
+    background-color: var(--background-color-inputs);
+}
+
+.dark .card-describer {
+    background-color: var(--card-background-color-dark);
+}
+
+.dark .app__info{
+    background-color: var(--card-background-color-dark);
+}
+
+.dark .app__button {
+    background-color: var(--button-color-unhover-dark);
+}
+
+.dark .app__actions {
+    background-color: var(--app-card-background-color-dark);
+}
+
+.dark .card-button {
+    background-color: var(--button-color-unhover-dark);
+}
+
+.dark .footer {
+    background-color: var(--header-color-dark);
+}
+
+.dark .dropdown-content {
+    background-color: var(--body-background-color-dark);
+}
+
+.dark .dropdown-content a {
+    background-color: var(--body-background-color-dark);
+}
+
+.dark .dropdown-link:hover {
+    background-color: var(--card-background-color-dark);
 }
 
 select{
@@ -54,7 +132,7 @@ select{
 
 input::placeholder {
     color: var(--input-text-color-placeholder-light);
-    opacity: .1;
+    opacity: 1;
     transition: .3s;
 }
 
@@ -64,7 +142,7 @@ input::placeholder {
     font-weight: 300;
     font-size: 18px;
     line-height: 21px;
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .pagination {
@@ -91,7 +169,7 @@ a {
 
 .header {
     background-color: var(--header-color-light);
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .main-title {
@@ -190,7 +268,7 @@ a {
     font-size: 20px;
     padding: 6px 0;
     border: none;
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .form__button:hover {
@@ -205,7 +283,7 @@ a {
     padding: 0 15px;
     color: var(--input-text-color-light);
     background-color: var(--input-color-light);
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .section__image {
@@ -220,7 +298,7 @@ a {
     width: 100%;
     padding-top: 20px;
     position: relative;
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .card-info {
@@ -235,7 +313,7 @@ a {
     flex-direction: column;
     justify-content: space-around;
     padding: 0 15px;
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .login__form {
@@ -254,7 +332,7 @@ a {
     border: none;
     font-size: 20px;
     background-color: var(--button-color-unhover-light);
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .about {
@@ -313,7 +391,7 @@ a {
     padding: 0 15px;
     display: flex;
     justify-content: space-around;
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .button-hover:hover{
@@ -333,7 +411,7 @@ a {
     font-size: 20px;
     color: black;
     background-color: var(--button-color-unhover-light);
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .card-button:hover {
@@ -355,7 +433,7 @@ a {
     margin-top: 70px;
     height: 200px;
     background-color: var(--header-color-light);
-    /*transition: .3s;*/
+    transition: .3s;
 }
 
 .footer__container {

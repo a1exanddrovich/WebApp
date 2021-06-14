@@ -15,6 +15,11 @@ public class AllOrdersPageCommand implements Command {
     private final static String PAGE_NUMBER = "pageNumber";
     private final static String CURRENT_PAGE = "currentPage";
     private final static String ALL_ORDERS_PAGE = "/WEB-INF/view/admin/adminallorders.jsp";
+    private final static String FALSE = "false";
+    private final static String CANCELLATION_MESSAGE_PARAMETER = "showCancel";
+    private final static String RESERVATION_MESSAGE_PARAMETER = "showRev";
+    private final static String CANCELLATION_ATTRIBUTE = "orderCancelled";
+    private final static String RESERVATION_ATTRIBUTE = "roomFound";
 
     private final OrderService service;
 
@@ -25,22 +30,28 @@ public class AllOrdersPageCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
-        if("false".equals(request.getParameter("showCancel"))) {
-            session.removeAttribute("orderCancelled");
+
+        if(FALSE.equals(request.getParameter(CANCELLATION_MESSAGE_PARAMETER))) {
+            session.removeAttribute(CANCELLATION_ATTRIBUTE);
         }
-        if("false".equals(request.getParameter("showRev"))) {
-            session.removeAttribute("roomFound");
+
+        if(FALSE.equals(request.getParameter(RESERVATION_MESSAGE_PARAMETER))) {
+            session.removeAttribute(RESERVATION_ATTRIBUTE);
         }
+
         int currentPage = Integer.parseInt(request.getParameter(CURRENT_PAGE));
         List<Order> orders = service.getAllOrders(currentPage, RECORDS_PER_PAGE);
         request.setAttribute(ORDERS, orders);
         int orderCount = service.getOrderCount();
         int pageNumber = orderCount / RECORDS_PER_PAGE;
+
         if (pageNumber % RECORDS_PER_PAGE > 0 && !(orderCount % RECORDS_PER_PAGE == 0)) {
             pageNumber++;
         }
+
         request.setAttribute(PAGE_NUMBER, pageNumber);
         request.setAttribute(CURRENT_PAGE, currentPage);
+
         return CommandResult.forward(ALL_ORDERS_PAGE);
     }
 

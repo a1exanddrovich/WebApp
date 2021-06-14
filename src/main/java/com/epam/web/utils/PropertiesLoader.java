@@ -10,11 +10,14 @@ public class PropertiesLoader {
 
     public Properties loadProperties(String fileName) throws IOException {
         try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName)) {
+
             if(inputStream == null) {
                 throw new IOException(FILE_NOT_FOUND);
             }
+
             Properties properties = new Properties();
             properties.load(inputStream);
+
             return properties;
         }
     }

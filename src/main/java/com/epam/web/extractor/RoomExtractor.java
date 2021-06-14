@@ -32,6 +32,7 @@ public class RoomExtractor implements Extractor<Room> {
         long hotelId = 0;
         Date arrival = null;
         Date departure = null;
+
         if (request.getParameter(ARRIVAL) != null && request.getParameter(DEPARTURE) != null) {
             try {
                 arrival = dateFormat.parse(request.getParameter(ARRIVAL));
@@ -40,7 +41,9 @@ public class RoomExtractor implements Extractor<Room> {
                 e.printStackTrace();
             }
         }
+
         hotelId = hotelService.getHotelIdByName(hotelName);
+
         Room extractedRoom = new Room(0, hotelId, roomClass, places, arrival, departure);
         return extractedRoom;
     }

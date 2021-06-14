@@ -167,7 +167,7 @@
     <jsp:include page="fragments/footer.jsp"/>
 </c:if>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

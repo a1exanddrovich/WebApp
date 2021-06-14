@@ -16,10 +16,12 @@ public class ReservationPriceCalculator {
     private final static String SKI_CLASS = "SKI";
     private final static String THEMED_CLASS = "THEMED";
     private final static String URBAN_CLASS = "URBAN";
+    private final static String UNKNOWN_CLASS = "Unknown room class ";
 
     public BigDecimal calculatePrice(Date arrivalDate, Date departureDate, String roomClass) {
         long days = arrivalDate.getTime() - departureDate.getTime();
         long duration = TimeUnit.DAYS.convert(days, TimeUnit.MILLISECONDS);
+
         switch (roomClass) {
             case BUDGET_CLASS:
                 return BigDecimal.valueOf(Math.abs(duration * BUDGET_CLASS_PRICE));
@@ -36,7 +38,8 @@ public class ReservationPriceCalculator {
             case URBAN_CLASS:
                 return BigDecimal.valueOf(Math.abs(duration * URBAN_CLASS_PRICE));
         }
-        throw new IllegalArgumentException("Unknown room class " + roomClass);
+
+        throw new IllegalArgumentException(UNKNOWN_CLASS + roomClass);
     }
 
 }

@@ -10,6 +10,7 @@ public class RoomValidator implements Validator<Room> {
     public boolean validate(Room entity) {
         String roomClass = entity.getRoomClass().toString();
         int places = entity.getPlaceCount();
+
         return EnumUtils.isValidEnum(RoomClass.class, roomClass) && places >= 1;
     }
 

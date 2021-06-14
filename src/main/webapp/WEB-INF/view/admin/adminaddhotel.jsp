@@ -34,7 +34,10 @@
                         <fmt:message key="label.enterCorrectNameOfHotel"/>
                     </div>
                     <fmt:message key="label.description" var="description"/>
-                    <input class="form__input" type="text" placeholder="${description}" name="description" maxlength="256" required>
+                    <input id="descOfHotel" class="form__input" type="text" placeholder="${description}" name="description" maxlength="256" required>
+                    <div id="errorDesc" class="error-div">
+                        <fmt:message key="label.enterCorrectDescOfHotel"/>
+                    </div>
                     <input type="file" name="file" accept="image/*"/>
                     <button class="form__button button-hover" type="submit">
                         <fmt:message key="label.add"/>
@@ -55,7 +58,7 @@
     </div>
 </main>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

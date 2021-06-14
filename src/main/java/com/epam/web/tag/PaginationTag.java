@@ -58,8 +58,10 @@ public class PaginationTag implements Tag {
     @Override
     public int doEndTag() {
         JspWriter out = pageContext.getOut();
+
         try {
             out.write("<ul class=\"menu__list pagination\">");
+
             if (currentPage != 1) {
                 currentPage--;
                 out.write("<li class=\"menu__list-item\">");
@@ -67,11 +69,13 @@ public class PaginationTag implements Tag {
                 out.write("</li >");
                 currentPage++;
             }
+
             for (int i = 1; i <= totalPages; i++) {
                 out.write("<li class=\"menu__list-item\">");
                 out.write("<a class=\"menu__list-link\" href=\"controller?command=" + commandName + "&currentPage=" + i + "\">" + i + "</a>");
                 out.write("</li>");
             }
+
             if (currentPage < totalPages) {
                 currentPage++;
                 out.write("<li class=\"menu__list-item\">");
@@ -82,6 +86,7 @@ public class PaginationTag implements Tag {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return Tag.EVAL_PAGE;
     }
 

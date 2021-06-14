@@ -27,26 +27,17 @@
         <h1 class="error">
             <fmt:message key="label.error"/>
             <c:if test="${not empty sessionScope.user}">
-                <c:if test="${user.getRole() == 'admin'}">
                 <br/>
-                <a href="controller?command=adminAllOrders&currentPage=1&showCancel=false&showRev=false"
+                <a href="controller?command=mainPage&currentPage=1&showMes=false"
                    class="menu__list-link">
                     <fmt:message key="label.main"/>
                 </a>
-                </c:if>
-                <c:if test="${user.getRole() == 'user'}">
-                    <br/>
-                    <a href="controller?command=mainPage&currentPage=1&showMes=false"
-                       class="menu__list-link">
-                        <fmt:message key="label.main"/>
-                    </a>
-                </c:if>
             </c:if>
         </h1>
     </div>
 </header>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

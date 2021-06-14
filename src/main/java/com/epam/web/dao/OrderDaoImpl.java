@@ -38,9 +38,11 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao{
     @Override
     protected void update(Order order) throws DaoException {
         Optional<Order> optionalHotel = findById(order.getId());
+
         if (optionalHotel.isEmpty()) {
             throw new DaoException(INVALID_ORDER_ID + order.getId());
         }
+
         executeUpdate(UPDATE, order.getUserId(), order.getHotelName(), order.getPlaceCount(), order.getRoomClass(), order.getArrivalDate(), order.getDepartureDate(), order.getStatus(), order.getId());
     }
 

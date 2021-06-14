@@ -14,6 +14,7 @@ public class UserExtractor implements Extractor<User> {
     public User extract(HttpServletRequest request) {
         String username = request.getParameter(USERNAME);
         String password = request.getParameter(PASSWORD);
+
         User extractedUser = new User(0, username, password, new BigDecimal(0), UserRole.USER, false);
         return extractedUser;
     }

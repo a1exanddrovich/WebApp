@@ -27,7 +27,7 @@
         <div class="header__container">
             <h1 class="header__title">Bookit</h1>
             <div style="display: flex; align-content: center">
-                <div style="margin-right: 20px" class="theme" onclick="setUpTheme()">
+                <div style="margin-right: 20px" class="theme" onclick="changeTheme()">
                     <img class="theme__image moon" src="images/icons/moon.png">
                 </div>
                 <div class="dropdown lang">
@@ -109,7 +109,7 @@
     </div>
 </main>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

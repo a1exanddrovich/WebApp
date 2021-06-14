@@ -34,9 +34,12 @@ public class MakeReservationCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
         Reservation extractedReservation = extractor.extract(request);
+
         Optional<Room> optionalRoom = roomService.findRoomById(extractedReservation.getRoomId());
         Optional<Order> optionalOrder = orderService.findOrderById(extractedReservation.getOrderId());
+
         reservationService.makeReservation(extractedReservation, optionalOrder.get(), optionalRoom.get());
+
         session.setAttribute(ROOM_FOUND, true);
         return CommandResult.redirect(ALL_ORDERS_COMMAND);
     }

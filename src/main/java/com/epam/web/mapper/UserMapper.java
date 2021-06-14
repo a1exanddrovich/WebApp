@@ -23,6 +23,7 @@ public class UserMapper implements Mapper<User> {
         UserRole userRole = UserRole.valueOf(resultSet.getString(ROLE));
         BigDecimal userBalance = resultSet.getBigDecimal(BALANCE);
         boolean isBlocked = resultSet.getBoolean(IS_BLOCKED);
+
         User user = new User(userId, userLogin, userPassword, userBalance, userRole, isBlocked);
         return user;
     }

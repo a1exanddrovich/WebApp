@@ -37,14 +37,18 @@ public class ConnectionPool {
         if (INSTANCE.get() == null) {
             try {
                 INSTANCE_LOCK.lock();
+
                 if (INSTANCE.get() == null) {
                     ConnectionPool pool = new ConnectionPool();
                     INSTANCE.getAndSet(pool);
                 }
+
             } finally {
                 INSTANCE_LOCK.unlock();
             }
+
         }
+
         return INSTANCE.get();
     }
 
@@ -55,6 +59,7 @@ public class ConnectionPool {
                 ProxyConnection proxyConnection = new ProxyConnection(connection, this);
                 availableConnections.add(proxyConnection);
             }
+
             LOGGER.info("Pool created");
         } catch (SQLException throwables) {
             LOGGER.fatal(throwables.getMessage());
@@ -64,11 +69,13 @@ public class ConnectionPool {
 
     public void returnConnection(ProxyConnection connection) {
         connectionsLock.lock();
+
         try {
             if (this.connectionsInUse.contains(connection)) {
                 availableConnections.offer(connection);
                 connectionsInUse.remove(connection);
             }
+
         } finally {
             semaphore.release();
             connectionsLock.unlock();
@@ -82,6 +89,7 @@ public class ConnectionPool {
             connectionsLock.lock();
             ProxyConnection connection = this.availableConnections.remove();
             this.connectionsInUse.add(connection);
+
             return connection;
         } catch (InterruptedException e) {
             LOGGER.fatal(e.getMessage());

@@ -22,8 +22,10 @@ public class DeclineOrderCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
         long orderId = Long.parseLong(request.getParameter(ORDER_ID));
+
         service.declineOrderById(orderId);
         session.setAttribute(ORDER_CANCELED, true);
+
         return CommandResult.redirect(ALL_ORDERS_COMMAND);
     }
 

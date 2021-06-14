@@ -23,8 +23,10 @@ public class DeleteOrderCommand implements Command {
         HttpSession session = request.getSession();
         String orderId = request.getParameter(ORDER_ID);
         long id = Long.parseLong(orderId);
+
         service.deleteOrder(id);
         session.setAttribute(ORDER_DELETED, true);
+
         return CommandResult.redirect(MY_ORDERS_COMMAND);
     }
 

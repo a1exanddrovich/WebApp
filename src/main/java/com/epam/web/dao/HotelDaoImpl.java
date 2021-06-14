@@ -35,9 +35,11 @@ public class HotelDaoImpl extends AbstractDao<Hotel> implements HotelDao {
     @Override
     protected void update(Hotel hotel) throws DaoException {
         Optional<Hotel> optionalHotel = findById(hotel.getId());
+
         if (optionalHotel.isEmpty()) {
             throw new DaoException(INVALID_HOTEL_ID + hotel.getId());
         }
+
         executeUpdate(UPDATE, hotel.getName(), hotel.getDescription(), hotel.getImagePath(), hotel.getBalance(), hotel.getId());
     }
 

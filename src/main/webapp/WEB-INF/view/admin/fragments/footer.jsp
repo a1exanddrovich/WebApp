@@ -8,7 +8,7 @@
     <div class="container">
         <div class="footer__container">
             <h1 class="header__title footer__title">Bookit</h1>
-            <p class="title__slogan">book it easily!</p>
+            <p class="title__slogan">manage it easily!</p>
         </div>
     </div>
 </footer>

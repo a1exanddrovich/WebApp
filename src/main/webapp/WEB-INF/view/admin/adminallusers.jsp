@@ -97,11 +97,14 @@
 <div class="container">
     <fmt:message key="label.next" var="next"/>
     <fmt:message key="label.prev" var="previous"/>
-    <ctg:pagination commandName="adminAllOrders" totalPages="${pageNumber}" currentPage="${currentPage}"
+    <ctg:pagination commandName="adminAllUsers" totalPages="${pageNumber}" currentPage="${currentPage}"
                     nextTitle="${next}" previousTitle="${previous}"/>
 </div>
+<c:if test="${users.size() != 0}">
+    <jsp:include page="fragments/footer.jsp"/>
+</c:if>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

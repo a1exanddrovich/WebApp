@@ -22,7 +22,9 @@ public class BlockingUsersCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws FileUploadException, ServiceException {
         boolean toBeBlocked = Boolean.parseBoolean(request.getParameter(BLOCK));
         long userId = Long.parseLong(request.getParameter(USER_ID));
+
         service.blockUser(userId, toBeBlocked);
+
         return CommandResult.redirect(ALL_USERS_PAGE);
     }
 

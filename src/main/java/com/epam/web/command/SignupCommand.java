@@ -37,23 +37,31 @@ public class SignupCommand implements Command {
         String login = request.getParameter(USERNAME);
         String firstPassword = request.getParameter(PASSWORD);
         String secondPassword = request.getParameter(SUBMITTED_PASSWORD);
+
         if(!firstPassword.equals(secondPassword)) {
             request.setAttribute(DIFFERENT_PASSWORDS, true);
             return CommandResult.forward(SIGNUP_PAGE);
         }
+
         User user = new User(0, login, firstPassword, new BigDecimal(0), UserRole.USER, false);
+
         if (!validator.validate(user)) {
             request.setAttribute(ERROR_MESSAGE, true);
             return CommandResult.forward(SIGNUP_PAGE);
         }
+
         boolean userExists = service.findByLogin(user);
+
         if (userExists) {
             request.setAttribute(LOGIN_TAKEN, true);
             return CommandResult.forward(SIGNUP_PAGE);
         }
+
         service.addUser(user);
+
         session.setAttribute(USER, user);
         session.setAttribute(REGISTERED_SUCCESSFULLY, true);
+
         return CommandResult.redirect(USER_MAIN_PAGE_COMMAND);
     }
 

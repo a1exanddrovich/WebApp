@@ -35,9 +35,11 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     @Override
     protected void update(Reservation reservation) throws DaoException {
         Optional<Reservation> optionalHotel = findById(reservation.getId());
+
         if (optionalHotel.isEmpty()) {
             throw new DaoException(INVALID_RESERVATION_ID + reservation.getId());
         }
+
         executeUpdate(UPDATE, reservation.getOrderId(), reservation.getHotelId(), reservation.getRoomId(), reservation.getUserId(), reservation.getPrice(), reservation.isPaid(), reservation.getId());
     }
 

@@ -27,6 +27,7 @@ public class OrderMapper implements Mapper<Order> {
         Date arrivalDate = resultSet.getDate(ARRIVAL_DATE);
         Date departureDate = resultSet.getDate(DEPARTURE_DATE);
         OrderStatus status = OrderStatus.valueOf(resultSet.getString(STATUS));
+
         Order order = new Order(id, userId, hotelName, hotelClass, places, arrivalDate, departureDate, status);
         return order;
     }

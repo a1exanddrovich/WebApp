@@ -123,8 +123,11 @@
         }
     </script>
 </c:if>
+<c:if test="${orders.size() != 0}">
+    <jsp:include page="fragments/footer.jsp"/>
+</c:if>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

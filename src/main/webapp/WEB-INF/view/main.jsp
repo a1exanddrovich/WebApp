@@ -52,7 +52,9 @@
     <ctg:pagination commandName="mainPage" totalPages="${pageNumber}" currentPage="${currentPage}" nextTitle="${next}"
                     previousTitle="${previous}"/>
 </div>
-<jsp:include page="fragments/footer.jsp"/>
+<c:if test="${hotels.size() != 0}">
+    <jsp:include page="fragments/footer.jsp"/>
+</c:if>
 <c:if test="${registeredSuccessfully != null}">
     <fmt:message key="label.signUpSuccess" var="mes"/>
     <script>
@@ -62,7 +64,7 @@
     </script>
 </c:if>
 <script>
-    checkForTheme();
+    makeDark();
 </script>
 </body>
 </html>

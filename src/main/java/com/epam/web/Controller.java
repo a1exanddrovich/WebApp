@@ -3,7 +3,6 @@ package com.epam.web;
 import com.epam.web.command.Command;
 import com.epam.web.command.CommandFactory;
 import com.epam.web.command.CommandResult;
-import org.apache.commons.fileupload.FileUploadException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,21 +21,13 @@ public class Controller extends HttpServlet {
     private final CommandFactory factory = new CommandFactory();
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            process(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        process(request, response);
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            process(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        process(request, response);
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -45,7 +36,8 @@ public class Controller extends HttpServlet {
         String page = null;
         CommandResult result = null;
         boolean isRedirect = false;
-        try{
+
+        try {
             result = command.execute(request, response);
             page = result.getPage();
             isRedirect = result.isRedirect();
@@ -53,20 +45,14 @@ public class Controller extends HttpServlet {
             LOGGER.error(e.getMessage());
             page = ERROR_PAGE;
         }
-        if(!isRedirect) {
-            forward(request, response, page);
+
+        if (!isRedirect) {
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+            dispatcher.forward(request, response);
         } else {
-            redirect(response, page);
+            response.sendRedirect(page);
         }
-    }
 
-    private void forward(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-        dispatcher.forward(request, response);
-    }
-
-    private void redirect(HttpServletResponse response, String page) throws IOException {
-        response.sendRedirect(page);
     }
 
 }

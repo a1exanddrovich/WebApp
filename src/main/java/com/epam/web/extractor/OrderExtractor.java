@@ -35,6 +35,7 @@ public class OrderExtractor implements Extractor<Order> {
         int places = Integer.parseInt(request.getParameter(PLACE_COUNT));
         Date arrivalDate = dateFormat.parse(request.getParameter(ARRIVAL));
         Date departureDate = dateFormat.parse(request.getParameter(DEPARTURE));
+
         Order extractedOrder = new Order(id, user.getId(), hotelName, roomClass, places, arrivalDate, departureDate, OrderStatus.PROCESSING);
         return extractedOrder;
     }

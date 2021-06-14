@@ -1,196 +1,94 @@
 "use strict"
 
-function checkForTheme() {
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if (lightTheme === "false" && darkTheme === "true") {
-        getDarkTheme();
+const dark = "dark";
+const theme = "theme";
+const html = "html";
+const languageSign = ".dropbutton";
+const themeSign = ".moon";
+const errorMessage = "A mistake occurred: ";
+const showClass = "show";
+const dropClass = "drop";
+const displayBlock = "block";
+const displayNone = "none";
+const languageIconDark = "images/icons/lang_dark.png";
+const languageIconLight = "images/icons/lang_light.png";
+const sunIcon = "images/icons/sun.png";
+const moonIcon = "images/icons/sun.png";
+const errorInputClass = "error_input";
+
+function changeTheme() {
+    if (localStorage.getItem(theme) === dark) {
+        localStorage.removeItem(theme);
+    } else {
+        localStorage.setItem(theme, dark);
     }
-    if (lightTheme === "true" && darkTheme === "false") {
-        getLightTheme();
+
+    makeDark();
+}
+
+function makeDark() {
+    try {
+        if (localStorage.getItem(theme) === dark) {
+            document.querySelector(html).classList.add(dark);
+
+            document.querySelector(languageSign).src = languageIconDark;
+            document.querySelector(themeSign).src = sunIcon;
+        } else {
+            document.querySelector(html).classList.remove(dark);
+
+            document.querySelector(languageSign).src = languageIconLight;
+            document.querySelector(themeSign).src = moonIcon;
+        }
+    } catch (err) {
+        console.log(errorMessage + err);
     }
 }
 
-function setUpTheme() {
-    const lightTheme = window.sessionStorage.getItem("lightTheme");
-    const darkTheme = window.sessionStorage.getItem("darkTheme");
-    if (lightTheme === "true" && darkTheme === "false") {
-        getDarkTheme();
-        window.sessionStorage.setItem("lightTheme", "false");
-        window.sessionStorage.setItem("darkTheme", "true");
-    }
-    if (lightTheme === "false" && darkTheme === "true") {
-        getLightTheme();
-        window.sessionStorage.setItem("lightTheme", "true");
-        window.sessionStorage.setItem("darkTheme", "false");
-    }
-}
-
-function getDarkTheme() {
-    const body = document.getElementsByClassName("body");
-    const header = document.getElementsByClassName("header");
-    const formButton = document.getElementsByClassName("form__button");
-    const formInput = document.getElementsByClassName("form__input");
-    const cardDescriber = document.getElementsByClassName("card-describer");
-    const appInfo = document.getElementsByClassName("app__info");
-    const appButton = document.getElementsByClassName("app__button");
-    const appActions = document.getElementsByClassName("app__actions");
-    const cardButton = document.getElementsByClassName("card-button");
-    const footer = document.getElementsByClassName("footer");
-    const themeButton = document.getElementsByClassName("moon")
-    const dropDownItem = document.getElementsByClassName("dropdown-link");
-    const langIcon = document.getElementsByClassName("dropbutton");
-    const selection = document.getElementsByClassName("classes");
-    for (let element of body) {
-        element.style.backgroundColor = "var(--body-background-color-dark)";
-        element.style.color = "var(--text-color-dark)";
-    }
-    for (let element of header) {
-        element.style.backgroundColor = "var(--header-color-dark)";
-    }
-    for (let element of formButton) {
-        element.style.backgroundColor = "var(--button-color-unhover-dark)";
-        element.style.color = "var(--button-text-color-dark)";
-    }
-    for (let element of formInput) {
-        element.style.backgroundColor = "var(--background-color-inputs)";
-        element.style.color = "var(--input-text-color-dark)";
-    }
-    for (let element of cardDescriber) {
-        element.style.backgroundColor = "var(--card-background-color-dark)";
-    }
-    for (let element of appInfo) {
-        element.style.backgroundColor = "var(--background-color-inputs)";
-    }
-    for (let element of appButton) {
-        element.style.backgroundColor = "var(--button-color-unhover-dark)";
-    }
-    for (let element of appActions) {
-        element.style.backgroundColor = "var(--app-card-background-color-dark)";
-    }
-    for (let element of cardButton) {
-        element.style.backgroundColor = "var(--button-color-unhover-dark)";
-    }
-    for (let element of footer) {
-        element.style.backgroundColor = "var(--header-color-dark)";
-    }
-    for (let element of themeButton) {
-        element.src = "images/icons/sun.png";
-    }
-    for (let element of dropDownItem) {
-        element.style.backgroundColor = "var(--card-background-color-dark)";
-    }
-    for (let element of langIcon) {
-        element.src = "images/icons/lang_dark.png";
-    }
-    for (let element of selection) {
-        element.style.backgroundColor = "var(--background-color-inputs)";
-        element.style.color = "var(--input-text-color-dark)";
-    }
-}
-
-function getLightTheme() {
-    const body = document.getElementsByClassName("body");
-    const header = document.getElementsByClassName("header");
-    const formButton = document.getElementsByClassName("form__button");
-    const formInput = document.getElementsByClassName("form__input");
-    const cardDescriber = document.getElementsByClassName("card-describer");
-    const appInfo = document.getElementsByClassName("app__info");
-    const appButton = document.getElementsByClassName("app__button");
-    const appActions = document.getElementsByClassName("app__actions");
-    const cardButton = document.getElementsByClassName("card-button");
-    const footer = document.getElementsByClassName("footer");
-    const themeButton = document.getElementsByClassName("moon");
-    const dropDownItem = document.getElementsByClassName("dropdown-link");
-    const langIcon = document.getElementsByClassName("dropbutton");
-    const selection = document.getElementsByClassName("classes");
-    for (let element of body) {
-        element.style.backgroundColor = "var(--body-background-color-light)";
-        element.style.color = "var(--text-color-light)";
-    }
-    for (let element of header) {
-        element.style.backgroundColor = "var(--header-color-light)";
-    }
-    for (let element of formButton) {
-        element.style.backgroundColor = "var(--button-color-unhover-light)";
-        element.style.color = "var(--button-text-color-light)";
-    }
-    for (let element of formInput) {
-        element.style.backgroundColor = "var(--input-color-light)";
-        element.style.color = "var(--input-text-color-light)";
-    }
-    for (let element of cardDescriber) {
-        element.style.backgroundColor = "var(--card-background-color-light)";
-    }
-    for (let element of appInfo) {
-        element.style.backgroundColor = "var(--card-background-color-light)";
-    }
-    for (let element of appButton) {
-        element.style.backgroundColor = "var(--button-color-unhover-light)";
-    }
-    for (let element of appActions) {
-        element.style.backgroundColor = "var(--app-card-background-color-light)";
-    }
-    for (let element of cardButton) {
-        element.style.backgroundColor = "var(--button-color-unhover-light)";
-    }
-    for (let element of footer) {
-        element.style.backgroundColor = "var(--header-color-light)";
-    }
-    for (let element of themeButton) {
-        element.src = "images/icons/moon.png";
-    }
-    for (let element of dropDownItem) {
-        element.style.backgroundColor = "var(--body-background-color-light)";
-    }
-    for (let element of langIcon) {
-        element.src = "images/icons/lang_light.png";
-    }
-    for (let element of selection) {
-        element.style.backgroundColor = "var(--input-color-light)";
-        element.style.color = "var(--input-text-color-light)";
-    }
-}
+makeDark();
 
 function dropdown() {
-    document.getElementById("drop").classList.toggle("show");
+    document.getElementById(dropClass).classList.toggle(showClass);
 }
 
 window.onclick = function (e) {
-    if (!e.target.matches(".dropbutton")) {
-        let myDropdown = document.getElementById("drop");
-        if (myDropdown.classList.contains("show")) {
-            myDropdown.classList.remove("show");
+    if (!e.target.matches(languageSign)) {
+        let myDropdown = document.getElementById(dropClass);
+
+        if (myDropdown.classList.contains(showClass)) {
+            myDropdown.classList.remove(showClass);
         }
     }
 }
 
 function validateLoginForm() {
-    const pattern = /[a-zA-Z1-9]{1,50}/
+    const pattern = /[a-zA-Z1-9]{5,50}/
     const errorLogin = document.getElementById("errorLogin");
     const errorPassword = document.getElementById("errorPassword");
     const loginField = document.getElementById("login");
     const passwordField = document.getElementById("password");
     let correctLogin = false;
     let correctPassword = false;
-    if (!loginField.value.match(pattern)) {
-        loginField.className = "form__input login form__input-login error_input";
-        errorLogin.style.display = "block";
+
+    if (!pattern.test(loginField.value)) {
+        loginField.classList.add(errorInputClass);
+        errorLogin.style.display = displayBlock;
         correctLogin = false;
     } else {
-        loginField.className = "form__input login form__input-login";
-        errorLogin.style.display = "none";
+        loginField.classList.remove(errorInputClass);
+        errorLogin.style.display = displayNone;
         correctLogin = true;
     }
-    if (!passwordField.value.match(pattern)) {
-        passwordField.className = "form__input login form__input-login error_input";
-        errorPassword.style.display = "block";
+
+    if (!pattern.test(passwordField.value)) {
+        passwordField.classList.add(errorInputClass);
+        errorPassword.style.display = displayBlock;
         correctPassword = false;
     } else {
-        passwordField.className = "form__input login form__input-login";
-        errorPassword.style.display = "none";
+        passwordField.classList.remove(errorInputClass);
+        errorPassword.style.display = displayNone;
         correctPassword = true;
     }
+
     return correctLogin && correctPassword;
 }
 
@@ -198,65 +96,72 @@ function validateBalanceForm() {
     const balance = document.getElementById("balance");
     const errorBalance = document.getElementById("errorBalance");
     const balanceValue = balance.value;
-    if (isNaN(balanceValue) || parseFloat(balanceValue) < 1) {
-        errorBalance.style.display = "block";
-        balance.className = "form__input login form__input-login error_input";
+
+    if (isNaN(balanceValue) || parseFloat(balanceValue) < 0.00) {
+        errorBalance.style.display = displayBlock;
+        balance.classList.add(errorInputClass);
+
         return false;
     } else {
-        errorBalance.style.display = "none";
-        balance.className = "form__input login form__input-login";
+        errorBalance.style.display = displayNone;
+        balance.classList.remove(errorInputClass);
+
         return true;
     }
 }
 
 function validateHotelForm() {
-    const pattern = /[a-zA-Z]{1,50}/
+    const namePattern = /[a-zA-Z_ ]{5,50}/
+    const descriptionPattern = /[a-zA-Z1-9_ ]{1,256}/
     const name = document.getElementById("nameOfHotel");
+    const desc = document.getElementById("descOfHotel");
     const errorHotel = document.getElementById("errorHotel");
-    if (!name.value.match(pattern)) {
-        name.className = "form__input error_input";
-        errorHotel.style.display = "block";
-        return false;
+    const errorDesc = document.getElementById("errorDesc");
+    let nameMatches = false;
+    let descriptionMatches = false;
+
+    if (!namePattern.test(name.value)) {
+        name.classList.add("error_input");
+        errorHotel.style.display = displayBlock;
+        nameMatches = false;
     } else {
-        name.className = "form__input";
-        errorHotel.style.display = "none";
-        return false;
+        name.classList.remove(errorInputClass);
+        errorHotel.style.display = displayNone;
+        nameMatches =  true;
     }
+
+    if (!descriptionPattern.test(name.value)) {
+        desc.classList.add(errorInputClass);
+        errorDesc.style.display = displayBlock;
+        descriptionMatches = false;
+    } else {
+        desc.classList.remove(errorInputClass);
+        errorDesc.style.display = displayNone;
+        descriptionMatches = true;
+    }
+
+    return nameMatches && descriptionMatches;
 }
 
 function validateRoomForm() {
-    const pattern = /[a-zA-Z]{1,50}/
-    const name = document.getElementById("nameOfHotel");
-    const errorHotel = document.getElementById("errorHotelName");
     const places = document.getElementById("places");
     const errorPlaces = document.getElementById("errorPlaces");
-    let correctName = false;
     let correctPlaces = false;
-    if (!name.value.match(pattern)) {
-        name.className = "form__input error_input";
-        errorHotel.style.display = "block";
-        correctName = false;
-    } else {
-        name.className = "form__input";
-        errorHotel.style.display = "none";
-        correctName = true;
-    }
+
     if (isNaN(places.value) || parseInt(places.value) < 1) {
-        places.className = "form__input error_input";
-        errorPlaces.style.display = "block";
+        places.classList.add(errorInputClass);
+        errorPlaces.style.display = displayBlock;
         correctPlaces = false;
     } else {
-        places.className = "form__input";
-        errorPlaces.style.display = "none";
+        places.classList.remove(errorInputClass);
+        errorPlaces.style.display = displayNone;
         correctPlaces = true;
     }
-    return correctName && correctPlaces;
+
+    return correctPlaces;
 }
 
 function validateBookingForm() {
-    const pattern = /[a-zA-Z]{1,50}/
-    const name = document.getElementById("nameOfHotel");
-    const errorHotel = document.getElementById("errorHotel");
     const places = document.getElementById("places");
     const errorPlaces = document.getElementById("errorPlaces");
     const arrival = document.getElementById("arr");
@@ -264,38 +169,80 @@ function validateBookingForm() {
     const errorDates = document.getElementById("errorDates");
     const arrivalValue = new Date(arrival.value);
     const departureValue = new Date(departure.value);
-    let correctName = false;
     let correctPlaces = false;
     let correctDates = false;
     let today = new Date();
-    if (!name.value.match(pattern)) {
-        name.className = "form__input error_input";
-        errorHotel.style.display = "block";
-        correctName = false;
-    } else {
-        name.className = "form__input";
-        errorHotel.style.display = "none";
-        correctName = true;
-    }
+
     if (isNaN(places.value) || parseInt(places.value) < 1) {
-        places.className = "form__input error_input";
-        errorPlaces.style.display = "block";
+        places.classList.add(errorInputClass);
+        errorPlaces.style.display = displayBlock;
         correctPlaces = false;
     } else {
-        places.className = "form__input";
-        errorPlaces.style.display = "none";
+        places.classList.remove(errorInputClass);
+        errorPlaces.style.display = displayNone;
         correctPlaces = true;
     }
+
     if ((arrivalValue > departureValue) || (arrivalValue < today) || (departureValue < today)) {
-        arrival.className = "form__input error_input";
-        departure.className = "form__input error_input";
-        errorDates.style.display = "block";
+        arrival.classList.add(errorInputClass);
+        departure.classList.add(errorInputClass);
+        errorDates.style.display = displayBlock;
         correctDates = false;
     } else {
-        arrival.className = "form__input";
-        departure.className = "form__input";
-        errorDates.style.display = "none";
+        arrival.classList.remove(errorInputClass);
+        departure.classList.remove(errorInputClass);
+        errorDates.style.display = displayNone;
         correctDates = true;
     }
-    return correctName && correctPlaces && correctDates;
+
+    return correctPlaces && correctDates;
+}
+
+function validateSignUpForm() {
+    const pattern = /[a-zA-Z1-9]{5,50}/
+    const errorLogin = document.getElementById("errorLogin");
+    const errorPassword = document.getElementById("errorPassword");
+    const passwordsAreNotTheSame = document.getElementById("errorPasswordTheSame");
+    const loginField = document.getElementById("signup");
+    const passwordFirstField = document.getElementById("passwordFirst");
+    const passwordSecondField = document.getElementById("passwordSecond");
+    let correctLogin = false;
+    let correctPassword = false;
+    let passwordsAreTheSame = false;
+
+    if (!pattern.test(loginField.value)) {
+        loginField.classList.add(errorInputClass);
+        errorLogin.style.display = displayBlock;
+        correctLogin = false;
+    } else {
+        loginField.classList.remove(errorInputClass);
+        errorLogin.style.display = displayNone;
+        correctLogin = true;
+    }
+
+    if (!pattern.test(passwordFirstField.value) || !pattern.test(passwordSecondField.value)) {
+        passwordFirstField.classList.add(errorInputClass);
+        passwordSecondField.classList.add(errorInputClass);
+        errorPassword.style.display = displayBlock;
+        correctPassword = false;
+    } else {
+        passwordFirstField.classList.remove(errorInputClass);
+        passwordSecondField.classList.remove(errorInputClass);
+        errorPassword.style.display = displayNone;
+        correctPassword = true;
+
+        if (passwordFirstField.value === passwordSecondField.value) {
+            passwordFirstField.classList.remove(errorInputClass);
+            passwordSecondField.classList.remove(errorInputClass);
+            passwordsAreNotTheSame.style.display = displayNone;
+            passwordsAreTheSame = true;
+        } else {
+            passwordFirstField.classList.add(errorInputClass);
+            passwordSecondField.classList.add(errorInputClass);
+            passwordsAreNotTheSame.style.display = displayBlock;
+            passwordsAreTheSame = false;
+        }
+    }
+
+    return correctLogin && correctPassword && passwordsAreTheSame;
 }

@@ -18,8 +18,8 @@ public class AccessFilter implements Filter {
     private final static String USER = "user";
     private final static String COMMAND = "command";
     private final static String ANONYMOUS_FORWARD_PAGE = "/index.jsp";
-    private final static String USER_FORWARD_PAGE = "controller?command=mainPage&currentPage=1";
-    private final static String ADMIN_FORWARD_PAGE = "controller?command=adminAllOrders&currentPage=1";
+    private final static String USER_FORWARD_PAGE = "controller?command=mainPage&currentPage=1&showMes=false";
+    private final static String ADMIN_FORWARD_PAGE = "controller?command=adminAllOrders&currentPage=1&showCancel=false&showRev=false";
 
     private final static String LOGIN = "login";
     private final static String LOGOUT = "logout";
@@ -60,23 +60,29 @@ public class AccessFilter implements Filter {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(USER);
         String userRole = null;
+
         if (user == null) {
             userRole = ANONYMOUS;
         } else {
             userRole = user.getRole();
         }
+
         String command = request.getParameter(COMMAND);
+
         if(!commands.get(userRole).contains(command)) {
             if(ANONYMOUS.equals(userRole)) {
                 request.getRequestDispatcher(ANONYMOUS_FORWARD_PAGE).forward(request, servletResponse);
             }
+
             if (UserRole.USER.name().equals(userRole)) {
                 request.getRequestDispatcher(USER_FORWARD_PAGE).forward(request, servletResponse);
             }
+
             if (UserRole.ADMIN.name().equals(userRole)) {
                 request.getRequestDispatcher(ADMIN_FORWARD_PAGE).forward(request, servletResponse);
             }
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
