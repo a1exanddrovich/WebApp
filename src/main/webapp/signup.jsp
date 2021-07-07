@@ -81,29 +81,20 @@
                     </button>
                 </form>
                 <fmt:message key="label.differentPasswords" var="differentPasswords"/>
-                <c:if test="${differentPasswordsError != null}">
+
                     <div class="invalid__login-div">
                         <h2 class="invalid__login">
+                        <c:if test="${differentPasswordsError != null}">
                                 ${differentPasswords}
-                        </h2>
-                    </div>
-                </c:if>
-                <fmt:message key="label.invalidLogin" var="invalidLogin"/>
-                <c:if test="${errorMessage != null}">
-                    <div class="invalid__login-div">
-                        <h2 class="invalid__login">
+                        </c:if>
+                        <c:if test="${errorMessage != null}">
                                 ${invalidLogin}
-                        </h2>
-                    </div>
-                </c:if>
-                <fmt:message key="label.loginTaken" var="loginTaken"/>
-                <c:if test="${loginAlreadyTaken != null}">
-                    <div class="invalid__login-div">
-                        <h2 class="invalid__login">
+                        </c:if>
+                        <c:if test="${loginAlreadyTaken != null}">
                                 ${loginTaken}
+                        </c:if>
                         </h2>
                     </div>
-                </c:if>
             </div>
         </section>
     </div>
